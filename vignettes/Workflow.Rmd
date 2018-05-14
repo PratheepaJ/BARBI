@@ -1,0 +1,95 @@
+---
+title: "BARBIE_Workflow"
+author: "PJ"
+date: "5/14/2018"
+output: html_document
+---
+
+Install packages: 
+```{r Install-Pkgs,message=FALSE,warning=FALSE,results='hide'}
+pkgs <- c("ggplot2","reshape2","VennDiagram","stringr","gdata","Rmisc","corrplot","PerformanceAnalytics","dplyr","permute","coin","tidyr","xtable","grid","phyloseq","DESeq2","edgeR","preprocessCore","locfdr","HDInterval","gridExtra","gtable","BiocParallel","doParallel","parallel","pracma")
+
+
+```
+
+load packages:
+```{r Load-pkgs,message=FALSE,warning=FALSE,results='hide'}
+lpckges<-pkgs%in%(.packages())
+if(any(!lpckges)){
+    sapply(pkgs[!lpckges],require,character.only=TRUE)
+}
+```
+
+Read phyloseq 
+```{r Read-phyloseq}
+ps <- readRDS("./Data/ps_sirs_updated_apr_26_2018.rds")
+```
+
+Remove library control
+```{r}
+ps <- subset_samples(ps,Sample_Type=!"Library_Control")
+```
+
+Adding blocks
+```{r}
+set1 <- c("1","2","3","4","11","12")
+set2 <- c("5","6","7","8","9","10")
+setP <- "P"
+ext.num <- sample_data(ps)$Extraction_Number
+
+blocks <-ifelse(ext.num %in% set1, "Set1", ifelse(ext.num %in% set2, "Set2", "SetP"))
+
+sample_data(ps)$block <- blocks
+```
+
+Preprocessing taxa 
+```{r Filter-taxa,message=FALSE,warning=FALSE}
+#   drop taxa with no reads
+ps <- prune_taxa(taxa_sums(ps)>0,ps)
+ps
+
+#   taxa not in any of plasma samples - 
+prevTaxaP <- apply(otu_table(subset_samples(ps,Sample_Type%in%"Plasma")),1,function(x){sum(x>0)})
+#   taxa not in any of plasma samples are identified as contaminants
+Contaminants1 <- names(prevTaxaP)[prevTaxaP==0]
+ps <- prune_taxa(prevTaxaP>0,ps)
+ps
+```
+
+preprocessing samples:
+```{r }
+if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}
+
+#   total reads per sample
+totalReads <- colSums(otu_table(ps))
+
+#   distribution of total reads per sample
+hist(log(totalReads),yaxs="i",xaxs="i",main="Distribution of total reads per sample",breaks=50)
+
+#   select SIRS samples, healthy samples, and negative controls 
+ps <- subset_samples(ps,SampleType %in% c("SIRS","Control","Healthy"))
+```
+
+Summary statistics
+```{r}
+#   number of SIRS and negative controls in each block
+table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
+```
+
+
+
+Break phyloseq by blocks
+```{r}
+psBlockResult <- psBlockResults(ps,sampleTypeVar="Sample_Type",blockVar="block")
+psByBlock <- psBlockResult[[1]]
+psNCbyBlock <- psBlockResult[[2]]
+psallzeroInNC <- psBlockResult[[3]]
+psPlByBlock <- psBlockResult[[4]]
+
+```
+
+estimate negative binomial parametrs of the contamination noise
+```{r message=FALSE,warning=FALSE}
+alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock =psNCbyBlock)
+```
+
