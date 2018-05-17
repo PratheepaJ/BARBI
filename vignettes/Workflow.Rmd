@@ -6,14 +6,12 @@ output: html_document
 ---
 
 Install packages: 
-```{r Install-Pkgs,message=FALSE,warning=FALSE,results='hide'}
+```{r install-pkgs,message=FALSE,warning=FALSE,results='hide'}
 pkgs <- c("ggplot2","reshape2","VennDiagram","stringr","gdata","Rmisc","corrplot","PerformanceAnalytics","dplyr","permute","coin","tidyr","xtable","grid","phyloseq","DESeq2","edgeR","preprocessCore","locfdr","HDInterval","gridExtra","gtable","BiocParallel","doParallel","parallel","pracma")
-
-
 ```
 
 load packages:
-```{r Load-pkgs,message=FALSE,warning=FALSE,results='hide'}
+```{r load-pkgs,message=FALSE,warning=FALSE,results='hide'}
 lpckges<-pkgs%in%(.packages())
 if(any(!lpckges)){
     sapply(pkgs[!lpckges],require,character.only=TRUE)
@@ -21,17 +19,17 @@ if(any(!lpckges)){
 ```
 
 Read phyloseq 
-```{r Read-phyloseq}
-ps <- readRDS("./Data/ps_sirs_updated_apr_26_2018.rds")
+```{r read-phylo,message=FALSE,warning=FALSE}
+ps <- readRDS("/Users/jpratheepa31/Dropbox/GitHub/sepsis_project/SIRS/Data/ps_sirs_updated_apr_26_2018.rds")
 ```
 
 Remove library control
-```{r}
+```{r remove-unwanted-controls,message=FALSE,warning=FALSE}
 ps <- subset_samples(ps,Sample_Type=!"Library_Control")
 ```
 
 Adding blocks
-```{r}
+```{r adding-blocks,message=FALSE,warning=FALSE}
 set1 <- c("1","2","3","4","11","12")
 set2 <- c("5","6","7","8","9","10")
 setP <- "P"
@@ -43,7 +41,7 @@ sample_data(ps)$block <- blocks
 ```
 
 Preprocessing taxa 
-```{r Filter-taxa,message=FALSE,warning=FALSE}
+```{r filter-taxa,message=FALSE,warning=FALSE}
 #   drop taxa with no reads
 ps <- prune_taxa(taxa_sums(ps)>0,ps)
 ps
@@ -57,7 +55,7 @@ ps
 ```
 
 preprocessing samples:
-```{r }
+```{r filter-samples}
 if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}
 
 #   total reads per sample
@@ -71,7 +69,7 @@ ps <- subset_samples(ps,SampleType %in% c("SIRS","Control","Healthy"))
 ```
 
 Summary statistics
-```{r}
+```{r summary-stat,message=FALSE,warning=FALSE}
 #   number of SIRS and negative controls in each block
 table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
 ```
@@ -79,7 +77,7 @@ table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
 
 
 Break phyloseq by blocks
-```{r}
+```{r block-phylos,message=FALSE,warning=FALSE}
 psBlockResult <- psBlockResults(ps,sampleTypeVar="Sample_Type",blockVar="block")
 psByBlock <- psBlockResult[[1]]
 psNCbyBlock <- psBlockResult[[2]]
@@ -88,8 +86,17 @@ psPlByBlock <- psBlockResult[[4]]
 
 ```
 
-estimate negative binomial parametrs of the contamination noise
-```{r message=FALSE,warning=FALSE}
-alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock =psNCbyBlock)
+```{r estimate-neg-bio-para-ncontrols,message=FALSE,warning=FALSE}
+alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock=psNCbyBlock)
+```
+
+
+```{r estimate-cont-for-plasma-sam,message=FALSE,warning=FALSE}
+gammPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock,psallzeroInNC=psallzeroInNC,blk = 3,alphaBetaNegControl=alphaBetaNegControl)
+```
+
+For all samples in the block, for all taxa in the block, the estiamted real reads distribution
+```{r estim-poster-real-reads,message=FALSE,warning=FALSE}
+taxa.post.all.sam  <- samplingPosterior(psPlByBlock=psPlByBlock,blk=3,gammPrior=gammPrior,iter=5)
 ```
 
