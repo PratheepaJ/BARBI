@@ -8,10 +8,10 @@
 #' @export
 psBlockResults <- function(ps,sampleTypeVar="Sample_Type",blockVar="block"){
 
-        names(sample_data(ps))[names(sample_data(ps))==sampleTypeVar] <- "Sample_Type"
-        names(sample_data(ps))[names(sample_data(ps))==blockVar] <- "block"
+        names(phyloseq::sample_data(ps))[names(phyloseq::sample_data(ps))==sampleTypeVar] <- "Sample_Type"
+        names(phyloseq::sample_data(ps))[names(phyloseq::sample_data(ps))==blockVar] <- "block"
 
-        samdf <- sample_data(ps)
+        samdf <- phyloseq::sample_data(ps)
         g <- samdf$block
         samdfL <- split(samdf,g)
         blockSamples <- lapply(samdfL,function(x){rownames(x)})
@@ -20,29 +20,29 @@ psBlockResults <- function(ps,sampleTypeVar="Sample_Type",blockVar="block"){
         psByBlock <- list()
 
         for(i in 1:length(blockSamples)){
-                psByBlock[[i]] <- prune_samples(blockSamples[[i]],ps)
+                psByBlock[[i]] <- phyloseq::prune_samples(blockSamples[[i]],ps)
         }
 
         psByBlock <- lapply(psByBlock,function(x){
-                allzero <- apply(otu_table(subset_samples(x,Sample_Type=="Plasma")),1,function(x){all(x<1)})
-                x <- prune_taxa(!allzero,x)
+                allzero <- apply(phyloseq::otu_table(phyloseq::subset_samples(x,Sample_Type=="Plasma")),1,function(x){all(x<1)})
+                x <- phyloseq::prune_taxa(!allzero,x)
                 return(x)
         })
 
         psNCbyBlock <- lapply(psByBlock,function(x){
-                x <- subset_samples(x,Sample_Type=="Control")
+                x <- phyloseq::subset_samples(x,Sample_Type=="Control")
                 return(x)
         })
 
 
         psallzeroInNC <- lapply(psNCbyBlock,function(x){
                 allzero <- apply(otu_table(x),1,function(y){all(y<1)})
-                z <- prune_taxa(allzero,x)
+                z <- phyloseq::prune_taxa(allzero,x)
                 return(z)
         })
 
         psPlByBlock <- lapply(psByBlock,function(x){
-                x <- subset_samples(x,Sample_Type=="Plasma")
+                x <- phyloseq::subset_samples(x,Sample_Type=="Plasma")
                 return(x)
         })
 

@@ -7,7 +7,7 @@ output: html_document
 
 Install packages: 
 ```{r install-pkgs,message=FALSE,warning=FALSE,results='hide'}
-pkgs <- c("ggplot2","reshape2","VennDiagram","stringr","gdata","Rmisc","corrplot","PerformanceAnalytics","dplyr","permute","coin","tidyr","xtable","grid","phyloseq","DESeq2","edgeR","preprocessCore","locfdr","HDInterval","gridExtra","gtable","BiocParallel","doParallel","parallel","pracma")
+pkgs <- c("ggplot2","reshape2","VennDiagram","stringr","gdata","Rmisc","corrplot","dplyr","coin","tidyr","xtable","grid","phyloseq","DESeq2","preprocessCore","HDInterval","gridExtra","gtable","BiocParallel","doParallel","parallel","pracma")
 ```
 
 load packages:

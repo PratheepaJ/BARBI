@@ -11,11 +11,11 @@ samplingPosterior <- function(psPlByBlock,blk,gammPrior,iter=10000){
         doParallel::registerDoParallel(parallel::detectCores())
         BiocParallel::register(BiocParallel::DoparParam())
         taxa.post <- list()
-        sam <- seq(1,nsamples(psPlByBlock[[blk]]))
+        sam <- seq(1,phyloseq::nsamples(psPlByBlock[[blk]]))
         sam <- as.list(sam)
-        taxa_post_all_sam <- bplapply(sam,function(x){
+        taxa_post_all_sam <- BiocParallel::bplapply(sam,function(x){
                 sam <- x
-                for(taxa in 1:ntaxa(psPlByBlock[[blk]])){
+                for(taxa in 1:phyloseq::ntaxa(psPlByBlock[[blk]])){
                         chain <- MH_MCMC(iterations = iter,k=as.numeric(gammPrior[[sam]][[3]][taxa]),al=gammPrior[[sam]][[1]][taxa],be=gammPrior[[sam]][[2]][taxa])
                         taxa.post[[taxa]] <- chain
                 }

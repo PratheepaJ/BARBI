@@ -12,7 +12,7 @@
 alphaBetaContInPlasma <- function(psPlByBlock,psallzeroInNC,blk,alphaBetaNegControl){
         gammPrior <- list()
         compAlphaBeta <- alphaBetaNegControl
-        for(j in 1:nsamples(psPlByBlock[[blk]])){
+        for(j in 1:phyloseq::nsamples(psPlByBlock[[blk]])){
                 Np <- colSums(otu_table(psPlByBlock[[blk]]))[j]
                 Nc <- compAlphaBeta[[blk]][[3]]
                 mhat <- compAlphaBeta[[blk]][[1]]
@@ -24,9 +24,9 @@ alphaBetaContInPlasma <- function(psPlByBlock,psallzeroInNC,blk,alphaBetaNegCont
                 # ind <- which(muhat.pl < 1)# if muhat.pl less than 1, set it to negative control muhat. i.e not considering library size of plasma sample
                 # ahat[ind] <- 1/dishat[ind]
                 # bhat[ind] <- 1/(dishat[ind]*mhat[ind])
-                xj <- otu_table(psPlByBlock[[blk]])[,j]
-                txname <- taxa_names(psPlByBlock[[blk]])
-                allzero <- ifelse(txname%in%taxa_names(psallzeroInNC[[blk]]),"Yes","No")
+                xj <- phyloseq::otu_table(psPlByBlock[[blk]])[,j]
+                txname <- phyloseq::taxa_names(psPlByBlock[[blk]])
+                allzero <- ifelse(txname%in%phyloseq::taxa_names(psallzeroInNC[[blk]]),"Yes","No")
                 gammPrior[[j]] <- list(ahat,bhat,xj,txname,allzero,muhat.pl)
         }
 
