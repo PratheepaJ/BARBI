@@ -1,3 +1,11 @@
+#' psBlockResults
+#'
+#' @param ps phyloseq object
+#' @param sampleTypeVar factor, with two levels "Plasma" and "Control" samples
+#' @param blockVar factor, block of the samples
+#'
+#' @return list, a list of phyloseq by block, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of plasma samples by block
+#' @export
 psBlockResults <- function(ps,sampleTypeVar="Sample_Type",blockVar="block"){
 
         names(sample_data(ps))[names(sample_data(ps))==sampleTypeVar] <- "Sample_Type"

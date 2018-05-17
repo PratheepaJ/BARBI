@@ -1,3 +1,12 @@
+#' samplingPosterior
+#'
+#' @param psPlByBlock list, phyloseq objects with plasma samples.
+#' @param blk numeric, which block samples to be used
+#' @param gammPrior list, contamination distribution in the plasma samples
+#' @param iter numeric, number of MCMC
+#'
+#' @return list, estiamted reference posterior for real reads in all samples
+#' @export
 samplingPosterior <- function(psPlByBlock,blk,gammPrior,iter=10000){
         doParallel::registerDoParallel(parallel::detectCores())
         BiocParallel::register(BiocParallel::DoparParam())

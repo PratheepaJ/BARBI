@@ -1,3 +1,12 @@
+#' posterior
+#'
+#' @param s numeric, intensity of real read.
+#' @param k numeric, observed read for a taxa in a sample.
+#' @param al numeric, estimated shape parameter for the contamination distribution for each taxa.
+#' @param be numeric, estimated scale parameter for the contamination distribution for each taxa.
+#'
+#' @return numeric, posterior density
+#' @export
 posterior <- function(s,k,al,be){
         ga.mu <- al/be
 

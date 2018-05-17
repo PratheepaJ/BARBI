@@ -1,3 +1,9 @@
+#' alphaBetaNegControl
+#'
+#' @param psNCbyBlock list, phyloseq objects with all negative control samples in each block.
+#'
+#' @return list, estimated contamination distribution parameters using all negative control samples.
+#' @export
 alphaBetaNegControl <- function(psNCbyBlock){
         compAlphaBeta <- lapply(psNCbyBlock,function(x){
                 otu_table(x) <- otu_table(x)+1
@@ -17,5 +23,5 @@ alphaBetaNegControl <- function(psNCbyBlock){
                 return(out)
         })
         return(compAlphaBeta)
-        
+
 }

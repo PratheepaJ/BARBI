@@ -1,3 +1,12 @@
+#' MH_MCMC
+#'
+#' @param iterations numeric, number of MCMC
+#' @param k numeric vector, observed reads for all taxa in a sample
+#' @param al numeric vector, estimated shape parameter for the contamination distribution
+#' @param be numeric vector, estimated scale parameter for the contamination distribution
+#'
+#' @return array
+#' @export
 MH_MCMC <- function(iterations,k,al,be){
         startvalue <- 0
         chain <- array(dim = c(iterations+1,1))
