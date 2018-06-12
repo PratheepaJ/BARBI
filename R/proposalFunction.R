@@ -6,6 +6,6 @@
 #'
 #' @return numeric, proposal density
 #' @export
-proposalFunction <- function(param,al.p,be.p){
-        return(rgamma(1,shape=al.p,rate=be.p))
+proposalFunction <- function(al_p,be_p){
+        return(rgamma(1,shape=al_p,rate=be_p))
 }

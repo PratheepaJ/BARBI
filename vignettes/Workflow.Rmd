@@ -20,7 +20,7 @@ if(any(!lpckges)){
 
 Read phyloseq 
 ```{r read-phylo,message=FALSE,warning=FALSE}
-ps <- readRDS("./Data/ps.rds")
+ps <- readRDS("/Users/jpratheepa31/Dropbox/GitHub/sepsis_project/SIRS/Data/ps_sirs_updated_apr_20_2018.rds")
 ```
 
 Remove library control
@@ -32,13 +32,28 @@ Adding blocks
 ```{r adding-blocks,message=FALSE,warning=FALSE}
 set1 <- c("1","2","3","4","11","12")
 set2 <- c("5","6","7","8","9","10")
-set3 <- c("11","12","13")
+setP <- "P"
 ext.num <- sample_data(ps)$Extraction_Number
 
-blocks <-ifelse(ext.num %in% set1, "Set1", ifelse(ext.num %in% set2, "Set2", "Set3"))
+blocks <-ifelse(ext.num %in% set1, "Set1", ifelse(ext.num %in% set2, "Set2", "SetP"))
 
 sample_data(ps)$block <- blocks
 ```
+
+preprocessing samples:
+```{r }
+if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}
+
+#   total reads per sample
+totalReads <- colSums(otu_table(ps))
+
+#   distribution of total reads per sample
+hist(log(totalReads),yaxs="i",xaxs="i",main="Distribution of total reads per sample",breaks=50)
+
+#   select SIRS samples, healthy samples, and negative controls 
+ps <- subset_samples(ps,SampleType %in% c("SIRS","Control","Healthy"))
+```
+
 
 Preprocessing taxa 
 ```{r filter-taxa,message=FALSE,warning=FALSE}
@@ -54,16 +69,7 @@ ps <- prune_taxa(prevTaxaP>0,ps)
 ps
 ```
 
-preprocessing samples:
-```{r filter-samples}
-if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}
 
-totalReads <- colSums(otu_table(ps))
-
-hist(log(totalReads),yaxs="i",xaxs="i",main="Distribution of total reads per sample",breaks=50)
-
-ps <- subset_samples(ps,SampleType %in% c("Plasma","Control"))
-```
 
 Summary statistics
 ```{r summary-stat,message=FALSE,warning=FALSE}
@@ -92,6 +98,6 @@ gammPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock,psallzeroInNC=psall
 ```
 
 ```{r estim-poster-real-reads,message=FALSE,warning=FALSE}
-taxa.post.all.sam  <- samplingPosterior(psPlByBlock=psPlByBlock,blk=3,gammPrior=gammPrior,iter=10000)
+taxa.post.all.sam  <- samplingPosterior(psPlByBlock=psPlByBlock,blk=3,gammPrior=gammPrior,iter=10)
 ```
 
