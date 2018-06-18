@@ -17,12 +17,12 @@ if(any(!lpckges)){
     sapply(pkgs[!lpckges],require,character.only=TRUE)
 }
 #devtools::load_all(".")
-#sourceDirectory("../BARBI/R")
+sourceDirectory("./R")
 ```
 
 Read phyloseq 
 ```{r read-phylo,message=FALSE,warning=FALSE}
-ps <- readRDS("/Users/jpratheepa31/Dropbox/GitHub/sepsis_project/SIRS/Data/ps_sirs_updated_apr_26_2018.rds")
+ps <- readRDS("/Users/jpratheepa31/Dropbox/GitHub/SIRS/Data/ps_sirs_updated_may_1_2018.rds")
 ```
 
 Remove library control
@@ -80,6 +80,8 @@ table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
 
 Break phyloseq by blocks
 ```{r block-phylos,message=FALSE,warning=FALSE}
+if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}
+
 psBlockResult <- psBlockResults(ps, sampleTypeVar = "Sample_Type",sampleName = "SampleCode",blockVar = "block")
 psByBlock <- psBlockResult[[1]]
 psNCbyBlock <- psBlockResult[[2]]
@@ -104,9 +106,10 @@ t1 <- proc.time()
 posterior_intensity_all_taxa  <- samplingPosterior(psPlByBlock = psPlByBlock,blk = block,gammaPrior_Cont = gammaPrior, itera = 10000)
 proc.time()-t1
 
+
 knownContGamma_posteriorSignal <- list(gammaPrior,posterior_intensity_all_taxa)
 
-saveRDS(knownContGamma_posteriorSignal,file = "./BARBI_Results/signalPosterior_gammaPrior.rds")
+saveRDS(knownContGamma_posteriorSignal,file = "./signalPosterior_gammaPrior.rds")
 ```
 
 
@@ -165,9 +168,11 @@ for(sam in 1:nsamples(psPlByBlock[[blk]])){
 
                 df <- data.frame(Species=taxa_names(psPlByBlock[[blk]]),xj=as.numeric(gammPrior[[sam]][[3]]),l.s=unlist(lower_limit_real),u.s=unlist(upper_limit_real),l.b=unlist(lower_limit_cont),u.b=unlist(upper_limit_cont),pre_zero_in_neg_cont=unlist(prevalence_zero_in_negative_control),sigToNoise_l=unlist(signal_to_noise_ratio_lower),sigToNoise_u=unlist(signal_to_noise_ratio_upper))
 
-                #View(arrange(filter(df,(l.s>u.b)&(l.s>0)),desc(xj)))
-                #
-                df <- dplyr::arrange(filter(df,(l.s>u.b)&(l.s>0)),desc(xj))
+                
+                # df <- dplyr::arrange(filter(df,(l.s>u.b)&(l.s>0)),desc(xj))
+                
+                df <- dplyr::arrange(filter(df,((l.s > u.b)&(l.s > 0))|(sigToNoise_l>1)),desc(xj))
+                
                 if(dim(df)[1]==0){
                         df <- data.frame(Species=NA)
                 }

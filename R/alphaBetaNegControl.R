@@ -6,10 +6,16 @@
 #' @export
 alphaBetaNegControl <- function(psNCbyBlock){
         compAlphaBeta <- lapply(psNCbyBlock,function(x){
-                # if(add1==TRUE){
-                #         otu_table(x) <- otu_table(x)+1
-                # }
+
                 psTodq <- phyloseq::phyloseq_to_deseq2(x,design = ~1)
+
+                gm_mean <-  function(x, na.rm=TRUE){
+                        exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+                }
+
+                geoMeans <-  apply(counts(psTodq), 1, gm_mean)
+
+                psTodq <- estimateSizeFactors(psTodq, geoMeans = geoMeans)
 
                 # dq <- DESeq2::DESeq(psTodq,fitType = "local",sfType = "poscounts")
                 dq <- DESeq2::DESeq(psTodq,fitType = "local")
