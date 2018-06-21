@@ -2,22 +2,37 @@
 % Please edit documentation in R/alphaBetaContInPlasma.R
 \name{alphaBetaContInPlasma}
 \alias{alphaBetaContInPlasma}
-\title{alphaBetaContInPlasma}
+\title{Compute gamma distribution parameters}
 \usage{
 alphaBetaContInPlasma(psPlByBlock, psallzeroInNC, blk, alphaBetaNegControl)
 }
 \arguments{
-\item{psPlByBlock}{list, phyloseq objects with plasma samples.}
+\item{psPlByBlock}{A list of phyloseq objects with plasma samples.}
 
-\item{psallzeroInNC}{list, phyloseq objects with all taxa with no prevalence in negative controls.}
+\item{psallzeroInNC}{A list of phyloseq objects with all taxa with no
+prevalence in negative control samples.}
 
-\item{blk}{numeric, which block samples to be used.}
+\item{blk}{Numeric, which block samples to be used.}
 
-\item{alphaBetaNegControl}{list, estimated contamination distribution parameters using all negative control samples.}
+\item{alphaBetaNegControl}{A list of estimated contamination
+distribution parameters using all negative control samples.}
 }
 \value{
-list, estimated contamination distribution parameters for the plasma samples.
+A list of estimated distribution parameters of contamination
+        intensity in the plasma samples in a particular block.
 }
 \description{
-alphaBetaContInPlasma
+Given the estimated gamma distribution parameters of contaminant
+intensity in negative control samples, \code{alphaBetaContInPlasma} computes the
+gamma distribution parameters in the plasma sample using the scaling
+property of the gamma distribution.
+}
+\section{Note}{
+
+If all the samples are from one block, create a variable with one block
+level.
+}
+
+\seealso{
+\code{\link{alphaBetaNegControl}}
 }

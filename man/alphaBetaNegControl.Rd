@@ -2,16 +2,27 @@
 % Please edit documentation in R/alphaBetaNegControl.R
 \name{alphaBetaNegControl}
 \alias{alphaBetaNegControl}
-\title{alphaBetaNegControl}
+\title{Compute gamma distirbution parameters}
 \usage{
 alphaBetaNegControl(psNCbyBlock)
 }
 \arguments{
-\item{psNCbyBlock}{list, phyloseq objects with all negative control samples in each block.}
+\item{psNCbyBlock}{A list of phyloseq objects with all negative control
+samples in each block.}
 }
 \value{
-list, estimated contamination distribution parameters using all negative control samples.
+A list of estimated distribution parameters of contamination
+        intensity in negative control samples.
 }
 \description{
-alphaBetaNegControl
+\code{alphaBetaNegControl} computes the gamma distribution parameters
+     using negative control samples for all blocks.
+}
+\examples{
+\dontrun{
+alphaBetaNegControl(psNCByBlock)
+}
+}
+\seealso{
+\code{\link[phyloseq]{phyloseq}}
 }

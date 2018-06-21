@@ -4,16 +4,16 @@
 \alias{MH_MCMC}
 \title{MH_MCMC}
 \usage{
-MH_MCMC(iterations, k, al, be)
+MH_MCMC(iterations, k, al_c, be_c, startvalue_lamda_r = 0)
 }
 \arguments{
 \item{iterations}{numeric, number of MCMC}
 
 \item{k}{numeric vector, observed reads for all taxa in a sample}
 
-\item{al}{numeric vector, estimated shape parameter for the contamination distribution}
+\item{al_c}{numeric vector, estimated shape parameter for the contamination distribution}
 
-\item{be}{numeric vector, estimated scale parameter for the contamination distribution}
+\item{be_c}{numeric vector, estimated scale parameter for the contamination distribution}
 }
 \value{
 array

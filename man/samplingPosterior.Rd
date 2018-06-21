@@ -2,22 +2,24 @@
 % Please edit documentation in R/samplingPosterior.R
 \name{samplingPosterior}
 \alias{samplingPosterior}
-\title{samplingPosterior}
+\title{Sampling posterior}
 \usage{
-samplingPosterior(psPlByBlock, blk, gammPrior, iter = 10000)
+samplingPosterior(psPlByBlock, blk, gammaPrior_Cont, itera = 10000)
 }
 \arguments{
-\item{psPlByBlock}{list, phyloseq objects with plasma samples.}
+\item{psPlByBlock}{A list of phyloseq objects with plasma samples.}
 
-\item{blk}{numeric, which block samples to be used}
+\item{blk}{Numeric, which block samples to be used.}
 
-\item{gammPrior}{list, contamination distribution in the plasma samples}
+\item{gammaPrior_Cont}{A list of estimated distribution parameters of
+contamination intensity in the plasma samples in a particular
+block.}
 
-\item{iter}{numeric, number of MCMC}
+\item{itera}{Numeric, number of MCMC.}
 }
 \value{
-list, estiamted reference posterior for real reads in all samples
+A list of estimated marginal reference posterior for the intensity of true signal.
 }
 \description{
-samplingPosterior
+Sampling from the marginal reference posterior for the intensity of true signal
 }

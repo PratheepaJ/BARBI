@@ -4,7 +4,7 @@
 \alias{proposalFunction}
 \title{proposalFunction}
 \usage{
-proposalFunction(param, al.p, be.p)
+proposalFunction(al_p, be_p)
 }
 \arguments{
 \item{param}{numeric, a proposal value}

@@ -4,16 +4,16 @@
 \alias{posterior}
 \title{posterior}
 \usage{
-posterior(s, k, al, be)
+posterior(lambda_r, k, al_c, be_c)
 }
 \arguments{
-\item{s}{numeric, intensity of real read.}
+\item{lambda_r}{numeric, intensity of real read.}
 
 \item{k}{numeric, observed read for a taxa in a sample.}
 
-\item{al}{numeric, estimated shape parameter for the contamination distribution for each taxa.}
+\item{al_c}{numeric, estimated shape parameter for the contamination distribution for each taxa.}
 
-\item{be}{numeric, estimated scale parameter for the contamination distribution for each taxa.}
+\item{be_c}{numeric, estimated scale parameter for the contamination distribution for each taxa.}
 }
 \value{
 numeric, posterior density

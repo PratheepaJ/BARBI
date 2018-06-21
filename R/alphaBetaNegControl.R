@@ -1,8 +1,18 @@
-#' alphaBetaNegControl
+#' Compute gamma distirbution parameters
 #'
-#' @param psNCbyBlock list, phyloseq objects with all negative control samples in each block.
+#' \code{alphaBetaNegControl} computes the gamma distribution parameters
+#'      using negative control samples for all blocks.
 #'
-#' @return list, estimated contamination density parameters using all negative control samples.
+#' @param psNCbyBlock A list of phyloseq objects with all negative control
+#'        samples in each block.
+#'
+#' @return A list of estimated distribution parameters of contamination
+#'         intensity in negative control samples.
+#' @examples
+#' \dontrun{
+#' alphaBetaNegControl(psNCByBlock)
+#' }
+#' @seealso \code{\link[phyloseq]{phyloseq}}
 #' @export
 alphaBetaNegControl <- function(psNCbyBlock){
         compAlphaBeta <- lapply(psNCbyBlock,function(x){

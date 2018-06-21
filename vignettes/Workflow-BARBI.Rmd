@@ -106,7 +106,6 @@ t1 <- proc.time()
 posterior_intensity_all_taxa  <- samplingPosterior(psPlByBlock = psPlByBlock,blk = block,gammaPrior_Cont = gammaPrior, itera = 10000)
 proc.time()-t1
 
-
 knownContGamma_posteriorSignal <- list(gammaPrior,posterior_intensity_all_taxa)
 
 saveRDS(knownContGamma_posteriorSignal,file = "./signalPosterior_gammaPrior.rds")
@@ -115,10 +114,14 @@ saveRDS(knownContGamma_posteriorSignal,file = "./signalPosterior_gammaPrior.rds"
 
 Save the results for each sample as a table in png format
 ```{r eval=FALSE}
-knownContGamma_posteriorSignal <- readRDS(file="./BARBI_Results/signalPosterior_gammaPrior.rds")
+knownContGamma_posteriorSignal <- readRDS(file=".signalPosterior_gammaPrior.rds")
+
 gammPrior <- knownContGamma_posteriorSignal[[1]]
+
 posterior_intensity_all_taxa <- knownContGamma_posteriorSignal[[2]]
+
 blk <- 3
+
 for(sam in 1:nsamples(psPlByBlock[[blk]])){
         
         posterior_taxa <- posterior_intensity_all_taxa[[sam]]
@@ -168,16 +171,14 @@ for(sam in 1:nsamples(psPlByBlock[[blk]])){
 
                 df <- data.frame(Species=taxa_names(psPlByBlock[[blk]]),xj=as.numeric(gammPrior[[sam]][[3]]),l.s=unlist(lower_limit_real),u.s=unlist(upper_limit_real),l.b=unlist(lower_limit_cont),u.b=unlist(upper_limit_cont),pre_zero_in_neg_cont=unlist(prevalence_zero_in_negative_control),sigToNoise_l=unlist(signal_to_noise_ratio_lower),sigToNoise_u=unlist(signal_to_noise_ratio_upper))
 
-                
-                # df <- dplyr::arrange(filter(df,(l.s>u.b)&(l.s>0)),desc(xj))
-                
-                df <- dplyr::arrange(filter(df,((l.s > u.b)&(l.s > 0))|(sigToNoise_l>1)),desc(xj))
-                
+               
+               df <- dplyr::arrange(filter(df,((l.s > u.b)&(l.s > 0))&(sigToNoise_l>1)),desc(xj))
+               
                 if(dim(df)[1]==0){
                         df <- data.frame(Species=NA)
                 }
                 
-                filname <- paste("./BARBI_Results/",sample_names(psPlByBlock[[blk]])[sam],".png",sep="")
+                filname <- paste("./",sample_names(psPlByBlock[[blk]])[sam],".png",sep="")
                png(filname, height = 600, width = 750)
                 
                 df.p <- tableGrob(df)
