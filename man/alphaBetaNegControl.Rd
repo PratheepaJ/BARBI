@@ -16,7 +16,7 @@ A list of estimated distribution parameters of contamination
 }
 \description{
 \code{alphaBetaNegControl} computes the gamma distribution parameters
-     using negative control samples for all blocks.
+     using negative control samples in all blocks.
 }
 \examples{
 \dontrun{
@@ -24,5 +24,5 @@ alphaBetaNegControl(psNCByBlock)
 }
 }
 \seealso{
-\code{\link[phyloseq]{phyloseq}}
+\code{\link[phyloseq]{phyloseq}} and \code{\link[phyloseq]{DESeq2}}
 }

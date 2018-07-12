@@ -25,6 +25,6 @@ alphaBetaNegControl, alphaBetaContInPlasma and samplingPosterior.
 \section{samplingPosterior fucntion}{
 
         The samplingPosterior function is used to sample from the
-        posterior distribution of true intensity.
+        posterior distribution of the true intensity.
 }
 

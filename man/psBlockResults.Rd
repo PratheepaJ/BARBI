@@ -8,14 +8,16 @@ psBlockResults(ps, sampleTypeVar = "Sample_Type", sampleName = "SampleCode",
   blockVar = "block")
 }
 \arguments{
-\item{ps}{phyloseq object}
+\item{ps}{phyloseq object.}
 
-\item{sampleTypeVar}{factor, with two levels "Plasma" and "Control" samples}
+\item{sampleTypeVar}{character, variable defines the "Plasma" and "Control" samples.}
 
-\item{blockVar}{factor, block of the samples. If all the samples are from the same block, create a variable with only one level.}
+\item{sampleName}{character, variable defines the sample names.}
+
+\item{blockVar}{character, variable defines the block of the samples. If all the samples are from the same block, create a variable with only one level.}
 }
 \value{
-list, a list of phyloseq by block, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of plasma samples by block
+A list of phyloseq by block, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of plasma samples by block
 }
 \description{
 psBlockResults

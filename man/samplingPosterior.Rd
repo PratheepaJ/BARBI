@@ -15,7 +15,7 @@ samplingPosterior(psPlByBlock, blk, gammaPrior_Cont, itera = 10000)
 contamination intensity in the plasma samples in a particular
 block.}
 
-\item{itera}{Numeric, number of MCMC.}
+\item{itera}{Numeric, number of MCMC samples.}
 }
 \value{
 A list of estimated marginal reference posterior for the intensity of true signal.
