@@ -23,7 +23,8 @@ A list of estimated distribution parameters of contamination
 }
 \description{
 Given the estimated gamma distribution parameters of contaminant
-intensity in negative control samples, \code{alphaBetaContInPlasma} computes the
+intensity in negative control samples, \code{alphaBetaContInPlasma}
+computes the
 gamma distribution parameters in the plasma sample using the scaling
 property of the gamma distribution.
 }
