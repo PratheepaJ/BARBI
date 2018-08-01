@@ -164,7 +164,7 @@ For all samples in the selected block/batch, for all taxa in each sample, we sam
 
 We save the gamma prior for the internsity of the contamination and the posterior samples.
 
-```{r sampling_post_true_int}
+```{r sampling_post_true_int,eval=FALSE}
 t1 <- proc.time()
 post_int_all_taxa  <- samplingPosterior(psPlByBlock=psPlByBlock,
                                         blk = block,
@@ -188,7 +188,7 @@ We can choose the coverage probability to construct the highest posterior densit
 
 We can choose the option `Use_SNR` to tell whether the filtering of species is also based on the signal-to-noise ratio, otherwise, the filtering is based on the lower limit of the true signal and the upper limit of the contaminant. 
 
-```{r make_tables}
+```{r make_tables, eval=FALSE}
 itera <- 100
 burnIn <- 10
 cov.pro <- .95
