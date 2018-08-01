@@ -53,7 +53,6 @@ library(gtable)
 library(gridExtra)
 library(BiocStyle)
 
-sourceDirectory("./R")
 devtools::load_all(".")
 ```
 
@@ -89,15 +88,16 @@ sample_data(ps)$block <- blocks
 We identified the species not in any single plasma sample and removed them from the phyloseq object and label them as contaminants.
 
 ```{r filter_taxa}
-ps <- prune_taxa(taxa_sums(ps)>0,ps)
+ps <- prune_taxa(taxa_sums(ps)>0, ps)
 ps_plasma <- subset_samples(ps,Sample_Type%in%"Plasma")
-prevTaxaP <- apply(otu_table(ps_plasma),1,function(x){sum(x>0)})
+prevTaxaP <- apply(otu_table(ps_plasma), 1 ,function(x){sum(x>0)})
 
 Contaminants1 <- names(prevTaxaP)[prevTaxaP==0]
 ps <- prune_taxa(prevTaxaP>0,ps)
 ```
 
 We set that the samples are on the columns and species are on the rows of `otu_table`. Then, we checked the distribution of library size/sample depth to see whether we can drop any sample with less library size.
+
 ```{r filter-samples}
 if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}
 totalReads <- colSums(otu_table(ps))
@@ -105,13 +105,14 @@ hist(log(totalReads),yaxs="i",xaxs="i",main="Distribution of total reads per sam
 ```
 
 We make sure that we filter only the SIRS/plasma, negative control, and healthy control samples.
+
 ```{r choose_samples}
 ps <- subset_samples(ps,SampleType %in% c("SIRS","Control","Healthy"))
 ```
 
-Summary of plasma and negative control samples in each block
-```{r summary_stat,message=FALSE,warning=FALSE}
-#   number of SIRS and negative controls in each block
+Summary of plasma and negative control samples in each block.
+
+```{r summary_stat}
 table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
 ```
 
@@ -119,15 +120,15 @@ table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
 
 ##      Prepare the phyloseq object for the Bayesian inference
 
-We use the Bayesian inference to identify contaminants in each block/batch because DNA contaminants are unique to each batch. 
+We use the Bayesian inference to identify contaminants in each block because DNA contaminants are unique to each batch. 
 
-Thus, we split the phyloseq object corresponding to each block/batch and store as a list of phyloseq objects, `psByBlock`. 
+Thus, we split the phyloseq object corresponding to each block and store as a list of phyloseq objects, `psByBlock`. 
 
-We select negative control samples from each block/batch and store as a list of phyloseq objects, `psNCbyBlock`. 
+We select negative control samples from each block and store as a list of phyloseq objects, `psNCbyBlock`. 
 
-We select all species that has prevalence of zero in all negative control samples for each block/batch and store as a list of phyloseq objects, `psallzeroInNC`.
+We select all species that has prevalence of zero in all negative control samples for each block and store as a list of phyloseq objects, `psallzeroInNC`.
 
-We select all plasma samples from each block/batch and store as a list of phyloseq objects, `psPlByBlock`.
+We select all plasma samples from each block and store as a list of phyloseq objects, `psPlByBlock`.
 
 ```{r list_of_phyloseq}
 psBlockResult <- psBlockResults(ps, sampleTypeVar = "Sample_Type",sampleName = "SampleCode",blockVar = "block")
@@ -139,7 +140,7 @@ psPlByBlock <- psBlockResult[[4]]
 
 ##      Estimate the distribution parameters of the DNA contamination in negative control samples
 
-We estimate the gamma distribution parameters for the intensity of contaminants usning the negative control samples for each block/batch. 
+We estimate the gamma distribution parameters for the intensity of contaminants usning the negative control samples for each block. 
 
 ```{r estimate_Cont_Intensity_NB_ncontrols}
 alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock)
@@ -147,9 +148,9 @@ alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock)
 
 ##      Estimate the distribution parameters of the DNA contamination in a plasma sample
 
-We choose the block/batch (for example `block =3`) samples to identify DNA contaminants.
+We choose the block (for example `block =3`) samples to identify DNA contaminants.
 
-Then, for each sample in the selected block/batch, we estimate the gamma distribution parameters of intensity of DNA contamination using the scaling property of the gamma distribution.
+Then, for each sample in the selected block, we estimate the gamma distribution parameters of intensity of DNA contamination using the scaling property of the gamma distribution.
 
 ```{r estimate_Cont_Intensity_NB_plasma}
 block <- 3
@@ -158,11 +159,11 @@ gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock,
                                     blk = block,                                   alphaBetaNegControl=alphaBetaNegControl)
 ```
 
-##      Sampling from the posterior of the intensity of true signal
+##      Sampling from the posterior for the intensity of true signal
 
-For all samples in the selected block/batch, for all taxa in each sample, we sampling from the posterior of the intensity of true signal using the Metropolis-Hasting MCMC. We can choose the number of MCMC using the option `itera`.
+For all samples in the selected block, for all taxa in each sample, we sampling from the posterior of the intensity of true signal using the Metropolis-Hasting MCMC. We can choose the number of MCMC using the option `itera`.
 
-We save the gamma prior for the internsity of the contamination and the posterior samples.
+We save the gamma prior for the intensity of the contamination and the posterior samples.
 
 ```{r sampling_post_true_int,eval=FALSE}
 t1 <- proc.time()
@@ -180,7 +181,7 @@ saveRDS(knownContGamma_posteriorSignal,file = "./signalPosterior_gammaPrior.rds"
 
 #       Display the results
 
-##     Make a table of the true signal for each samples in the selected block/batch.
+##     Make a table of the true signal for each samples in the selected block
 
 We can choose the number of MCMC to be removed using the option `burnIn` and it must be less than `itera`.
 
@@ -334,3 +335,8 @@ for(sam in 1:nsamples(psPlByBlock[[blk]])){
 }
 ```
 
+# Session Info {.unnumbered}
+
+```{r session_info}
+sessionInfo()
+```

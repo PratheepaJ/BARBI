@@ -14,20 +14,22 @@ samplingPosterior <-  function(psPlByBlock,
                              blk,
                              gammaPrior_Cont,
                              itera=10000){
+        # doParallel::registerDoParallel(parallel::detectCores())
+        # BiocParallel::register(BiocParallel::DoparParam())
 
-        doParallel::registerDoParallel(parallel::detectCores())
-        BiocParallel::register(BiocParallel::DoparParam())
+        registerDoParallel(detectCores())
+        register(DoparParam())
 
-        sampleLst <- seq(1,phyloseq::nsamples(psPlByBlock[[blk]]))
+        sampleLst <- seq(1, nsamples(psPlByBlock[[blk]]))
         sampleLst <- as.list(sampleLst)
 
-        taxa_post_all_sam = BiocParallel::bplapply(sampleLst,function(x){
+        taxa_post_all_sam = bplapply(sampleLst, function(x){
                 #taxa_post = list()
                 sam <- x
                 taxa_list <- as.list(1:ntaxa(psPlByBlock[[blk]]))
 
                 taxa_post <- lapply(taxa_list, function(taxa){
-                        chain = MH_MCMC(itera = itera,k = as.numeric(gammaPrior_Cont[[sam]]$kij[taxa]),al_c = gammaPrior_Cont[[sam]]$alpha_ij_c[taxa],be_c = gammaPrior_Cont[[sam]]$beta_ij_c[taxa],startvalue_lamda_r=0)
+                        chain = MH_MCMC(itera = itera, k = as.numeric(gammaPrior_Cont[[sam]]$kij[taxa]), al_c = gammaPrior_Cont[[sam]]$alpha_ij_c[taxa], be_c = gammaPrior_Cont[[sam]]$beta_ij_c[taxa], startvalue_lamda_r=0)
                         return(chain)
                         }
                 )

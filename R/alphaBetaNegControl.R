@@ -10,9 +10,12 @@
 #' alphaBetaNegControl(psNCByBlock)
 #' }
 #' @import DESeq2
+#' @import SummarizedExperiment
+#' @import Biobase
 #' @importFrom stats median var runif dgamma rgamma
 #' @export
 alphaBetaNegControl <- function(psNCbyBlock){
+
         compAlphaBeta <- lapply(psNCbyBlock, function(x){
 
                 psTodq <- phyloseq_to_deseq2(x, design = ~1)
@@ -71,5 +74,4 @@ alphaBetaNegControl <- function(psNCbyBlock){
                 return(out)
         })
         return(compAlphaBeta)
-
 }
