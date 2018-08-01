@@ -7,9 +7,9 @@
 proposalFunction(al_p, be_p)
 }
 \arguments{
-\item{al_p}{numeric, shape parameter of the proposal function}
+\item{al_p}{numeric, shape parameter for the proposal function}
 
-\item{be_p}{numeric, scale parameter of the proposal function}
+\item{be_p}{numeric, scale parameter for the proposal function}
 }
 \value{
 numeric, proposal density

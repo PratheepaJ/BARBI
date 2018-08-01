@@ -11,18 +11,13 @@ alphaBetaNegControl(psNCbyBlock)
 samples in each block.}
 }
 \value{
-A list of estimated distribution parameters of contamination
-        intensity in negative control samples.
+A list of estimated distribution parameters for the intensity of contamination in negative control samples.
 }
 \description{
-\code{alphaBetaNegControl} computes the gamma distribution parameters
-     using negative control samples in all blocks.
+Computes the gamma distribution parameters for the intensity of contamination using negative control samples in each block.
 }
 \examples{
 \dontrun{
 alphaBetaNegControl(psNCByBlock)
 }
-}
-\seealso{
-\code{\link[phyloseq]{phyloseq}} and \code{\link[phyloseq]{DESeq2}}
 }

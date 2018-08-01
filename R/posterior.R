@@ -7,23 +7,27 @@
 #'
 #' @return numeric, posterior density
 #' @export
-posterior = function(lambda_r,k,al_c,be_c){
-        ga_mu = al_c/be_c
+posterior <- function(lambda_r,
+                     k,
+                     al_c,
+                     be_c){
+
+        ga_mu <- al_c/be_c
 
         if(k==0){
-                pos_v = dgamma(lambda_r,shape=.5,rate = 1)
+                pos_v <- dgamma(lambda_r,shape=.5,rate = 1)
 
         }else if(k==1){
-                pos_v = exp(-log(factorial(.5))+.5*log(lambda_r+ga_mu)-(lambda_r+ga_mu))
+                pos_v <- exp(-log(factorial(.5)) + .5*log(lambda_r + ga_mu)-(lambda_r + ga_mu))
         }else{
-                c_m = numeric()
-                c_m[1] = 0
+                c_m <- numeric()
+                c_m[1] <- 0
 
                 for(m in 2:k){
-                        c_m[m] = log(m)+c_m[m-1]
+                        c_m[m] <- log(m) + c_m[m-1]
                 }
 
-                pos_v = exp(-c_m[(k-1)]+(k-.5)*log(lambda_r+ga_mu)-(lambda_r+ga_mu))
+                pos_v <- exp(-c_m[(k-1)] + (k-.5)*log(lambda_r + ga_mu)-(lambda_r + ga_mu))
         }
 
         return(pos_v)

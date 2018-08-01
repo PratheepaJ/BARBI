@@ -4,8 +4,8 @@
 \alias{psBlockResults}
 \title{psBlockResults}
 \usage{
-psBlockResults(ps, sampleTypeVar = "Sample_Type", sampleName = "SampleCode",
-  blockVar = "block")
+psBlockResults(ps, sampleTypeVar = "Sample_Type",
+  sampleName = "SampleCode", blockVar = "block")
 }
 \arguments{
 \item{ps}{phyloseq object.}
@@ -14,11 +14,11 @@ psBlockResults(ps, sampleTypeVar = "Sample_Type", sampleName = "SampleCode",
 
 \item{sampleName}{character, variable defines the sample names.}
 
-\item{blockVar}{character, variable defines the block of the samples. If all the samples are from the same block, create a variable with only one level.}
+\item{blockVar}{character, variable defines the block of the samples. If there is only one block, create a variable with only one level.}
 }
 \value{
-A list of phyloseq by block, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of plasma samples by block
+A list of phyloseq objects, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of plasma samples by block.
 }
 \description{
-psBlockResults
+Prepare the phyloseq object for the Bayesian inference
 }

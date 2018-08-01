@@ -15,10 +15,10 @@ MH_MCMC(itera, k, al_c, be_c, startvalue_lamda_r = 0)
 
 \item{be_c}{numeric, estimated scale parameter for the contamination distribution for each taxa.}
 
-\item{startvalue_lamda_r}{numeric, initial value of the intensity of true signal.}
+\item{startvalue_lamda_r}{numeric, initial value for the intensity of true signal.}
 }
 \value{
-array of MCMC samples.
+An array of MCMC samples.
 }
 \description{
 MH_MCMC

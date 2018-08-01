@@ -1,0 +1,336 @@
+---
+title: "BARBI Workflow"
+author:
+  name: Pratheepa Jeganathan
+  affiliation: Department of Statistics, Stanford University
+  email: jpratheepa31@gmail.com
+package: BARBI
+abstract: >
+  BAyesian Reduction in Background Interference (BARBI) provides a reproducible and automated process to remove contaminating DNA from metagenomic shotgun sequencing data in the setting of ultra low-biomass samples.
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+    %\VignetteIndexEntry{BARBI Workflow}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+bibliography: BARBI.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+Install [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/). Open this `Rmd` `r Githubpkg("rstudio/rmarkdown")` file in RStudio. Then run the following code to install all required packages.
+
+```{r install_packages,eval=FALSE}
+pkgs <- c("DESeq2","phyloseq","dplyr",
+          "tidyr","R.utils","BiocParallel",
+          "doParallel","parallel","HDInterval",
+          "grid","xtable","gtable",
+          "gridExtra","BiocStyle")
+source("http://bioconductor.org/biocLite.R")
+biocLite(setdiff(pkgs,installed.packages()))
+devtools::install_github("PratheepaJ/BARBI")
+```
+
+Load packages:
+```{r load_packages}
+#library(BARBI)
+library(devtools)
+library(phyloseq)
+library(DESeq2)
+library(dplyr)
+library(tidyr)
+library(R.utils)
+library(BiocParallel)
+library(doParallel)
+library(parallel)
+library(HDInterval)
+library(grid)
+library(xtable)
+library(gtable)
+library(gridExtra)
+library(BiocStyle)
+
+sourceDirectory("./R")
+devtools::load_all(".")
+```
+
+#      Load the real data stored as a phyloseq object in the ``BARBI`` pacakge or use your own data stored as a phyloseq object.
+
+##      Read the downloaded phyloseq 
+
+Analysis of shotgun-metagenomic sequencing samples that is a subset of SIRS patients from @cheng2017integration.
+
+```{r read-phylo,message=FALSE,warning=FALSE}
+ps <- psSub
+```
+
+We removed library controls. 
+
+```{r remove_unwanted-controls}
+ps <- subset_samples(ps,Sample_Type=!"Library_Control")
+```
+
+We identified three different blocks/batches of processing samples using a PCA on ranks of abundance (though we expect a user to know the blocks/batches in advance for each samples). 
+
+```{r adding_blocks}
+set1 <- c("1","2","3","4","11","12")
+set2 <- c("5","6","7","8","9","10")
+setP <- "P"
+ext.num <- sample_data(ps)$Extraction_Number
+
+blocks <-ifelse(ext.num %in% set1, "Set1", ifelse(ext.num %in% set2, "Set2", "SetP"))
+
+sample_data(ps)$block <- blocks
+```
+
+We identified the species not in any single plasma sample and removed them from the phyloseq object and label them as contaminants.
+
+```{r filter_taxa}
+ps <- prune_taxa(taxa_sums(ps)>0,ps)
+ps_plasma <- subset_samples(ps,Sample_Type%in%"Plasma")
+prevTaxaP <- apply(otu_table(ps_plasma),1,function(x){sum(x>0)})
+
+Contaminants1 <- names(prevTaxaP)[prevTaxaP==0]
+ps <- prune_taxa(prevTaxaP>0,ps)
+```
+
+We set that the samples are on the columns and species are on the rows of `otu_table`. Then, we checked the distribution of library size/sample depth to see whether we can drop any sample with less library size.
+```{r filter-samples}
+if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}
+totalReads <- colSums(otu_table(ps))
+hist(log(totalReads),yaxs="i",xaxs="i",main="Distribution of total reads per sample",breaks=50)
+```
+
+We make sure that we filter only the SIRS/plasma, negative control, and healthy control samples.
+```{r choose_samples}
+ps <- subset_samples(ps,SampleType %in% c("SIRS","Control","Healthy"))
+```
+
+Summary of plasma and negative control samples in each block
+```{r summary_stat,message=FALSE,warning=FALSE}
+#   number of SIRS and negative controls in each block
+table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
+```
+
+#       Bayesian Inference 
+
+##      Prepare the phyloseq object for the Bayesian inference
+
+We use the Bayesian inference to identify contaminants in each block/batch because DNA contaminants are unique to each batch. 
+
+Thus, we split the phyloseq object corresponding to each block/batch and store as a list of phyloseq objects, `psByBlock`. 
+
+We select negative control samples from each block/batch and store as a list of phyloseq objects, `psNCbyBlock`. 
+
+We select all species that has prevalence of zero in all negative control samples for each block/batch and store as a list of phyloseq objects, `psallzeroInNC`.
+
+We select all plasma samples from each block/batch and store as a list of phyloseq objects, `psPlByBlock`.
+
+```{r list_of_phyloseq}
+psBlockResult <- psBlockResults(ps, sampleTypeVar = "Sample_Type",sampleName = "SampleCode",blockVar = "block")
+psByBlock <- psBlockResult[[1]]
+psNCbyBlock <- psBlockResult[[2]]
+psallzeroInNC <- psBlockResult[[3]]
+psPlByBlock <- psBlockResult[[4]]
+```
+
+##      Estimate the distribution parameters of the DNA contamination in negative control samples
+
+We estimate the gamma distribution parameters for the intensity of contaminants usning the negative control samples for each block/batch. 
+
+```{r estimate_Cont_Intensity_NB_ncontrols}
+alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock)
+```
+
+##      Estimate the distribution parameters of the DNA contamination in a plasma sample
+
+We choose the block/batch (for example `block =3`) samples to identify DNA contaminants.
+
+Then, for each sample in the selected block/batch, we estimate the gamma distribution parameters of intensity of DNA contamination using the scaling property of the gamma distribution.
+
+```{r estimate_Cont_Intensity_NB_plasma}
+block <- 3
+gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock,
+                                    psallzeroInNC = psallzeroInNC,
+                                    blk = block,                                   alphaBetaNegControl=alphaBetaNegControl)
+```
+
+##      Sampling from the posterior of the intensity of true signal
+
+For all samples in the selected block/batch, for all taxa in each sample, we sampling from the posterior of the intensity of true signal using the Metropolis-Hasting MCMC. We can choose the number of MCMC using the option `itera`.
+
+We save the gamma prior for the internsity of the contamination and the posterior samples.
+
+```{r sampling_post_true_int}
+t1 <- proc.time()
+post_int_all_taxa  <- samplingPosterior(psPlByBlock=psPlByBlock,
+                                        blk = block,
+                                        gammaPrior_Cont = gammaPrior,
+                                        itera = 100)
+proc.time()-t1
+
+knownContGamma_posteriorSignal <- list(gammaPrior,
+                                       post_int_all_taxa)
+
+saveRDS(knownContGamma_posteriorSignal,file = "./signalPosterior_gammaPrior.rds")
+```
+
+#       Display the results
+
+##     Make a table of the true signal for each samples in the selected block/batch.
+
+We can choose the number of MCMC to be removed using the option `burnIn` and it must be less than `itera`.
+
+We can choose the coverage probability to construct the highest posterior density interval using the option `cov.pro`.
+
+We can choose the option `Use_SNR` to tell whether the filtering of species is also based on the signal-to-noise ratio, otherwise, the filtering is based on the lower limit of the true signal and the upper limit of the contaminant. 
+
+```{r make_tables}
+itera <- 100
+burnIn <- 10
+cov.pro <- .95
+Use_SNR <- TRUE
+
+knownContGamma_posteriorSignal <- readRDS(file="./signalPosterior_gammaPrior.rds")
+
+gammPrior <- knownContGamma_posteriorSignal[[1]]
+
+post_int_all_taxa <- knownContGamma_posteriorSignal[[2]]
+
+blk <- 3
+
+for(sam in 1:nsamples(psPlByBlock[[blk]])){
+        
+        posterior_taxa <- post_int_all_taxa[[sam]]
+        acceptance_prob <- list()
+        expected_posterior_real <- list()
+        lower_limit_real <- list()
+        upper_limit_real <- list()
+        standDev_posterior_real <- list()
+        upper_limit_cont <- list()
+        lower_limit_cont <- list()
+        naive_expected_real <- list()
+        pre_zero_in_ncontrol <- list()
+        signal_to_noise_ratio_upper <- list()
+        signal_to_noise_ratio_lower <- list()
+        SNR <- list()
+                for(taxa in 1:length(posterior_taxa)){
+                        burnIn  <- burnIn
+                        acceptance_prob[[taxa]]  <-  1-mean(duplicated(posterior_taxa[[taxa]][-(1:burnIn),]))
+                
+                        expected_posterior_real[[taxa]] <- mean(posterior_taxa[[taxa]][-(1:burnIn),])
+                          
+                        hdi.v <- hdi(posterior_taxa[[taxa]][-(1:burnIn),],credMass = cov.pro)
+                        lower_limit_real[[taxa]] <- round(hdi.v[1],digits = 0)
+                        upper_limit_real[[taxa]] <- round(hdi.v[2],digits = 0)
+                        
+                        b.int <- rgamma(
+                                (itera-burnIn+1),
+                                shape=gammPrior[[sam]][[1]][taxa],
+                                rate = gammPrior[[sam]][[2]][taxa]
+                                )
+                        
+                        hdi.b <- hdi(b.int,
+                                     credMass = cov.pro
+                                     )
+                        lower_limit_cont[[taxa]] <- round(hdi.b[1],
+                                                          digits = 0)
+                        upper_limit_cont[[taxa]] <- round(hdi.b[2],
+                                                          digits = 0)
+                        
+                        standDev_posterior_real[[taxa]] <- sd(
+                                posterior_taxa[[taxa]][-(1:burnIn),]
+                                )
+                        
+                       naive_expected_real[[taxa]] <- gammPrior[[sam]][[3]][taxa]-(gammPrior[[sam]][[1]][taxa]/gammPrior[[sam]][[2]][taxa])
+                        
+                        pre_zero_in_ncontrol[[taxa]] <-  gammPrior[[sam]][[5]][taxa]
+                        
+                        sig.noise.ratio <- posterior_taxa[[taxa]][-(1:burnIn),]/b.int
+                        
+                        sig.noise.ra_hdi <- hdi(sig.noise.ratio,
+                                                credMass = cov.pro)
+                        signal_to_noise_ratio_upper[[taxa]] <- sig.noise.ra_hdi[[2]]
+                        SNR[[taxa]] <- mean(posterior_taxa[[taxa]][-(1:burnIn),])/mean(b.int)
+                        
+                        signal_to_noise_ratio_lower[[taxa]] <- sig.noise.ra_hdi[[1]]
+                }
+        
+
+                df <- data.frame(
+                        Species = taxa_names(psPlByBlock[[blk]]),
+                        xj = as.numeric(gammPrior[[sam]][[3]]),
+                        l.s = unlist(lower_limit_real),
+                        u.s = unlist(upper_limit_real),
+                        l.b=unlist(lower_limit_cont),
+                        u.b=unlist(upper_limit_cont),
+                        pre_zero_in_neg_cont=unlist(pre_zero_in_ncontrol),
+                        sigToNoise_l=unlist(signal_to_noise_ratio_lower),
+                        sigToNoise_u=unlist(signal_to_noise_ratio_upper)
+                        )
+
+               
+                if(Use_SNR){
+                        df <- dplyr::arrange(
+                       filter(df,((l.s > u.b)&(l.s>0))&(sigToNoise_l>1)),
+                       desc(xj)
+                       )
+                }else{
+                        df <- dplyr::arrange(
+                       filter(df,((l.s > u.b)&(l.s>0))),
+                       desc(xj)
+                       )
+                }
+                
+               
+                if(dim(df)[1]==0){
+                        df <- data.frame(Species="No True Species Found")
+                        rownames(df) <- NULL
+                }
+                
+                filname <- paste(
+                        "./",
+                        sample_names(psPlByBlock[[blk]])[sam],
+                        ".png",
+                        sep=""
+                        )
+               
+                png(filname, height = 600, width = 750)
+                
+                df.p <- tableGrob(df)
+                
+                libSize <- sum(as.numeric(gammPrior[[sam]][[3]]))
+                
+                title <- textGrob(paste(
+                                sample_names(psPlByBlock[[blk]])[sam],
+                                "lib=",
+                                libSize,
+                                sep=" "), 
+                        gp = gpar(fontsize = 10)
+                        )
+                
+                padding <- unit(0.5,"line")
+                
+                df.p <- gtable_add_rows(
+                        df.p, 
+                        heights = grobHeight(title) + padding, 
+                        pos = 0
+                        )
+                
+                df.p <- gtable_add_grob(
+                        df.p, 
+                        list(title),
+                        t = 1, 
+                        l = 1, 
+                        r = ncol(df.p)
+                        )
+                
+                grid.newpage()
+                grid.draw(df.p)
+                dev.off()
+}
+```
+
