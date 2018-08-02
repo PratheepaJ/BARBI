@@ -4,14 +4,15 @@
 #'
 #' @param psNCbyBlock A list of phyloseq objects with all negative control
 #'        samples in each block.
+#' @param add1 logical, whether adding one to the otu table in the phyloseq
 #' @return A list of estimated distribution parameters for the intensity of contamination in negative control samples.
 #' @examples
 #' \dontrun{
 #' alphaBetaNegControl(psNCByBlock)
 #' }
 #' @import DESeq2
-#' @import SummarizedExperiment
-#' @import Biobase
+#' @importFrom SummarizedExperiment assays
+#' @importFrom Biobase rowMedians
 #' @importFrom stats median var runif dgamma rgamma
 #' @export
 alphaBetaNegControl <- function(psNCbyBlock, add1 = TRUE){

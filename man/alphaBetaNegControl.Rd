@@ -4,11 +4,13 @@
 \alias{alphaBetaNegControl}
 \title{Compute gamma distirbution parameters}
 \usage{
-alphaBetaNegControl(psNCbyBlock)
+alphaBetaNegControl(psNCbyBlock, add1 = TRUE)
 }
 \arguments{
 \item{psNCbyBlock}{A list of phyloseq objects with all negative control
 samples in each block.}
+
+\item{add1}{logical, whether adding one to the otu table in the phyloseq}
 }
 \value{
 A list of estimated distribution parameters for the intensity of contamination in negative control samples.

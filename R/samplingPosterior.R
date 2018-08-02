@@ -8,6 +8,9 @@
 #' @param itera Numeric, number of MCMC samples.
 #' @inheritParams alphaBetaContInPlasma
 #' @inheritParams MH_MCMC
+#' @importFrom doParallel registerDoParallel
+#' @importFrom parallel detectCores
+#' @importFrom BiocParallel register DoparParam bplapply
 #' @return A list of estimated marginal reference posterior for the intensity of true signal.
 #' @export
 samplingPosterior <-  function(psPlByBlock,

@@ -168,17 +168,10 @@ num_blks <- length(alphaBetaNegControl)
 blks <- seq(1, num_blks) %>% as.list
 
 gammaPrior_all_blks <- lapply(blks, function(x){
-        gammaPrior <- alphaBetaContInPlasma(
-                psPlByBlock = psPlByBlock,
-                psallzeroInNC = psallzeroInNC,
-                blk = x,
-                alphaBetaNegControl=alphaBetaNegControl,
-                stringent = TRUE)
+        gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock, psallzeroInNC = psallzeroInNC, blk = x, alphaBetaNegControl=alphaBetaNegControl, stringent = TRUE)
         return(gammaPrior)
 })
-# gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock,
-#                                     psallzeroInNC = psallzeroInNC,
-#                                     blk = block,                                   alphaBetaNegControl=alphaBetaNegControl)
+
 ```
 
 ##      Sampling from the posterior for the intensity of true signal
@@ -199,16 +192,8 @@ post_all_blocks <- lapply(blks,function(x){
         return(post_int_all_taxa)
 })
 
-# post_int_all_taxa  <- samplingPosterior(psPlByBlock=psPlByBlock,
-#                                         blk = block,
-#                                         gammaPrior_Cont = gammaPrior,
-#                                         itera = 100)
 proc.time()-t1
 
-# knownContGamma_posteriorSignal <- list(gammaPrior,
-#                                        post_int_all_taxa)
-# 
-# saveRDS(knownContGamma_posteriorSignal,file = "./signalPosterior_gammaPrior.rds")
 gammaPrior_posTrueSing_all_blocks <- list(gammaPrior_all_blks,post_all_blocks)
 
 saveRDS(gammaPrior_posTrueSing_all_blocks, file= "./gammaPrior_posTrueSing_all_blocks.rds")
@@ -244,7 +229,8 @@ for(blk in 1:num_blks){
         taxa_post_all_sam <- post_all_blocks[[blk]]
         gammPrior <- gammaPrior_all_blks[[blk]]
     
-        total_summary_table <- NULL #Summary dataframe for all taxa from all subjects in a block.
+        total_summary_table <- NULL 
+        
         all_real_taxa <- character()
 
         for(sam in 1:nsamples(psPlByBlock[[blk]])){
@@ -360,7 +346,6 @@ for(blk in 1:num_blks){
                       height = 600, 
                       width = 750)
                   
-                 # Modify df columns for printing
                  df.mod <- df
                  df.mod <- subset(df.mod, 
                                   select = c(Species, 
