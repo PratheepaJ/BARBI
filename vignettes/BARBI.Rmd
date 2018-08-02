@@ -235,22 +235,22 @@ gammaPrior_posTrueSing_all_blocks <- readRDS("./gammaPrior_posTrueSing_all_block
 gammaPrior_all_blks <- gammaPrior_posTrueSing_all_blocks[[1]]
 post_all_blocks <- gammaPrior_posTrueSing_all_blocks[[2]]
 
+finalPosTaxa <- data.frame()
+final_results_list <- list()
 
 for(blk in 1:num_blks){
         
-        taxa.post.all.sam <- post_all_blocks[[blk]]
+        taxa_post_all_sam <- post_all_blocks[[blk]]
         gammPrior <- gammaPrior_all_blks[[blk]]
     
-        total.summary.table <- NULL #Summary dataframe for all taxa from all subjects in a block.
-        all.real.taxa <- character()
+        total_summary_table <- NULL #Summary dataframe for all taxa from all subjects in a block.
+        all_real_taxa <- character()
 
-        
-        ##########
         for(sam in 1:nsamples(psPlByBlock[[blk]])){
           
-          taxa.post <- taxa.post.all.sam[[sam]]
+          taxa_post <- taxa_post_all_sam[[sam]]
           acceptance <- list()
-          exp.post.s <- list()
+          exp_post_s <- list()
           lower.s <- list()
           upper.s <- list()
           upper.b <- list()
@@ -258,13 +258,13 @@ for(blk in 1:num_blks){
           sd.s <- list()
           naive.exp <- list()
           all.zero.nc <- list()
-                  for(taxa in 1:length(taxa.post)){
+                  for(taxa in 1:length(taxa_post)){
                           burnIn  <- burnIn
-                          acceptance[[taxa]]  <-  1-mean(duplicated(taxa.post[[taxa]][-(1:burnIn),]))
+                          acceptance[[taxa]]  <-  1-mean(duplicated(taxa_post[[taxa]][-(1:burnIn),]))
                   
-                          exp.post.s[[taxa]] <- mean(taxa.post[[taxa]][-(1:burnIn),])
+                          exp_post_s[[taxa]] <- mean(taxa_post[[taxa]][-(1:burnIn),])
                             
-                          hdi.v <- hdi(taxa.post[[taxa]][-(1:burnIn),], credMass = cov.pro)
+                          hdi.v <- hdi(taxa_post[[taxa]][-(1:burnIn),], credMass = cov.pro)
                           lower.s[[taxa]] <- round(hdi.v[1], digits = 0)
                           upper.s[[taxa]] <- round(hdi.v[2], digits = 0)
                           
@@ -272,7 +272,7 @@ for(blk in 1:num_blks){
                           lower.b[[taxa]] <- round(hdi.b[1], digits = 0)
                           upper.b[[taxa]] <- round(hdi.b[2], digits = 0)
                           
-                          sd.s[[taxa]] <- sd(taxa.post[[taxa]][-(1:burnIn),])
+                          sd.s[[taxa]] <- sd(taxa_post[[taxa]][-(1:burnIn),])
                           sd.s[[taxa]] <- round(sd.s[[taxa]], digits = 0)
                           
                           naive.exp[[taxa]] <- gammPrior[[sam]][[3]][taxa] - (gammPrior[[sam]][[1]][taxa]/gammPrior[[sam]][[2]][taxa])
@@ -284,8 +284,6 @@ for(blk in 1:num_blks){
                   mappingFileByBlock <-lapply(psByBlock, function(x) {as.data.frame(x@sam_data)})
                   sampleDepth <- as.numeric(mappingFileByBlock[[blk]][sample_names(psPlByBlock[[blk]])[sam], "Reads"])
 
-          
-            
                   df <- data.frame(Species=taxa_names(psPlByBlock[[blk]]),
                                    xj=as.numeric(gammPrior[[sam]][[3]]),
                                    l.s=unlist(lower.s),
@@ -298,18 +296,13 @@ for(blk in 1:num_blks){
                                   Sample_Depth = rep(sampleDepth,length(unlist(upper.s))), Sample = rep(sample_names(psPlByBlock[[blk]])[sam],
                                                                                                         length(unlist(upper.s))))
   
-
-                  #View(arrange(filter(df,(l.s>u.b)&(l.s>0)),desc(xj)))
-                  #
                   df <- arrange(filter(df,(l.s>u.b)&(l.s>0)),desc(xj))
-                  
                   
                   # Filter Out Viral Taxa
                   ps.tax.df <- as.data.frame(ps@tax_table)
                   ps.tax.df.viruses <- filter(ps.tax.df, Superkingdom == "k__Viruses")
                   list.of.viruses <- as.character(ps.tax.df.viruses[,"Species"])
                   df <- arrange(filter(df, !(Species %in% list.of.viruses)), desc(xj))
-                  
                   
                   
                   finalPosTaxa <- rbind(finalPosTaxa, df)
@@ -319,9 +312,8 @@ for(blk in 1:num_blks){
                           df <- data.frame(Species="Negative", xj="Negative", l.s="Negative", u.s="Negative", l.b ="Negative", u.b="Negative", sd.s = "Negative", naive.exp = "Negative", all.zero.nc = "Negative", Sample_Depth=sampleDepth, Sample = sample_names(psPlByBlock[[blk]])[sam])
                   }                  
                   
-                  all.real.taxa <- c(all.real.taxa, as.character(df$Species))
-                  
-#GGG
+                  all_real_taxa <- c(all_real_taxa, as.character(df$Species))
+
                   #create a line.summary variable that summarizes df for each sample in 1 line
                   sam.summary <- character()
                   for (i in 1:nrow(df)) {
@@ -335,24 +327,20 @@ for(blk in 1:num_blks){
                     }
                   }
                   sam.summary <- substring(sam.summary, 3)
-                  total.summary.table <- rbind(total.summary.table, data.frame(sample_names(psPlByBlock[[blk]])[sam], sam.summary))                 
-                  
-                  
-                  
+                  total_summary_table <- rbind(total_summary_table, data.frame(sample_names(psPlByBlock[[blk]])[sam], sam.summary))                 
                   filname <- paste("./",sample_names(psPlByBlock[[blk]])[sam],".png",sep="")
-                 png(filname, height = 600, width = 750)
+                 
+                  png(filname, height = 600, width = 750)
                   
                  # Modify df columns for printing
                  df.mod <- df
                  df.mod <- subset(df.mod, select = c(Species, xj, l.s, u.b, all.zero.nc))
                  colnames(df.mod) <- c("Species", "Raw Reads", "Lower Limit Real","Upper Limit Contaminant", "In Neg. Cont.")
                  
-                  df.p <- tableGrob(df.mod)
-                  title <- textGrob(sample_names(psPlByBlock[[blk]])[sam], gp = gpar(fontsize = 14))
-                  padding <- unit(0.5,"line")
-                  df.p <- gtable_add_rows(
-                    df.p, heights = grobHeight(title) + padding, pos = 0
-                  )
+                df.p <- tableGrob(df.mod)
+                title <- textGrob(sample_names(psPlByBlock[[blk]])[sam], gp = gpar(fontsize = 14))
+                padding <- unit(0.5,"line")
+                df.p <- gtable_add_rows(df.p,heights = grobHeight(title) + padding,pos = 0)
                   df.p <- gtable_add_grob(
                     df.p, list(title),
                     t = 1, l = 1, r = ncol(df.p)
@@ -364,11 +352,20 @@ for(blk in 1:num_blks){
                   
   }
         
-        all.real.taxa <- unique(all.real.taxa)
-        final.results.list[[blk]] <- list(total.summary.table, all.real.taxa)
+        all_real_taxa <- unique(all_real_taxa)
+        final_results_list[[blk]] <- list(total_summary_table, all_real_taxa)
 }
 
+total_summary_table_list  <- list() 
+total_summary_table_list  <- lapply(final_results_list, function(x) {x[[1]]} )
+total_summary_table_all <- do.call("rbind", total_summary_table_list )
+row.names(total_summary_table_all) <- total_summary_table_all[,1]
+colnames(total_summary_table_all) <- c("Sample", "Species (Raw Reads, Lower Bound Background Reads Estimate, Upper Bound Real Reads Estimate, Presence in Neg. Controls)")
+total_summary_table_all <- total_summary_table_all[order(row.names(total_summary_table_all)), , drop = FALSE]
 
+write.table(total_summary_table_all, paste("./total.summary.table.95", ".txt", sep=""), sep="\t", col.names=TRUE, row.names = FALSE)
+
+saveRDS(finalPosTaxa,file="./finalPosTaxa.rds")
 ```
 
 # Session Info {.unnumbered}
