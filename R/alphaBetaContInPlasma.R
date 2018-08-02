@@ -43,7 +43,7 @@ alphaBetaContInPlasma <-  function(psPlByBlock,
                 alpha_ij_c <- rep(.0001, length(mu_ij_0))
                 beta_ij_c <- rep(1, length(mu_ij_0))
 
-                if(stringent){
+                if(stringent==TRUE){
                         ind_not_na_of_mu_ij_0 <- which(!is.na(mu_ij_0))
 
                         alpha_ij_c[ind_not_na_of_mu_ij_0] <- S_j/S_j0*(1/gamma_ij_0[ind_not_na_of_mu_ij_0])
