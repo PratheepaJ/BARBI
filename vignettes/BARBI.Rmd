@@ -53,8 +53,6 @@ library(gtable)
 library(gridExtra)
 library(BiocStyle)
 library(magrittr)
-
-#devtools::load_all(".")
 ```
 
 #      Load the real data stored as a phyloseq object in the ``BARBI`` package or use your own data stored as a phyloseq object
@@ -73,7 +71,7 @@ We remove library controls.
 ps <- subset_samples(ps,Sample_Type=!"Library_Control")
 ```
 
-We identified three different blocks/batches of processing samples using a PCA on ranks of abundance (though we expect a user to know the blocks/batches in advance for each samples). 
+We identified three different blocks/batches of processing samples using a PCA on ranks of abundance (though we expect a user to know the blocks/batches in advance for each sample.) 
 
 ```{r adding_blocks}
 set1 <- c("1","2","3","4","11","12")
@@ -121,7 +119,7 @@ table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
 
 ##      Prepare the phyloseq object for the Bayesian inference
 
-We use the Bayesian inference to identify contaminants in each block because DNA contaminants are unique to each batch. 
+We use the Bayesian inference to identify contaminants in each block because DNA contaminants are unique to each block. 
 
 Thus, we split the phyloseq object corresponding to each block and store as a list of phyloseq objects, `psByBlock`. 
 
@@ -138,7 +136,7 @@ psNCbyBlock <- psBlockResult[[2]]
 psallzeroInNC <- psBlockResult[[3]]
 psPlByBlock <- psBlockResult[[4]]
 
-#       subset for the workflow
+#       subset plasma samples for the workflow
 psPlByBlock <- lapply(psPlByBlock, function(x){
         subsetSample <- as.character(sample_data(x)$SampleCode[c(1,5)])
         x <- prune_samples(subsetSample,x)
@@ -148,26 +146,26 @@ psPlByBlock <- lapply(psPlByBlock, function(x){
 
 ##      Estimate the distribution parameters of the DNA contamination in negative control samples
 
-We estimate the gamma distribution parameters for the intensity of contaminants usning the negative control samples for each block. 
+We estimate the gamma distribution parameters for the intensity of contaminants using the negative control samples for each block. 
 
-`add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == TRUE` corresponds to choosing 'poscounts' for saize factor calculation method in `DESeq`.
+`add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for size factor calculation method in `DESeq::estimateSizeFactors`.
 
 ```{r estimate_Cont_Intensity_ncontrols}
-alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = TRUE)
+alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = FALSE)
 ```
 
-##      Estimate the distribution parameters for the intensity of contamination in a plasma sample
+##      Estimate the distribution parameters for the intensity of contamination in each plasma sample
 
 For each plasma sample, we estimate the gamma distribution parameters for the intensity of contamination using the scaling property of the gamma distribution.
 
-`stringent == TRUE` corresponds to `add1 == TRUE` and use the gamma parameters as in the negative control samples.
+Choosing `stringent == TRUE` suggests to not using the scaling property for the species with mean intensity of contamination less than one.
 
 ```{r estimate_Cont_Intensity_plasma}
 num_blks <- length(alphaBetaNegControl)
 blks <- seq(1, num_blks) %>% as.list
 
 gammaPrior_all_blks <- lapply(blks, function(x){
-        gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock, psallzeroInNC = psallzeroInNC, blk = x, alphaBetaNegControl=alphaBetaNegControl, stringent = TRUE)
+        gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock, psallzeroInNC = psallzeroInNC, blk = x, alphaBetaNegControl=alphaBetaNegControl, stringent = FALSE)
         return(gammaPrior)
 })
 ```
@@ -205,14 +203,13 @@ We can choose the number of MCMC to be removed using the option `burnIn` and it 
 
 We can choose the coverage probability to construct the highest posterior density interval using the option `cov.pro`.
 
-We can choose the option `Use_SNR` to tell whether the filtering of species is also based on the signal-to-noise ratio, otherwise, the filtering is based on the lower limit of the true signal and the upper limit of the contaminant. 
+We can choose the option `Use_SNR` to tell whether the contamination identification is also based on the signal-to-noise ratio, otherwise, the contamination identification is based on the lower limit of the true signal and the upper limit of the contaminant. 
 
 ```{r make_tables, eval=FALSE}
 itera <- 100
 burnIn <- 10
 cov.pro <- .95
 Use_SNR <- FALSE
-
 
 gammaPrior_posTrueSing_all_blocks <- readRDS("./gammaPrior_posTrueSing_all_blocks.rds")
 
