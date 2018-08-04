@@ -2,7 +2,7 @@
 % Please edit documentation in R/alphaBetaNegControl.R
 \name{alphaBetaNegControl}
 \alias{alphaBetaNegControl}
-\title{Compute gamma distirbution parameters}
+\title{Compute gamma distirbution parameters in negative control samples.}
 \usage{
 alphaBetaNegControl(psNCbyBlock, add1 = TRUE)
 }

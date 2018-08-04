@@ -36,7 +36,7 @@ devtools::install_github("PratheepaJ/BARBI")
 
 Load packages:
 ```{r load_packages}
-#library(BARBI)
+library(BARBI)
 library(devtools)
 library(phyloseq)
 library(DESeq2)
@@ -54,7 +54,7 @@ library(gridExtra)
 library(BiocStyle)
 library(magrittr)
 
-devtools::load_all(".")
+#devtools::load_all(".")
 ```
 
 #      Load the real data stored as a phyloseq object in the ``BARBI`` package or use your own data stored as a phyloseq object
@@ -140,7 +140,7 @@ psPlByBlock <- psBlockResult[[4]]
 
 #       subset for the workflow
 psPlByBlock <- lapply(psPlByBlock, function(x){
-        subsetSample <- as.character(sample_data(x)$SampleCode[c(1:2,5:7)])
+        subsetSample <- as.character(sample_data(x)$SampleCode[c(1,5)])
         x <- prune_samples(subsetSample,x)
         return(x)
 })
@@ -152,7 +152,7 @@ We estimate the gamma distribution parameters for the intensity of contaminants 
 
 `add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == TRUE` corresponds to choosing 'poscounts' for saize factor calculation method in `DESeq`.
 
-```{r estimate_Cont_Intensity_NB_ncontrols}
+```{r estimate_Cont_Intensity_ncontrols}
 alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = TRUE)
 ```
 
@@ -162,8 +162,7 @@ For each plasma sample, we estimate the gamma distribution parameters for the in
 
 `stringent == TRUE` corresponds to `add1 == TRUE` and use the gamma parameters as in the negative control samples.
 
-```{r estimate_Cont_Intensity_NB_plasma}
-#block <- 3
+```{r estimate_Cont_Intensity_plasma}
 num_blks <- length(alphaBetaNegControl)
 blks <- seq(1, num_blks) %>% as.list
 
@@ -171,7 +170,6 @@ gammaPrior_all_blks <- lapply(blks, function(x){
         gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock, psallzeroInNC = psallzeroInNC, blk = x, alphaBetaNegControl=alphaBetaNegControl, stringent = TRUE)
         return(gammaPrior)
 })
-
 ```
 
 ##      Sampling from the posterior for the intensity of true signal

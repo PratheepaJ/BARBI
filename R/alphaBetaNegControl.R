@@ -1,4 +1,4 @@
-#' Compute gamma distirbution parameters
+#' Compute gamma distirbution parameters in negative control samples.
 #'
 #' Computes the gamma distribution parameters for the intensity of contamination using negative control samples in each block.
 #'

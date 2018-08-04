@@ -2,7 +2,7 @@
 % Please edit documentation in R/alphaBetaContInPlasma.R
 \name{alphaBetaContInPlasma}
 \alias{alphaBetaContInPlasma}
-\title{Compute gamma distribution parameters}
+\title{Compute gamma distribution parameters in plasma samples}
 \usage{
 alphaBetaContInPlasma(psPlByBlock, psallzeroInNC, blk, alphaBetaNegControl,
   stringent = FALSE)

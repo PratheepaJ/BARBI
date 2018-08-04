@@ -1,4 +1,4 @@
-#' Compute gamma distribution parameters
+#' Compute gamma distribution parameters in plasma samples
 #'
 #' Given the estimated gamma distribution parameters for the intensity of contamination in negative control samples, \code{alphaBetaContInPlasma}
 #' computes the
