@@ -402,7 +402,7 @@ saveRDS(finalPosTaxa,
         file="./finalPosTaxa.rds")
 ```
 
-# Session Info {.unnumbered}
+# Session Info 
 
 ```{r session_info}
 sessionInfo()
