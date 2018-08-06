@@ -396,7 +396,7 @@ saveRDS(finalPosTaxa,
 ```
 
 # Session Info 
-
+Print packages used
 ```{r session_info}
 sessionInfo()
 ```
