@@ -4,6 +4,7 @@
 #'
 #' @param ps phyloseq object.
 #' @param sampleTypeVar character, variable defines the "Plasma" and "Control" samples.
+#' @param caselevels character vector, levels of the plasma samples, e.g. "Healthy_Plasma" and "Sick_Plasma".
 #' @param sampleName character, variable defines the sample names.
 #' @param blockVar character, variable defines the block of the samples. If there is only one block, create a variable with only one level.
 #'
@@ -12,6 +13,7 @@
 #' @export
 psBlockResults <- function(ps,
                           sampleTypeVar="Sample_Type",
+                          caselevels = "Plasma",
                           sampleName="SampleCode",
                           blockVar="block"
                           ){
@@ -40,7 +42,8 @@ psBlockResults <- function(ps,
         }
 
         psByBlock <- lapply(psByBlock, function(y){
-                y <- prune_taxa(taxa_sums(subset_samples(y, Sample_Type == "Plasma"))>0, y)
+                sb_samples <- as.character(sample_data(y)$SampleCode[sample_data(y)$Sample_Type %in% caselevels])
+                y <- prune_taxa(taxa_sums(prune_samples(sb_samples,y))>0, y)
                 return(y)
         })
 
@@ -55,7 +58,8 @@ psBlockResults <- function(ps,
         })
 
         psPlByBlock <- lapply(psByBlock, function(x){
-                x <- subset_samples(x, Sample_Type=="Plasma")
+                sb_samples <- as.character(sample_data(x)$SampleCode[sample_data(x)$Sample_Type %in% caselevels])
+                x <- prune_samples(sb_samples,x)
                 return(x)
         })
 

@@ -59,10 +59,10 @@ library(magrittr)
 
 ##      Load the phyloseq 
 
-Analysis of shotgun-metagenomic sequencing samples that is a subset of SIRS patients from @cheng2017integration.
+Analysis of shotgun-metagenomic sequencing samples that is a subset of plasma samples and all negative control samples from @cheng2017integration.
 
 ```{r read-phylo}
-ps <- psSub
+ps <- ps
 ```
 
 We remove library controls. 
@@ -88,7 +88,7 @@ We identified the species not in any single plasma sample and removed them from 
 
 ```{r filter_taxa}
 ps <- prune_taxa(taxa_sums(ps)>0, ps)
-ps_plasma <- subset_samples(ps,Sample_Type%in%"Plasma")
+ps_plasma <- subset_samples(ps,Sample_Type%in%c("Healthy_Plasma","Patient_Plasma"))
 prevTaxaP <- apply(otu_table(ps_plasma), 1 ,function(x){sum(x>0)})
 
 Contaminants1 <- names(prevTaxaP)[prevTaxaP==0]
@@ -103,10 +103,10 @@ totalReads <- colSums(otu_table(ps))
 hist(log(totalReads),yaxs="i",xaxs="i",main="Distribution of total reads per sample",breaks=50)
 ```
 
-We make sure that we filter only the SIRS/plasma, negative control, and healthy control samples.
+We make sure that we filter only the plasma, negative control, and healthy control samples.
 
 ```{r choose_samples}
-ps <- subset_samples(ps,Sample_Type %in% c("Plasma","Control"))
+ps <- subset_samples(ps,Sample_Type %in% c("Healthy_Plasma","Patient_Plasma","Control"))
 ```
 
 Summary of plasma and negative control samples in each block.
@@ -130,18 +130,15 @@ We select all species that has prevalence of zero in all negative control sample
 We select all plasma samples from each block and store as a list of phyloseq objects, `psPlByBlock`.
 
 ```{r list_of_phyloseq}
-psBlockResult <- psBlockResults(ps, sampleTypeVar = "Sample_Type",sampleName = "SampleCode",blockVar = "block")
+psBlockResult <- psBlockResults(ps, 
+                                sampleTypeVar = "Sample_Type",
+                                caselevels = c("Healthy_Plasma","Patient_Plasma"), 
+                                sampleName = "Sample_ID", 
+                                blockVar = "block")
 psByBlock <- psBlockResult[[1]]
 psNCbyBlock <- psBlockResult[[2]]
 psallzeroInNC <- psBlockResult[[3]]
 psPlByBlock <- psBlockResult[[4]]
-
-#       subset plasma samples for the workflow
-psPlByBlock <- lapply(psPlByBlock, function(x){
-        subsetSample <- as.character(sample_data(x)$SampleCode[c(1,5)])
-        x <- prune_samples(subsetSample,x)
-        return(x)
-})
 ```
 
 ##      Estimate the distribution parameters of the DNA contamination in negative control samples
