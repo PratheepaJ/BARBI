@@ -19,6 +19,13 @@ Imports:
         Biobase,
         BiocParallel,
         SummarizedExperiment,
-        doParallel
+        doParallel,
+        R.utils,
+        devtools,
+        gridExtra,
+        gtable,
+        magrittr,
+        tidyr,
+        xtable
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown

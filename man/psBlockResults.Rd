@@ -5,12 +5,15 @@
 \title{psBlockResults}
 \usage{
 psBlockResults(ps, sampleTypeVar = "Sample_Type",
-  sampleName = "SampleCode", blockVar = "block")
+  caselevels = "Plasma", sampleName = "SampleCode",
+  blockVar = "block")
 }
 \arguments{
 \item{ps}{phyloseq object.}
 
 \item{sampleTypeVar}{character, variable defines the "Plasma" and "Control" samples.}
+
+\item{caselevels}{character vector, levels of the plasma samples, e.g. "Healthy_Plasma" and "Sick_Plasma".}
 
 \item{sampleName}{character, variable defines the sample names.}
 

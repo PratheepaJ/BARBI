@@ -130,22 +130,18 @@ We select all species that has prevalence of zero in all negative control sample
 We select all plasma samples from each block and store as a list of phyloseq objects, `psPlByBlock`.
 
 ```{r list_of_phyloseq}
-psBlockResult <- psBlockResults(ps, 
-                                sampleTypeVar = "Sample_Type",
-                                caselevels = c("Healthy_Plasma","Patient_Plasma"), 
-                                sampleName = "Sample_ID", 
-                                blockVar = "block")
+psBlockResult <- psBlockResults(ps, sampleTypeVar = "Sample_Type", caselevels = c("Healthy_Plasma","Patient_Plasma"), sampleName = "Sample_ID", blockVar = "block")
 psByBlock <- psBlockResult[[1]]
 psNCbyBlock <- psBlockResult[[2]]
 psallzeroInNC <- psBlockResult[[3]]
 psPlByBlock <- psBlockResult[[4]]
 ```
 
-##      Estimate the distribution parameters of the DNA contamination in negative control samples
+##      Estimate the distribution parameters for the instensity of contamination in negative control samples
 
 We estimate the gamma distribution parameters for the intensity of contaminants using the negative control samples for each block. 
 
-`add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for size factor calculation method in `DESeq::estimateSizeFactors`.
+`add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for size factor calculation method in `DESeq::estimateSizeFactors` and latter is the default option.
 
 ```{r estimate_Cont_Intensity_ncontrols}
 alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = FALSE)
@@ -155,7 +151,7 @@ alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = FAL
 
 For each plasma sample, we estimate the gamma distribution parameters for the intensity of contamination using the scaling property of the gamma distribution.
 
-Choosing `stringent == TRUE` suggests to not using the scaling property for the species with mean intensity of contamination less than one.
+Choosing `stringent == TRUE` suggests to not using the scaling property for the species with the mean intensity of contamination less than one.
 
 ```{r estimate_Cont_Intensity_plasma}
 num_blks <- length(alphaBetaNegControl)
@@ -390,7 +386,7 @@ colnames(total_summary_table_all) <- c("Sample",
 total_summary_table_all <- total_summary_table_all[order(row.names(total_summary_table_all)), , drop = FALSE]
 
 write.table(total_summary_table_all, 
-            paste("./total_summary_table_95", ".txt", sep=""), 
+            paste("./total_summary_table", ".txt", sep=""), 
             sep="\t", 
             col.names=TRUE, 
             row.names = FALSE)
