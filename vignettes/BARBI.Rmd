@@ -31,7 +31,7 @@ pkgs <- c("DESeq2","phyloseq","dplyr",
           "gridExtra","BiocStyle","magrittr")
 source("http://bioconductor.org/biocLite.R")
 biocLite(setdiff(pkgs,installed.packages()))
-devtools::install_github("PratheepaJ/BARBI")
+devtools::install_github("PratheepaJ/BARBI",auth_token = "33c5f43cc3f1772c19a441e15fc9478c3bf91b67")
 ```
 
 Load packages:
