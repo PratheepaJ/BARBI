@@ -36,7 +36,7 @@ devtools::install_github("PratheepaJ/BARBI",auth_token = "33c5f43cc3f1772c19a441
 
 Load packages:
 ```{r load_packages}
-library(BARBI)
+#library(BARBI)
 library(devtools)
 library(phyloseq)
 library(DESeq2)
@@ -53,6 +53,7 @@ library(gtable)
 library(gridExtra)
 library(BiocStyle)
 library(magrittr)
+devtools::load_all(".")
 ```
 
 #      Load the real data stored as a phyloseq object in the ``BARBI`` package or use your own data stored as a phyloseq object
@@ -130,7 +131,8 @@ We select all species that has prevalence of zero in all negative control sample
 We select all plasma samples from each block and store as a list of phyloseq objects, `psPlByBlock`.
 
 ```{r list_of_phyloseq}
-psBlockResult <- psBlockResults(ps, sampleTypeVar = "Sample_Type", caselevels = c("Healthy_Plasma","Patient_Plasma"), sampleName = "Sample_ID", blockVar = "block")
+psBlockResult <- psBlockResults(ps, sampleTypeVar = "Sample_Type", caselevels = c("Healthy_Plasma","Patient_Plasma"), controllevel="Control", sampleName = "Sample_ID", blockVar = "block")
+
 psByBlock <- psBlockResult[[1]]
 psNCbyBlock <- psBlockResult[[2]]
 psallzeroInNC <- psBlockResult[[3]]
