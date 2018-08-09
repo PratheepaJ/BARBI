@@ -9,7 +9,7 @@
 #' @param sampleName character, variable defines the sample names.
 #' @param blockVar character, variable defines the block of the samples. If there is only one block, create a variable with only one level.
 #'
-#' @return A list of phyloseq objects, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of plasma samples by block.
+#' @return A list of phyloseq objects, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of case samples by block.
 #' @import phyloseq
 #' @export
 psBlockResults <- function(ps,

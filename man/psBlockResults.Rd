@@ -22,7 +22,7 @@ psBlockResults(ps, sampleTypeVar = "Sample_Type",
 \item{blockVar}{character, variable defines the block of the samples. If there is only one block, create a variable with only one level.}
 }
 \value{
-A list of phyloseq objects, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of plasma samples by block.
+A list of phyloseq objects, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of case samples by block.
 }
 \description{
 Prepare the phyloseq object for the Bayesian inference
