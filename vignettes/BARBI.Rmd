@@ -36,7 +36,7 @@ devtools::install_github("PratheepaJ/BARBI",auth_token = "33c5f43cc3f1772c19a441
 
 Load packages:
 ```{r load_packages}
-#library(BARBI)
+library(BARBI)
 library(devtools)
 library(phyloseq)
 library(DESeq2)
@@ -53,7 +53,7 @@ library(gtable)
 library(gridExtra)
 library(BiocStyle)
 library(magrittr)
-devtools::load_all(".")
+
 ```
 
 #      Load the real data stored as a phyloseq object in the ``BARBI`` package or use your own data stored as a phyloseq object
