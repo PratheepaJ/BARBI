@@ -4,27 +4,23 @@
 \name{BARBI}
 \alias{BARBI}
 \alias{BARBI-package}
-\title{BARBI: A package for distinguishing true signal from reagent contamination in ultra-low biomass metagenomics NGS data.}
+\title{BARBI: BAyesian Reduction in Background Interference}
 \description{
-The BARBI package provides three important functions:
-alphaBetaNegControl, alphaBetaContInPlasma and samplingPosterior.
+A package for distinguishing true signal from reagent contamination in ultra-low biomass metagenomics NGS data. The BARBI package provides three important functions: alphaBetaNegControl, alphaBetaContInPlasma and samplingPosterior.
 }
 \section{alphaBetaNegControl function}{
 
-        The alphaBetaNegControl function is used to estimate the
-        contamination distribution parameters in negtiave control
-        samples.
+        The alphaBetaNegControl function is used to estimate the parameters of the distribution of the intensity of contamination in negtiave control samples.
 }
 
 \section{alphaBetaContInPlasma function}{
 
-        The alphaBetaContInPlasma function is used to estimate the
-        contamination distribution parameters in a plasma sample.
+        The alphaBetaContInPlasma function is used to estimate the parameters of the distribution of the intensity of contamination in a plasma sample.
 }
 
 \section{samplingPosterior fucntion}{
 
         The samplingPosterior function is used to sample from the
-        posterior distribution of the true intensity.
+        posterior distribution of the true signal.
 }
 

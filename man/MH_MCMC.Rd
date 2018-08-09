@@ -9,11 +9,11 @@ MH_MCMC(itera, k, al_c, be_c, startvalue_lamda_r = 0)
 \arguments{
 \item{itera}{numeric, number of MCMC samples.}
 
-\item{k}{numeric, observed read for a taxa in a sample.}
+\item{k}{numeric, observed count for a taxa in a sample.}
 
-\item{al_c}{numeric, estimated shape parameter for the contamination distribution for each taxa.}
+\item{al_c}{numeric, estimated shape parameter for the intensity of contamination for a taxa.}
 
-\item{be_c}{numeric, estimated scale parameter for the contamination distribution for each taxa.}
+\item{be_c}{numeric, estimated scale parameter for the intensity of contamination for a taxa.}
 
 \item{startvalue_lamda_r}{numeric, initial value for the intensity of true signal.}
 }
@@ -21,5 +21,5 @@ MH_MCMC(itera, k, al_c, be_c, startvalue_lamda_r = 0)
 An array of MCMC samples.
 }
 \description{
-MH_MCMC
+Metropolis Hastings MCMC
 }

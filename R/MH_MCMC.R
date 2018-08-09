@@ -1,5 +1,7 @@
 #' MH_MCMC
 #'
+#' Metropolis Hastings MCMC
+#'
 #' @param itera numeric, number of MCMC samples.
 #' @param startvalue_lamda_r numeric, initial value for the intensity of true signal.
 #' @inheritParams posterior

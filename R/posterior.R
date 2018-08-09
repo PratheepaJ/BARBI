@@ -1,11 +1,13 @@
 #' posterior
 #'
-#' @param lambda_r numeric, intensity of real read.
-#' @param k numeric, observed read for a taxa in a sample.
-#' @param al_c numeric, estimated shape parameter for the contamination distribution for each taxa.
-#' @param be_c numeric, estimated scale parameter for the contamination distribution for each taxa.
+#' Posterior density function
 #'
-#' @return numeric, posterior density
+#' @param lambda_r numeric, intensity of true signal.
+#' @param k numeric, observed count for a taxa in a sample.
+#' @param al_c numeric, estimated shape parameter for the intensity of contamination for a taxa.
+#' @param be_c numeric, estimated scale parameter for the intensity of contamination for a taxa.
+#'
+#' @return numeric, posterior density function
 #' @export
 posterior <- function(lambda_r,
                      k,

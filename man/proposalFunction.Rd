@@ -7,13 +7,13 @@
 proposalFunction(al_p, be_p)
 }
 \arguments{
-\item{al_p}{numeric, shape parameter for the proposal function}
+\item{al_p}{numeric, shape parameter for the proposed density function}
 
-\item{be_p}{numeric, scale parameter for the proposal function}
+\item{be_p}{numeric, scale parameter for the proposed density function}
 }
 \value{
-numeric, proposal density
+numeric, proposed density function
 }
 \description{
-proposalFunction
+Proposed gamma density function
 }
