@@ -171,7 +171,7 @@ For all samples and for all taxa, we sampling from the posterior for the intensi
 
 We save the gamma prior for the intensity of contamination and the posterior samples.
 
-```{r sampling_post_true_int,eval=FALSE}
+```{r sampling_post_true_int}
 t1 <- proc.time()
 
 post_all_blocks <- lapply(blks,function(x){
@@ -179,7 +179,7 @@ post_all_blocks <- lapply(blks,function(x){
                 psPlByBlock = psPlByBlock,
                 blk = x,
                 gammaPrior_Cont = gammaPrior_all_blks[[x]],
-                itera = 100)
+                itera = 5)
         return(post_int_all_taxa)
 })
 

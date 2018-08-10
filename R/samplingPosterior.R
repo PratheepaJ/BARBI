@@ -26,19 +26,32 @@ samplingPosterior <-  function(psPlByBlock,
         sampleLst <- seq(1, nsamples(psPlByBlock[[blk]]))
         sampleLst <- as.list(sampleLst)
 
-        taxa_post_all_sam = bplapply(sampleLst, function(x){
-                #taxa_post = list()
+        sub_sampling_pos <- function(x,gammaPrior_Cont,blk,itera){
                 sam <- x
                 taxa_list <- as.list(1:ntaxa(psPlByBlock[[blk]]))
 
                 taxa_post <- lapply(taxa_list, function(taxa){
                         chain = MH_MCMC(itera = itera, k = as.numeric(gammaPrior_Cont[[sam]]$kij[taxa]), al_c = gammaPrior_Cont[[sam]]$alpha_ij_c[taxa], be_c = gammaPrior_Cont[[sam]]$beta_ij_c[taxa], startvalue_lamda_r=0)
                         return(chain)
-                        }
+                }
                 )
 
                 return(taxa_post)
-        })
+        }
 
+        # taxa_post_all_sam = bplapply(sampleLst, function(x){
+        #         sam <- x
+        #         taxa_list <- as.list(1:ntaxa(psPlByBlock[[blk]]))
+        #
+        #         taxa_post <- lapply(taxa_list, function(taxa){
+        #                 chain = MH_MCMC(itera = itera, k = as.numeric(gammaPrior_Cont[[sam]]$kij[taxa]), al_c = gammaPrior_Cont[[sam]]$alpha_ij_c[taxa], be_c = gammaPrior_Cont[[sam]]$beta_ij_c[taxa], startvalue_lamda_r=0)
+        #                 return(chain)
+        #                 }
+        #         )
+        #
+        #         return(taxa_post)
+        # })
+
+        taxa_post_all_sam = bplapply(sampleLst, FUN=sub_sampling_pos,gammaPrior_Cont=gammaPrior_Cont,blk=blk,itera=itera)
         return(taxa_post_all_sam)
 }
