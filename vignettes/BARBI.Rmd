@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 Install [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/). Open this `Rmd` `r Githubpkg("rstudio/rmarkdown")` file in RStudio. Then run the following code to install all required packages.
 
-```{r install_packages,eval=FALSE}
+```{r install_packages}
 pkgs <- c("DESeq2","phyloseq","dplyr",
           "tidyr","R.utils","BiocParallel",
           "doParallel","parallel","HDInterval",
@@ -31,6 +31,7 @@ pkgs <- c("DESeq2","phyloseq","dplyr",
           "gridExtra","BiocStyle","magrittr")
 source("http://bioconductor.org/biocLite.R")
 biocLite(setdiff(pkgs,installed.packages()))
+
 devtools::install_github("PratheepaJ/BARBI",auth_token = "33c5f43cc3f1772c19a441e15fc9478c3bf91b67")
 ```
 
