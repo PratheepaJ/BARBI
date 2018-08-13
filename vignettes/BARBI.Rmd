@@ -137,6 +137,8 @@ psByBlock <- psBlockResult[[1]]
 psNCbyBlock <- psBlockResult[[2]]
 psallzeroInNC <- psBlockResult[[3]]
 psPlByBlock <- psBlockResult[[4]]
+
+saveRDS(psByBlock,"./psByBlock.rds")
 ```
 
 ##      Estimate the distribution parameters for the instensity of contamination in negative control samples
@@ -170,7 +172,7 @@ gammaPrior_all_blks <- lapply(blks, function(x){
 For all samples and for all taxa, we sampling from the posterior for the intensity of true signal using the Metropolis-Hasting MCMC. We can choose the number of MCMC using the option `itera`.
 
 We save the gamma prior for the intensity of contamination and the posterior samples.
-
+The suggested number of itera is 10,000.
 ```{r sampling_post_true_int}
 t1 <- proc.time()
 
@@ -179,7 +181,7 @@ post_all_blocks <- lapply(blks,function(x){
                 psPlByBlock = psPlByBlock,
                 blk = x,
                 gammaPrior_Cont = gammaPrior_all_blks[[x]],
-                itera = 5)
+                itera = 1000)
         return(post_int_all_taxa)
 })
 
@@ -198,203 +200,29 @@ We can choose the number of MCMC to be removed using the option `burnIn` and it 
 
 We can choose the coverage probability to construct the highest posterior density interval using the option `cov.pro`.
 
-We can choose the option `Use_SNR` to tell whether the contamination identification is also based on the signal-to-noise ratio, otherwise, the contamination identification is based on the lower limit of the true signal and the upper limit of the contaminant. 
+The contamination identification is based on the lower limit of the true signal and the upper limit of the contaminant. 
 
+The suggested burnIn is 5000 for itera = 10000.
 ```{r make_tables, eval=FALSE}
-itera <- 100
-burnIn <- 10
+itera <- 1000
+burnIn <- 100
 cov.pro <- .95
-Use_SNR <- FALSE
+mak_tab <- TRUE
+psByBlock <- readRDS("./psByBlock.rds")
 
 gammaPrior_posTrueSing_all_blocks <- readRDS("./gammaPrior_posTrueSing_all_blocks.rds")
 
 gammaPrior_all_blks <- gammaPrior_posTrueSing_all_blocks[[1]]
 post_all_blocks <- gammaPrior_posTrueSing_all_blocks[[2]]
 
-finalPosTaxa <- data.frame()
-final_results_list <- list()
+all_taxa_res <- makeTable(itera, burnIn, num_blks, cov.pro, psByBlock, gammaPrior_all_blks, post_all_blocks, mak_tab=TRUE)
+```
 
-for(blk in 1:num_blks){
-        
-        taxa_post_all_sam <- post_all_blocks[[blk]]
-        gammPrior <- gammaPrior_all_blks[[blk]]
-    
-        total_summary_table <- NULL 
-        
-        all_real_taxa <- character()
-
-        for(sam in 1:nsamples(psPlByBlock[[blk]])){
-          
-                taxa_post <- taxa_post_all_sam[[sam]]
-                acceptance <- list()
-                exp_post_s <- list()
-                lower.s <- list()
-                upper.s <- list()
-                upper.b <- list()
-                lower.b <- list()
-                sd.s <- list()
-                naive.exp <- list()
-                all.zero.nc <- list()
-                  for(taxa in 1:length(taxa_post)){
-                          burnIn  <- burnIn
-                          acceptance[[taxa]]  <-  1-mean(duplicated(taxa_post[[taxa]][-(1:burnIn),]))
-                  
-                          exp_post_s[[taxa]] <- mean(taxa_post[[taxa]][-(1:burnIn),])
-                            
-                          hdi.v <- hdi(taxa_post[[taxa]][-(1:burnIn),], credMass = cov.pro)
-                          lower.s[[taxa]] <- round(hdi.v[1], digits = 0)
-                          upper.s[[taxa]] <- round(hdi.v[2], digits = 0)
-                          
-                          hdi.b <- hdi(rgamma((itera-burnIn+1), shape=gammPrior[[sam]][[1]][taxa], rate = gammPrior[[sam]][[2]][taxa]), credMass = cov.pro)
-                          lower.b[[taxa]] <- round(hdi.b[1], digits = 0)
-                          upper.b[[taxa]] <- round(hdi.b[2], digits = 0)
-                          
-                          sd.s[[taxa]] <- sd(taxa_post[[taxa]][-(1:burnIn),])
-                          sd.s[[taxa]] <- round(sd.s[[taxa]], digits = 0)
-                          
-                          naive.exp[[taxa]] <- gammPrior[[sam]][[3]][taxa] - (gammPrior[[sam]][[1]][taxa]/gammPrior[[sam]][[2]][taxa])
-                          naive.exp[[taxa]] <- round(naive.exp[[taxa]], digits = 0)
-                          
-                          all.zero.nc[[taxa]] <-  gammPrior[[sam]][[5]][taxa]
-                  }
-
-                mappingFileByBlock <-lapply(psByBlock, function(x){
-                        as.data.frame(x@sam_data)
-                        })
-                sampleDepth <- as.numeric(mappingFileByBlock[[blk]][sample_names(psPlByBlock[[blk]])[sam], "Reads"])
-
-                df <- data.frame(Species=taxa_names(psPlByBlock[[blk]]),
-                                 xj=as.numeric(gammPrior[[sam]][[3]]),
-                                 l.s=unlist(lower.s),
-                                 u.s=unlist(upper.s),
-                                 l.b=unlist(lower.b),
-                                 u.b=unlist(upper.b),
-                                 sd.s=unlist(sd.s),
-                                 naive.exp=unlist(naive.exp),
-                                 all.zero.nc=unlist(all.zero.nc),
-                                 Sample_Depth = rep(sampleDepth,length(unlist(upper.s))),
-                                 Sample = rep(sample_names(psPlByBlock[[blk]])[sam],
-                                              length(unlist(upper.s))))
-  
-                  df <- arrange(filter(df,(l.s>u.b)&(l.s>0)), desc(xj))
-                  
-                  # Filter Out Viral Taxa
-                  ps.tax.df <- as.data.frame(ps@tax_table)
-                  ps.tax.df.viruses <- filter(ps.tax.df, 
-                                              Superkingdom=="k__Viruses")
-                  list.of.viruses <- as.character(ps.tax.df.viruses[,"Species"])
-                  df <- arrange(filter(df, 
-                                       !(Species %in% list.of.viruses)),
-                                desc(xj))
-                  
-                  
-                  finalPosTaxa <- rbind(finalPosTaxa, df)
-                  
-                  
-                  if(dim(df)[1]==0){
-                          df <- data.frame(Species="Negative",
-                                           xj="Negative",
-                                           l.s="Negative",
-                                           u.s="Negative",
-                                           l.b ="Negative", u.b="Negative", sd.s = "Negative", naive.exp = "Negative",
-                                           all.zero.nc = "Negative",
-                                           Sample_Depth=sampleDepth,
-                                           Sample = sample_names(psPlByBlock[[blk]])[sam])
-                  }                  
-                  
-                  all_real_taxa <- c(all_real_taxa, 
-                                     as.character(df$Species))
-
-                  #create a line.summary variable that summarizes df for each sample in 1 line
-                  sam.summary <- character()
-                  for (i in 1:nrow(df)) {
-                    
-                    if (df[i, "Species", drop = FALSE]=="Negative") {
-                      sam.summary <- "; Negative"
-                    }
-                    else {
-                    taxa.summary <- paste(df[i, "Species"], 
-                                          " (", df[i, "xj"], 
-                                          ", ", df[i, "l.s"], 
-                                          ", ", df[i, "u.b"], 
-                                          ", ", df[i, "all.zero.nc"], 
-                                          ")",  sep="")
-                    sam.summary <- paste(sam.summary, "; ", 
-                                         taxa.summary, sep = "")
-                    }
-                  }
-                  
-                  
-                  sam.summary <- substring(sam.summary, 3)
-                  total_summary_table <- rbind(total_summary_table,       data.frame(sample_names(psPlByBlock[[blk]])[sam],sam.summary))                 
-                  filname <- paste("./",
-                                   sample_names(psPlByBlock[[blk]])[sam],
-                                   ".png",
-                                   sep="")
-                 
-                  png(filname, 
-                      height = 600, 
-                      width = 750)
-                  
-                 df.mod <- df
-                 df.mod <- subset(df.mod, 
-                                  select = c(Species, 
-                                             xj, l.s, u.b, all.zero.nc))
-                 
-                colnames(df.mod) <- c("Species", 
-                                      "Raw Reads", 
-                                      "Lower Limit Real",
-                                      "Upper Limit Contaminant", 
-                                      "In Neg. Cont.")
-                 
-                df.p <- tableGrob(df.mod)
-                
-                title <- textGrob(sample_names(psPlByBlock[[blk]])[sam],
-                                  gp = gpar(fontsize = 14))
-                
-                padding <- unit(0.5,"line")
-                df.p <- gtable_add_rows(df.p,
-                                        heights = grobHeight(title) + padding,
-                                        pos = 0)
-                  df.p <- gtable_add_grob(
-                          df.p, 
-                          list(title),
-                          t = 1, l = 1, 
-                          r = ncol(df.p))
-                  
-                  grid.newpage()
-                  grid.draw(df.p)
-                  dev.off()
-                  
-                  
-  }
-        
-        all_real_taxa <- unique(all_real_taxa)
-        final_results_list[[blk]] <- list(total_summary_table, all_real_taxa)
-}
-
-total_summary_table_list  <- list() 
-total_summary_table_list  <- lapply(final_results_list, 
-                                    function(x) {
-                                            x[[1]]
-                                            })
-
-total_summary_table_all <- do.call("rbind", 
-                                   total_summary_table_list )
-
-row.names(total_summary_table_all) <- total_summary_table_all[,1]
-colnames(total_summary_table_all) <- c("Sample", 
-                                       "Species (Raw Reads, Lower Bound Background Reads Estimate, Upper Bound Real Reads Estimate, Presence in Neg. Controls)")
-total_summary_table_all <- total_summary_table_all[order(row.names(total_summary_table_all)), , drop = FALSE]
-
-write.table(total_summary_table_all, 
-            paste("./total_summary_table", ".txt", sep=""), 
-            sep="\t", 
-            col.names=TRUE, 
-            row.names = FALSE)
-
-saveRDS(finalPosTaxa,
-        file="./finalPosTaxa.rds")
+##      Make phyloseq with true signal
+```{r make_phyloseq}
+all_real_taxa_lt <- unlist(all_taxa_res)
+all_real_taxa_lt <- all_real_taxa_lt[which(!all_real_taxa_lt=="Negative")]
+ps_decon <- prune_taxa(all_real_taxa_lt, ps)
 ```
 
 # Session Info 

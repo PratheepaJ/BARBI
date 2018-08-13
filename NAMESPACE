@@ -3,6 +3,7 @@
 export(MH_MCMC)
 export(alphaBetaContInPlasma)
 export(alphaBetaNegControl)
+export(makeTable)
 export(posterior)
 export(proposalFunction)
 export(psBlockResults)
