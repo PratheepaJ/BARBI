@@ -6,7 +6,7 @@ author:
   email: jpratheepa31@gmail.com
 package: BARBI
 abstract: >
-  BAyesian Reduction in Background Interference (BARBI) provides a reproducible and automated process to remove contaminating DNA from metagenomic shotgun sequencing data in the setting of ultra low-biomass samples (After removing Eukaryotic pathogens).
+  BAyesian Reduction in Background Interference (BARBI) provides a reproducible and automated process to remove contaminating bacterial and viral DNA from metagenomic shotgun sequencing data in the setting of ultra low-biomass samples.
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -57,23 +57,27 @@ library(magrittr)
 
 ```
 
-#      Load the real data stored as a phyloseq object in the ``BARBI`` package or use your own data stored as a phyloseq object
+#      Load the example dataset stored as a phyloseq object in the ``BARBI`` package (or use your own data stored as a phyloseq object)
 
-##      Load the phyloseq 
+##      Load the phyloseq object
 
-Analysis of shotgun-metagenomic sequencing samples that is a subset of plasma samples and all negative control samples from @cheng2017integration.
+This example dataset is taken from a study that involved metagenomic shotgun sequencing on plasma from patients with suspected sepsis ( @cheng2017integration ).
 
 ```{r read-phylo}
 ps <- ps
 ```
 
-We remove library controls. 
+Remove library controls samples from the dataset, which will not be needed for this BARBI analysis. 
 
 ```{r remove_unwanted_controls}
 ps <- subset_samples(ps,Sample_Type=!"Library_Control")
 ```
 
-We identified three different blocks/batches of processing samples using a PCA on ranks of abundance (though we expect a user to know the blocks/batches in advance for each sample.) 
+In a previous PCoA analysis of this dataset, the samples separated into three separate clusters, which correlated with three groups of DNA extraction batches. 
+
+To reduce the batch-effects of contamination, we specified three "blocks" of samples, and analyzed each block separately with BARBI.  (Pratheepa, consider adding the code for PCoA of these samples). 
+
+We highly recommend that you keep track of batch effects (esp. DNA extraction and library prep batches), visualize your data with PCoA, and separate your data into different blocks of necessary. 
 
 ```{r adding_blocks}
 set1 <- c("1","2","3","4","11","12")
@@ -86,7 +90,7 @@ blocks <-ifelse(ext.num %in% set1, "Set1", ifelse(ext.num %in% set2, "Set2", "Se
 sample_data(ps)$block <- blocks
 ```
 
-We identified the species not in any single plasma sample and removed them from the phyloseq object and label them as contaminants.
+Identify the species that are not present in at least one plasma sample and removed them from the phyloseq object. Label these species as contaminants. 
 
 ```{r filter_taxa}
 ps <- prune_taxa(taxa_sums(ps)>0, ps)
@@ -97,7 +101,9 @@ Contaminants1 <- names(prevTaxaP)[prevTaxaP==0]
 ps <- prune_taxa(prevTaxaP>0,ps)
 ```
 
-We set that the samples are on the columns and species are on the rows of `otu_table`. Then, we checked the distribution of library size/sample depth to see whether we can drop any sample with less library size.
+Specify that the samples are on the columns and species are on the rows of `otu_table`. 
+
+Check the distribution of library size/sample depth to see whether there are samples with very small library sizes that should be dropped from the analysis.
 
 ```{r filter-samples}
 if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}
@@ -105,13 +111,14 @@ totalReads <- colSums(otu_table(ps))
 hist(log(totalReads),yaxs="i",xaxs="i",main="Distribution of total reads per sample",breaks=50)
 ```
 
-We make sure that we filter only the plasma, negative control, and healthy control samples.
+Subset samples such that only patient plasma, healthy subject control, and negative controls are included in the final phyloseq object. 
+(Pratheepa, consider moving this line of code to p top.). 
 
 ```{r choose_samples}
 ps <- subset_samples(ps,Sample_Type %in% c("Healthy_Plasma","Patient_Plasma","Control"))
 ```
 
-Summary of plasma and negative control samples in each block.
+See a summary of the plasma and negative control samples in each block. 
 
 ```{r summary_stat}
 table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
@@ -121,15 +128,15 @@ table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
 
 ##      Prepare the phyloseq object for the Bayesian inference
 
-We use the Bayesian inference to identify contaminants in each block because DNA contaminants are unique to each block. 
+We use Bayesian inference to identify contaminants in each block separately to account for the batch-effects of contamination. 
 
-Thus, we split the phyloseq object corresponding to each block and store as a list of phyloseq objects, `psByBlock`. 
+Thus, split the phyloseq object into multiple phyloseq obecjts corresponding to each block, and store the phyloseq objects as a list of phyloseq objects, `psByBlock`. 
 
-We select negative control samples from each block and store as a list of phyloseq objects, `psNCbyBlock`. 
+Select negative control samples from each block and store as a list of phyloseq objects, `psNCbyBlock`. 
 
-We select all species that has prevalence of zero in all negative control samples for each block and store as a list of phyloseq objects, `psallzeroInNC`.
+Select all species that have a prevalence of zero (i.e., have zero reads) in all negative control samples for each block and store as a list of phyloseq objects, `psallzeroInNC`.
 
-We select all plasma samples from each block and store as a list of phyloseq objects, `psPlByBlock`.
+Select all plasma samples from each block and store as a list of phyloseq objects, `psPlByBlock`.
 
 ```{r list_of_phyloseq}
 psBlockResult <- psBlockResults(ps, sampleTypeVar = "Sample_Type", caselevels = c("Healthy_Plasma","Patient_Plasma"), controllevel="Control", sampleName = "Sample_ID", blockVar = "block")
@@ -144,9 +151,9 @@ saveRDS(psByBlock,"./psByBlock.rds")
 
 ##      Estimate the distribution parameters for the instensity of contamination in negative control samples
 
-We estimate the gamma distribution parameters for the intensity of contaminants using the negative control samples for each block. 
+Estimate the gamma distribution parameters for the intensity of contaminants using the negative control samples for each block. 
 
-`add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for size factor calculation method in `DESeq::estimateSizeFactors` and latter is the default option.
+`add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for the size factor calculation method in `DESeq::estimateSizeFactors`. The latter is the default option.
 
 ```{r estimate_Cont_Intensity_ncontrols}
 alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = FALSE)
@@ -154,9 +161,9 @@ alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = FAL
 
 ##      Estimate the distribution parameters for the intensity of contamination in each plasma sample
 
-For each plasma sample, we estimate the gamma distribution parameters for the intensity of contamination using the scaling property of the gamma distribution.
+For each plasma sample, estimate the gamma distribution parameters for the intensity of contamination using the scaling property of the gamma distribution.
 
-Choosing `stringent == TRUE` suggests to not using the scaling property for the species with the mean intensity of contamination less than one.
+Choosing `stringent == TRUE` specifies BARBI to not using the scaling property for the species with the mean intensity of contamination less than one. (Pratheepa, what does this mean for the user? Shoudl we say something like 'This is one of two parameters that allows for more stringent subtraction of contaminants, especially for those at low abundance.')
 
 ```{r estimate_Cont_Intensity_plasma}
 num_blks <- length(alphaBetaNegControl)
@@ -170,11 +177,12 @@ gammaPrior_all_blks <- lapply(blks, function(x){
 
 ##      Sampling from the posterior for the intensity of true signal
 
-For all samples and for all taxa, we sampling from the posterior for the intensity of true signal using the Metropolis-Hasting MCMC. We can choose the number of MCMC using the option `itera`.
+For all samples and for all taxa, sample from the posterior for the intensity of true signal using the Metropolis-Hasting MCMC. Specifify the number of iterations in the MCMC using the option `itera`. 
 
-We save the gamma prior for the intensity of contamination and the posterior samples.
+Save the gamma prior for the intensity of contamination and the posterior samples.
 
-The suggested number of itera is 10,000.
+The  suggeseted itera is 10,000. 
+
 ```{r sampling_post_true_int}
 t1 <- proc.time()
 
@@ -198,11 +206,11 @@ saveRDS(gammaPrior_posTrueSing_all_blocks, file= "./gammaPrior_posTrueSing_all_b
 
 ##     Make summaires from the BARBI results.
 
-We can choose the number of MCMC to be removed using the option `burnIn` and it must be less than `itera`.
+Choose the number of MCMC to be removed using the option `burnIn`.  It must be less than `itera`.
 
-We can choose the coverage probability to construct the highest posterior density interval using the option `cov.pro`.
+Choose the coverage probability to construct the highest posterior density interval using the option `cov.pro`.
 
-The contamination identification is based on the lower limit of the true signal and the upper limit of the contaminant. 
+Taxa are labeled as contaminants if the lower limit of the true signal is greater than the upper limit of the contaminant. (Just wondering, are you going to include the signal:noise ratio in this?)
 
 The suggested burnIn is 5000 for itera = 10000.
 ```{r make_tables}
@@ -319,7 +327,7 @@ for(blk in 1:num_blks){
 
 ```
 
-##      Make phyloseq with true signal
+##      Construct a phyloseq object with the true signal
 ```{r make_phyloseq}
 all_real_taxa_lt <- unlist(all_real_taxa_lt)
 all_real_taxa_lt <- all_real_taxa_lt[which(!all_real_taxa_lt=="Negative")]
