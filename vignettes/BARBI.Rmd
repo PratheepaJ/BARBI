@@ -310,7 +310,7 @@ for(blk in 1:num_blks){
 
                                 df.p <- gtable_add_grob(
                                         df.p, list(title),
-                                        t = 1, l = 1, r = ncol(df.p)
+                                        t = 1, l = 1, r = ncol(df.p) 
                                 )
 
                                 grid.newpage()
