@@ -197,8 +197,8 @@ post_all_blocks <- lapply(blks,function(x){
         post_int_all_taxa <- samplingPosterior(psPlByBlock = psPlByBlock,
                 blk = x,
                 gammaPrior_Cont = gammaPrior_all_blks[[x]],
-                itera = 100,
-                ncores = ncores)
+                itera = 500,
+                ncores = 4)
         return(post_int_all_taxa)
 })
 
