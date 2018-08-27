@@ -16,7 +16,7 @@
 samplingPosterior <-  function(psPlByBlock,
                              blk,
                              gammaPrior_Cont,
-                             itera=10000){
+                             itera=10000,ncores = ncores){
 
         registerDoParallel(detectCores())
         register(DoparParam())
@@ -42,7 +42,9 @@ samplingPosterior <-  function(psPlByBlock,
         }
 
 
-        taxa_post_all_sam <- bplapply(sampleLst, FUN=sub_sampling_pos, gammaPrior_Cont=gammaPrior_Cont, blk=blk, itera=itera)
+        # taxa_post_all_sam <- bplapply(sampleLst, FUN=sub_sampling_pos, gammaPrior_Cont=gammaPrior_Cont, blk=blk, itera=itera, BPPARAM = MulticoreParam(workers = ncores, tasks = ncores))
+
+        taxa_post_all_sam <- mclapply(sampleLst, FUN=sub_sampling_pos, gammaPrior_Cont=gammaPrior_Cont, blk=blk, itera=itera, mc.cores = ncores)
 
         return(taxa_post_all_sam)
 }

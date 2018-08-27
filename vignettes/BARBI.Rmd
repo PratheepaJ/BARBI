@@ -58,7 +58,8 @@ library(magrittr)
 
 Set the computational resources
 ```{r}
-ncores <- parallel::detectCores()
+ncores = as.integer(Sys.getenv("SLURM_NTASKS"))
+if(is.na(ncores)) ncores <- parallel::detectCores()
 ```
 
 
@@ -193,15 +194,16 @@ The  suggeseted itera is 10,000.
 t1 <- proc.time()
 
 post_all_blocks <- lapply(blks,function(x){
-        post_int_all_taxa <- samplingPosterior(
-                psPlByBlock = psPlByBlock,
+        post_int_all_taxa <- samplingPosterior(psPlByBlock = psPlByBlock,
                 blk = x,
                 gammaPrior_Cont = gammaPrior_all_blks[[x]],
-                itera = 1000)
+                itera = 100,
+                ncores = ncores)
         return(post_int_all_taxa)
 })
 
 proc.time()-t1
+
 
 gammaPrior_posTrueSing_all_blocks <- list(gammaPrior_all_blks,post_all_blocks)
 
