@@ -54,7 +54,6 @@ library(gtable)
 library(gridExtra)
 library(BiocStyle)
 library(magrittr)
-
 ```
 
 #      Load the example dataset stored as a phyloseq object in the ``BARBI`` package (or use your own data stored as a phyloseq object)
@@ -90,6 +89,12 @@ blocks <-ifelse(ext.num %in% set1, "Set1", ifelse(ext.num %in% set2, "Set2", "Se
 sample_data(ps)$block <- blocks
 ```
 
+Subset samples such that only patient plasma, healthy subject control, and negative controls are included in the final phyloseq object. 
+
+```{r choose_samples}
+ps <- subset_samples(ps,Sample_Type %in% c("Healthy_Plasma","Patient_Plasma","Control"))
+```
+
 Identify the species that are not present in at least one plasma sample and removed them from the phyloseq object. Label these species as contaminants. 
 
 ```{r filter_taxa}
@@ -111,12 +116,7 @@ totalReads <- colSums(otu_table(ps))
 hist(log(totalReads),yaxs="i",xaxs="i",main="Distribution of total reads per sample",breaks=50)
 ```
 
-Subset samples such that only patient plasma, healthy subject control, and negative controls are included in the final phyloseq object. 
-(Pratheepa, consider moving this line of code to p top.). 
 
-```{r choose_samples}
-ps <- subset_samples(ps,Sample_Type %in% c("Healthy_Plasma","Patient_Plasma","Control"))
-```
 
 See a summary of the plasma and negative control samples in each block. 
 
