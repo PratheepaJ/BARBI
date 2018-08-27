@@ -56,6 +56,12 @@ library(BiocStyle)
 library(magrittr)
 ```
 
+Set the computational resources
+```{r}
+ncores <- parallel::detectCores()
+```
+
+
 #      Load the example dataset stored as a phyloseq object in the ``BARBI`` package (or use your own data stored as a phyloseq object)
 
 ##      Load the phyloseq object
@@ -130,7 +136,7 @@ table(sample_data(ps)$Sample_Type,sample_data(ps)$block)
 
 We use Bayesian inference to identify contaminants in each block separately to account for the batch-effects of contamination. 
 
-Thus, split the phyloseq object into multiple phyloseq obecjts corresponding to each block, and store the phyloseq objects as a list of phyloseq objects, `psByBlock`. 
+Thus, split the phyloseq object into multiple phyloseq objects corresponding to each block, and store the phyloseq objects as a list of phyloseq objects, `psByBlock`. 
 
 Select negative control samples from each block and store as a list of phyloseq objects, `psNCbyBlock`. 
 
