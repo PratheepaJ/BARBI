@@ -1,8 +1,8 @@
-#' Simulated \code{"phyloseq"} object.
+#' Simulated \code{'phyloseq'} object.
 #'
-#' A \code{"phyloseq"} class object with 1638 taxa from 48 patient plasma, healthy plasma, and negative control samples.
+#' A \code{'phyloseq'} class object with 1638 taxa from 48 patient plasma, healthy plasma, and negative control samples.
 #'
-#' @format An object of class \code{"phyloseq"}.
+#' @format An object of class \code{'phyloseq'}.
 #' \describe{
 #'   \item{SubjectCode}{IDs of individuals}
 #'   \item{Sample_Type}{A factor with three levels: Patient_Plasma, Control, and Healthy_Plasma}

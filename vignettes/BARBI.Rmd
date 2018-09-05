@@ -113,6 +113,7 @@ Contaminants1 <- names(prevTaxaP)[prevTaxaP==0]
 ps <- prune_taxa(prevTaxaP>0,ps)
 ```
 
+
 Specify that the samples are on the columns and species are on the rows of `otu_table`. 
 
 Check the distribution of library size/sample depth to see whether there are samples with very small library sizes that should be dropped from the analysis.
