@@ -29,6 +29,7 @@ pkgs <- c("DESeq2","phyloseq","dplyr",
           "doParallel","parallel","HDInterval",
           "grid","xtable","gtable",
           "gridExtra","BiocStyle","magrittr")
+
 source("http://bioconductor.org/biocLite.R")
 biocLite(setdiff(pkgs,installed.packages()))
 
@@ -221,6 +222,16 @@ Choose the coverage probability to construct the highest posterior density inter
 
 Taxa are labeled as contaminants if the lower limit of the true signal is greater than the upper limit of the contaminant. (Just wondering, are you going to include the signal:noise ratio in this?)
 
+[Code](https://www.tutorialspoint.com/r/r_mean_median_mode.htm)
+
+```{r}
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+```
+
+
 The suggested burnIn is 5000 for itera = 10000.
 ```{r make_tables}
 itera <- 1000
@@ -255,8 +266,13 @@ for(blk in 1:num_blks){
                         lower.b <- list()
                         upper.b <- list()
                         all.zero.nc <- list()
+                        lambda_re <- list()
+                        lambda_c <- list()
+                        pro_re <- list()
+                        pro_c <- list()
 
                         for(taxa in 1:length(taxa_post)){
+                                xij <- as.numeric(gammPrior[[sam]][[3]][taxa])
                                 burnIn  <- burnIn
                                 acceptance[[taxa]]  <-  1-mean(duplicated(taxa_post[[taxa]][-(1:burnIn),]))
 
@@ -265,26 +281,39 @@ for(blk in 1:num_blks){
                                 hdi.v <- hdi(taxa_post[[taxa]][-(1:burnIn),], credMass = cov.pro)
                                 lower.s[[taxa]] <- round(hdi.v[1], digits = 0)
                                 upper.s[[taxa]] <- round(hdi.v[2], digits = 0)
+                                bb <- rgamma((itera-burnIn+1), shape= gammPrior[[sam]][[1]][taxa], rate = gammPrior[[sam]][[2]][taxa])
+                                
+                                exp_bb <- gammPrior[[sam]][[1]][taxa]/gammPrior[[sam]][[2]][taxa]
 
-                                hdi.b <- hdi(rgamma((itera-burnIn+1), shape=gammPrior[[sam]][[1]][taxa], rate = gammPrior[[sam]][[2]][taxa]), credMass = cov.pro)
+                                hdi.b <- hdi(bb, credMass = cov.pro)
                                 lower.b[[taxa]] <- round(hdi.b[1], digits = 0)
                                 upper.b[[taxa]] <- round(hdi.b[2], digits = 0)
 
 
                                 all.zero.nc[[taxa]] <-  gammPrior[[sam]][[5]][taxa]
+                                lambda_re[[taxa]] <- getmode(taxa_post[[taxa]][-(1:burnIn),])
+                                pro_re[[taxa]] <- dpois(x = xij, lambda = lambda_re[[taxa]])
+                                lambda_c[[taxa]] <- exp_bb
+                                pro_c[[taxa]] <- dpois(x = xij, lambda_c[[taxa]])
+                                
+                                
                         }
 
 
                         df <- data.frame(Species=taxa_names(psPlByBlock[[blk]]),
-                                         xj=as.numeric(gammPrior[[sam]][[3]]),
+                                         xj = as.numeric(gammPrior[[sam]][[3]]),
                                          l.s=unlist(lower.s),
                                          u.s=unlist(upper.s),
                                          l.b=unlist(lower.b),
                                          u.b=unlist(upper.b),
-                                         all.zero.nc=unlist(all.zero.nc)
-                        )
+                                         all.zero.nc=unlist(all.zero.nc),
+                                         lambda_re = unlist(lambda_re),
+                                         lambda_c = unlist(lambda_c),
+                                         pro_re = unlist(pro_re),
+                                         pro_c = unlist(pro_c)
+                                         )
 
-                        df <- arrange(filter(df,(l.s>u.b)&(l.s>0)), desc(xj))
+                        df <- arrange(filter(df,(l.s > u.b)&(l.s > 0)), desc(xj))
 
 
                         if(dim(df)[1]==0){
