@@ -266,13 +266,8 @@ for(blk in 1:num_blks){
                         lower.b <- list()
                         upper.b <- list()
                         all.zero.nc <- list()
-                        lambda_re <- list()
-                        lambda_c <- list()
-                        pro_re <- list()
-                        pro_c <- list()
 
                         for(taxa in 1:length(taxa_post)){
-                                xij <- as.numeric(gammPrior[[sam]][[3]][taxa])
                                 burnIn  <- burnIn
                                 acceptance[[taxa]]  <-  1-mean(duplicated(taxa_post[[taxa]][-(1:burnIn),]))
 
@@ -291,11 +286,6 @@ for(blk in 1:num_blks){
 
 
                                 all.zero.nc[[taxa]] <-  gammPrior[[sam]][[5]][taxa]
-                                lambda_re[[taxa]] <- getmode(taxa_post[[taxa]][-(1:burnIn),])
-                                pro_re[[taxa]] <- dpois(x = xij, lambda = lambda_re[[taxa]])
-                                lambda_c[[taxa]] <- exp_bb
-                                pro_c[[taxa]] <- dpois(x = xij, lambda_c[[taxa]])
-                                
                                 
                         }
 
@@ -307,10 +297,6 @@ for(blk in 1:num_blks){
                                          l.b=unlist(lower.b),
                                          u.b=unlist(upper.b),
                                          all.zero.nc=unlist(all.zero.nc),
-                                         lambda_re = unlist(lambda_re),
-                                         lambda_c = unlist(lambda_c),
-                                         pro_re = unlist(pro_re),
-                                         pro_c = unlist(pro_c)
                                          )
 
                         df <- arrange(filter(df,(l.s > u.b)&(l.s > 0)), desc(xj))
