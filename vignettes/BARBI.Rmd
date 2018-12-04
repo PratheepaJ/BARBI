@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 Install [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/). Open this `Rmd` `r Githubpkg("rstudio/rmarkdown")` file in RStudio. Then run the following code to install all required packages.
 
-```{r install_packages}
+```{r install_packages, eval=FALSE}
 pkgs <- c("DESeq2","phyloseq","dplyr",
           "tidyr","R.utils","BiocParallel",
           "doParallel","parallel","HDInterval",
@@ -38,7 +38,7 @@ devtools::install_github("PratheepaJ/BARBI",auth_token = "33c5f43cc3f1772c19a441
 
 Load packages:
 ```{r load_packages}
-library(BARBI)
+#library(BARBI)
 library(devtools)
 library(phyloseq)
 library(DESeq2)
@@ -55,6 +55,7 @@ library(gtable)
 library(gridExtra)
 library(BiocStyle)
 library(magrittr)
+load_all(".")
 ```
 
 Set the computational resources
@@ -108,10 +109,10 @@ Identify the species that are not present in at least one plasma sample and remo
 ```{r filter_taxa}
 ps <- prune_taxa(taxa_sums(ps)>0, ps)
 ps_plasma <- subset_samples(ps,Sample_Type%in%c("Healthy_Plasma","Patient_Plasma"))
-prevTaxaP <- apply(otu_table(ps_plasma), 1 ,function(x){sum(x>0)})
+prevTaxaP <- apply(otu_table(ps_plasma), 1, function(x){sum(x>0)})
 
 Contaminants1 <- names(prevTaxaP)[prevTaxaP==0]
-ps <- prune_taxa(prevTaxaP>0,ps)
+ps <- prune_taxa(prevTaxaP>0, ps)
 ```
 
 
@@ -235,7 +236,7 @@ getmode <- function(v) {
 The suggested burnIn is 5000 for itera = 10000.
 ```{r make_tables}
 itera <- 1000
-burnIn <- 100
+burnIn <- 10
 cov.pro <- .95
 mak_tab <- TRUE
 psByBlock <- readRDS("./psByBlock.rds")
@@ -290,14 +291,13 @@ for(blk in 1:num_blks){
                         }
 
 
-                        df <- data.frame(Species=taxa_names(psPlByBlock[[blk]]),
+                        df <- data.frame(Species = taxa_names(psPlByBlock[[blk]]),
                                          xj = as.numeric(gammPrior[[sam]][[3]]),
-                                         l.s=unlist(lower.s),
-                                         u.s=unlist(upper.s),
-                                         l.b=unlist(lower.b),
-                                         u.b=unlist(upper.b),
-                                         all.zero.nc=unlist(all.zero.nc),
-                                         )
+                                         l.s = unlist(lower.s),
+                                         u.s = unlist(upper.s),
+                                         l.b = unlist(lower.b),
+                                         u.b = unlist(upper.b),
+                                         all.zero.nc = unlist(all.zero.nc))
 
                         df <- arrange(filter(df,(l.s > u.b)&(l.s > 0)), desc(xj))
 
