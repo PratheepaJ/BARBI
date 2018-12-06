@@ -165,7 +165,7 @@ Estimate the gamma distribution parameters for the intensity of contaminants usi
 <!-- `add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for the size factor calculation method in `DESeq::estimateSizeFactors`. The latter is the default option. -->
 
 ```{r estimate_Cont_Intensity_ncontrols}
-alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = FALSE)
+alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, stringent = FALSE)
 ```
 
 ##      Estimate the distribution parameters for the intensity of contamination in each plasma sample
@@ -179,7 +179,7 @@ num_blks <- length(alphaBetaNegControl)
 blks <- seq(1, num_blks) %>% as.list
 
 gammaPrior_all_blks <- lapply(blks, function(x){
-        gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock, psallzeroInNC = psallzeroInNC, blk = x, alphaBetaNegControl=alphaBetaNegControl, stringent = FALSE)
+        gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock, psallzeroInNC = psallzeroInNC, blk = x, alphaBetaNegControl=alphaBetaNegControl)
         return(gammaPrior)
 })
 ```

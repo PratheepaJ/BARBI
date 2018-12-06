@@ -10,8 +10,6 @@
 #'        prevalence in negative control samples.
 #' @param blk Numeric, which block samples to be used.
 #' @param alphaBetaNegControl A list of estimated distribution parameters for the intensity of contamination in negative control samples returned by \code{alphaBetaNegControl}.
-#' @param stringent Logical, TRUE/FALSE: (i) TRUE keep the gamma parametersas in the negative controls for the taxa with mean less than 1, and (ii) FALSE use the scaling property of the gamma distribution.
-
 #' @return A list of estimated distribution parameters for the intensity of contamination in the plasma samples in a selected block.
 #' @import phyloseq
 #' @export
@@ -20,8 +18,7 @@
 #' level.
 #' @seealso \code{\link{alphaBetaNegControl}}
 
-alphaBetaContInPlasma <- function(psPlByBlock, psallzeroInNC, blk, alphaBetaNegControl,
-    stringent = FALSE) {
+alphaBetaContInPlasma <- function(psPlByBlock, psallzeroInNC, blk, alphaBetaNegControl) {
     ps_blk <- psPlByBlock[[blk]]
     if (dim(otu_table(ps_blk))[1] != ntaxa(ps_blk)) {
         otu_table(ps_blk) = t(otu_table(ps_blk))
@@ -43,7 +40,6 @@ alphaBetaContInPlasma <- function(psPlByBlock, psallzeroInNC, blk, alphaBetaNegC
 
         alpha_ij_c[ind_not_na_of_mu_ij_0] <- S_j/S_j0 * compAlphaBeta_blk$alpha_ij_0[ind_not_na_of_mu_ij_0]
         beta_ij_c[ind_not_na_of_mu_ij_0] <- compAlphaBeta_blk$beta_ij_0[ind_not_na_of_mu_ij_0]
-
 
         species_name <- compAlphaBeta_blk$species_name
 

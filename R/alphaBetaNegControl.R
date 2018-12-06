@@ -5,6 +5,8 @@
 #' @param psNCbyBlock A list of phyloseq objects with all negative control
 #'        samples in each block.
 #' @param add1 logical, whether adding one to the otu table in the phyloseq
+#' @param stringent Logical, TRUE/FALSE: (i) TRUE use the sample mean of non-zero abundances in the negative control samples for the taxa with mean less than 1, and (ii) FALSE use the less than one mean.
+#'
 #' @return A list of estimated distribution parameters for the intensity of contamination in negative control samples.
 #' @examples
 #' \dontrun{
@@ -15,7 +17,7 @@
 #' @importFrom Biobase rowMedians
 #' @importFrom stats median var runif dgamma rgamma
 #' @export
-alphaBetaNegControl <- function(psNCbyBlock, add1 = FALSE) {
+alphaBetaNegControl <- function(psNCbyBlock, stringent = FALSE) {
 
     compAlphaBeta <- lapply(psNCbyBlock, function(x) {
 
@@ -39,12 +41,6 @@ alphaBetaNegControl <- function(psNCbyBlock, add1 = FALSE) {
             library.size.norm <- sizeFactors(dq)
 
             ot.tab <- t(t(otu_table(x))/library.size.norm)
-
-            # tax.present <- lapply(seq_len(ntaxa(x)), function(y){which(ot.tab[y,] > 0)})
-            #
-            # S_j0.taxa <- lapply(tax.present, function(y){
-            #         round(min(colSums(ot.tab)[y]), digits = 0)
-            # })
 
             S_j0 <- round(min(colSums(ot.tab)), digits = 0)
 
@@ -87,14 +83,18 @@ alphaBetaNegControl <- function(psNCbyBlock, add1 = FALSE) {
 
             ind_less_one_mu_ij_0 <- which(abs(mu_ij_0) < 1)
 
-            alpha_ij_0[ind_not_na_of_mu_ij_0] <- 1/gamma_ij_0[ind_not_na_of_mu_ij_0]
-            beta_ij_0[ind_not_na_of_mu_ij_0] <- 1/(gamma_ij_0[ind_not_na_of_mu_ij_0] *
-                            mu_ij_0[ind_not_na_of_mu_ij_0])
+            if(stringent){
+                    alpha_ij_0[ind_not_na_of_mu_ij_0] <- 1/gamma_ij_0[ind_not_na_of_mu_ij_0]
+                    beta_ij_0[ind_not_na_of_mu_ij_0] <- 1/(gamma_ij_0[ind_not_na_of_mu_ij_0] *
+                                    mu_ij_0[ind_not_na_of_mu_ij_0])
 
-           # alpha_ij_0[ind_less_one_mu_ij_0] <- 1/disp[ind_less_one_mu_ij_0]
-            #beta_ij_0[ind_less_one_mu_ij_0] <- 1/(gamma_ij_0[ind_less_one_mu_ij_0]*sample_mean[ind_less_one_mu_ij_0])
+                    beta_ij_0[ind_less_one_mu_ij_0] <- 1/(gamma_ij_0[ind_less_one_mu_ij_0]*sample_mean[ind_less_one_mu_ij_0])
 
-
+            }else{
+                    alpha_ij_0[ind_not_na_of_mu_ij_0] <- 1/gamma_ij_0[ind_not_na_of_mu_ij_0]
+                    beta_ij_0[ind_not_na_of_mu_ij_0] <- 1/(gamma_ij_0[ind_not_na_of_mu_ij_0] *
+                                    mu_ij_0[ind_not_na_of_mu_ij_0])
+            }
 
         out <- list(mu_ij_0, gamma_ij_0, S_j0, species_name, sample_mean,
             sample_var, alpha_ij_0, beta_ij_0)
