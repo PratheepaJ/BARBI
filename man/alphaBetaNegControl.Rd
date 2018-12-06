@@ -4,7 +4,7 @@
 \alias{alphaBetaNegControl}
 \title{Compute gamma distirbution parameters in negative control samples.}
 \usage{
-alphaBetaNegControl(psNCbyBlock, add1 = TRUE)
+alphaBetaNegControl(psNCbyBlock, add1 = FALSE)
 }
 \arguments{
 \item{psNCbyBlock}{A list of phyloseq objects with all negative control

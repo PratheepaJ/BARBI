@@ -11,11 +11,11 @@ psBlockResults(ps, sampleTypeVar = "Sample_Type",
 \arguments{
 \item{ps}{phyloseq object.}
 
-\item{sampleTypeVar}{character, variable defines the "Plasma" and "Control" samples.}
+\item{sampleTypeVar}{character, variable defines the 'Plasma' and 'Control' samples.}
 
-\item{caselevels}{character vector, levels of the plasma samples, e.g. "Healthy_Plasma" and "Sick_Plasma".}
+\item{caselevels}{character vector, levels of the plasma samples, e.g. 'Healthy_Plasma' and 'Sick_Plasma'.}
 
-\item{controllevel}{character, level of the control samples, e.g. "Control"}
+\item{controllevel}{character, level of the control samples, e.g. 'Control'}
 
 \item{sampleName}{character, variable defines the sample names.}
 

@@ -4,7 +4,8 @@
 \alias{samplingPosterior}
 \title{Sampling posterior}
 \usage{
-samplingPosterior(psPlByBlock, blk, gammaPrior_Cont, itera = 10000)
+samplingPosterior(psPlByBlock, blk, gammaPrior_Cont, itera = 10000,
+  ncores = ncores)
 }
 \arguments{
 \item{psPlByBlock}{A list of phyloseq objects with plasma samples.}

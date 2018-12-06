@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 Install [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/). Open this `Rmd` `r Githubpkg("rstudio/rmarkdown")` file in RStudio. Then run the following code to install all required packages.
 
-```{r install_packages, eval=FALSE}
+```{r install_packages}
 pkgs <- c("DESeq2","phyloseq","dplyr",
           "tidyr","R.utils","BiocParallel",
           "doParallel","parallel","HDInterval",
@@ -38,7 +38,7 @@ devtools::install_github("PratheepaJ/BARBI",auth_token = "33c5f43cc3f1772c19a441
 
 Load packages:
 ```{r load_packages}
-#library(BARBI)
+library(BARBI)
 library(devtools)
 library(phyloseq)
 library(DESeq2)
@@ -55,7 +55,6 @@ library(gtable)
 library(gridExtra)
 library(BiocStyle)
 library(magrittr)
-load_all(".")
 ```
 
 Set the computational resources
@@ -163,7 +162,7 @@ saveRDS(psByBlock,"./psByBlock.rds")
 
 Estimate the gamma distribution parameters for the intensity of contaminants using the negative control samples for each block. 
 
-`add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for the size factor calculation method in `DESeq::estimateSizeFactors`. The latter is the default option.
+<!-- `add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for the size factor calculation method in `DESeq::estimateSizeFactors`. The latter is the default option. -->
 
 ```{r estimate_Cont_Intensity_ncontrols}
 alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = FALSE)
@@ -173,7 +172,7 @@ alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, add1 = FAL
 
 For each plasma sample, estimate the gamma distribution parameters for the intensity of contamination using the scaling property of the gamma distribution.
 
-Choosing `stringent == TRUE` specifies BARBI to not using the scaling property for the species with the mean intensity of contamination less than one. (Pratheepa, what does this mean for the user? Shoudl we say something like 'This is one of two parameters that allows for more stringent subtraction of contaminants, especially for those at low abundance.')
+<!-- Choosing `stringent == TRUE` specifies BARBI to not using the scaling property for the species with the mean intensity of contamination less than one. This is one of two parameters that allows for more stringent subtraction of contaminants, especially for those at low abundance in negative control samples. -->
 
 ```{r estimate_Cont_Intensity_plasma}
 num_blks <- length(alphaBetaNegControl)
@@ -200,7 +199,7 @@ post_all_blocks <- lapply(blks,function(x){
         post_int_all_taxa <- samplingPosterior(psPlByBlock = psPlByBlock,
                 blk = x,
                 gammaPrior_Cont = gammaPrior_all_blks[[x]],
-                itera = 1000,
+                itera = 100,
                 ncores = ncores)
         return(post_int_all_taxa)
 })
@@ -221,21 +220,12 @@ Choose the number of MCMC to be removed using the option `burnIn`.  It must be l
 
 Choose the coverage probability to construct the highest posterior density interval using the option `cov.pro`.
 
-Taxa are labeled as contaminants if the lower limit of the true signal is greater than the upper limit of the contaminant. (Just wondering, are you going to include the signal:noise ratio in this?)
-
-[Code](https://www.tutorialspoint.com/r/r_mean_median_mode.htm)
-
-```{r}
-getmode <- function(v) {
-   uniqv <- unique(v)
-   uniqv[which.max(tabulate(match(v, uniqv)))]
-}
-```
+Taxa are labeled as contaminants if the lower limit of the true signal is greater than the upper limit of the contaminant. 
 
 
 The suggested burnIn is 5000 for itera = 10000.
 ```{r make_tables}
-itera <- 1000
+itera <- 100
 burnIn <- 10
 cov.pro <- .95
 mak_tab <- TRUE
@@ -299,7 +289,7 @@ for(blk in 1:num_blks){
                                          u.b = unlist(upper.b),
                                          all.zero.nc = unlist(all.zero.nc))
 
-                        df <- arrange(filter(df,(l.s > u.b)&(l.s > 0)), desc(xj))
+                        df <- arrange(filter(df,(l.s > u.b) & (l.s > 0)), desc(xj))
 
 
                         if(dim(df)[1]==0){
@@ -354,7 +344,7 @@ for(blk in 1:num_blks){
 ##      Construct a phyloseq object with the true signal
 ```{r make_phyloseq}
 all_real_taxa_lt <- unlist(all_real_taxa_lt)
-all_real_taxa_lt <- all_real_taxa_lt[which(!all_real_taxa_lt=="Negative")]
+all_real_taxa_lt <- all_real_taxa_lt[which(!all_real_taxa_lt == "Negative")]
 ps_decon <- prune_taxa(all_real_taxa_lt, ps)
 ```
 

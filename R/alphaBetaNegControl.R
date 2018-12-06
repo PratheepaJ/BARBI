@@ -40,6 +40,12 @@ alphaBetaNegControl <- function(psNCbyBlock, add1 = FALSE) {
 
             ot.tab <- t(t(otu_table(x))/library.size.norm)
 
+            # tax.present <- lapply(seq_len(ntaxa(x)), function(y){which(ot.tab[y,] > 0)})
+            #
+            # S_j0.taxa <- lapply(tax.present, function(y){
+            #         round(min(colSums(ot.tab)[y]), digits = 0)
+            # })
+
             S_j0 <- round(min(colSums(ot.tab)), digits = 0)
 
             mu_ij_0_all <- assays(dq)[["mu"]]
@@ -77,7 +83,7 @@ alphaBetaNegControl <- function(psNCbyBlock, add1 = FALSE) {
             alpha_ij_0 <- rep(1e-04, length(mu_ij_0))
             beta_ij_0 <- rep(1, length(mu_ij_0))
 
-            ind_not_na_of_mu_ij_0 <- which(!is.infinite(mu_ij_0))
+            ind_not_na_of_mu_ij_0 <- which(!is.infinite(mu_ij_0))#max produce NA for all zeros
 
             ind_less_one_mu_ij_0 <- which(abs(mu_ij_0) < 1)
 
@@ -86,7 +92,7 @@ alphaBetaNegControl <- function(psNCbyBlock, add1 = FALSE) {
                             mu_ij_0[ind_not_na_of_mu_ij_0])
 
            # alpha_ij_0[ind_less_one_mu_ij_0] <- 1/disp[ind_less_one_mu_ij_0]
-            beta_ij_0[ind_less_one_mu_ij_0] <- 1/(gamma_ij_0[ind_less_one_mu_ij_0]*sample_mean[ind_less_one_mu_ij_0])
+            #beta_ij_0[ind_less_one_mu_ij_0] <- 1/(gamma_ij_0[ind_less_one_mu_ij_0]*sample_mean[ind_less_one_mu_ij_0])
 
 
 
