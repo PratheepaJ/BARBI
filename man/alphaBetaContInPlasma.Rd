@@ -4,8 +4,7 @@
 \alias{alphaBetaContInPlasma}
 \title{Compute gamma distribution parameters in plasma samples}
 \usage{
-alphaBetaContInPlasma(psPlByBlock, psallzeroInNC, blk, alphaBetaNegControl,
-  stringent = FALSE)
+alphaBetaContInPlasma(psPlByBlock, psallzeroInNC, blk, alphaBetaNegControl)
 }
 \arguments{
 \item{psPlByBlock}{A list of phyloseq objects with plasma samples.}
@@ -16,8 +15,6 @@ prevalence in negative control samples.}
 \item{blk}{Numeric, which block samples to be used.}
 
 \item{alphaBetaNegControl}{A list of estimated distribution parameters for the intensity of contamination in negative control samples returned by \code{alphaBetaNegControl}.}
-
-\item{stringent}{Logical, TRUE/FALSE: (i) TRUE keep the gamma parametersas in the negative controls for the taxa with mean less than 1, and (ii) FALSE use the scaling property of the gamma distribution.}
 }
 \value{
 A list of estimated distribution parameters for the intensity of contamination in the plasma samples in a selected block.

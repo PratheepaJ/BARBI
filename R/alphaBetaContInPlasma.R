@@ -48,7 +48,7 @@ alphaBetaContInPlasma <- function(psPlByBlock, psallzeroInNC, blk, alphaBetaNegC
 
         rt <- list(alpha_ij_c, beta_ij_c, kij, species_name, all_zero_neg_controls,
             S_j, S_j0)
-        names(rt) = c("alpha_ij_c", "beta_ij_c", "kij", "species_name", "all_zero_neg_controls",
+        names(rt) <- c("alpha_ij_c", "beta_ij_c", "kij", "species_name", "all_zero_neg_controls",
             "S_j", "S_j0")
 
         return(rt)

@@ -4,7 +4,6 @@
 #'
 #' @param psNCbyBlock A list of phyloseq objects with all negative control
 #'        samples in each block.
-#' @param add1 logical, whether adding one to the otu table in the phyloseq
 #' @param stringent Logical, TRUE/FALSE: (i) TRUE use the sample mean of non-zero abundances in the negative control samples for the taxa with mean less than 1, and (ii) FALSE use the less than one mean.
 #'
 #' @return A list of estimated distribution parameters for the intensity of contamination in negative control samples.
