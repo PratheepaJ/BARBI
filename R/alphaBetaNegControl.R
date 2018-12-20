@@ -41,12 +41,17 @@ alphaBetaNegControl <- function(psNCbyBlock, stringent = FALSE) {
 
             ot.tab <- t(t(otu_table(x))/library.size.norm)
 
-            S_j0 <- round(min(colSums(ot.tab)), digits = 0)
+            S_j0 <- round(median(colSums(ot.tab)), digits = 0)
 
             mu_ij_0_all <- assays(dq)[["mu"]]
 
             mu_ij_0 <- apply(mu_ij_0_all, 1, function(x){
-                    max(x, na.rm = T)
+                    if(all(is.na(x))){
+                            NA
+                    }else{
+                            max(x, na.rm = T)
+                    }
+
             })
 
             gamma_ij_0 <- dispersions(dq)
@@ -78,7 +83,7 @@ alphaBetaNegControl <- function(psNCbyBlock, stringent = FALSE) {
             alpha_ij_0 <- rep(1e-04, length(mu_ij_0))
             beta_ij_0 <- rep(1, length(mu_ij_0))
 
-            ind_not_na_of_mu_ij_0 <- which(!is.infinite(mu_ij_0))#max produce NA for all zeros
+            ind_not_na_of_mu_ij_0 <- which(!is.na(mu_ij_0))#max produce NA for all zeros
 
             ind_less_one_mu_ij_0 <- which(abs(mu_ij_0) < 1)
 

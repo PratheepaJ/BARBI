@@ -33,7 +33,7 @@ alphaBetaContInPlasma <- function(psPlByBlock, psallzeroInNC, blk, alphaBetaNegC
         S_j0 <- compAlphaBeta_blk$S_j0
 
         mu_ij_0 <- compAlphaBeta_blk$mu_ij_0
-        ind_not_na_of_mu_ij_0 <- which(!is.infinite(mu_ij_0))
+        ind_not_na_of_mu_ij_0 <- which(!is.na(mu_ij_0))
 
         alpha_ij_c <- rep(1e-04, length(mu_ij_0))
         beta_ij_c <- rep(1, length(mu_ij_0))

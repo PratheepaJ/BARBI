@@ -13,6 +13,8 @@
 #' @export
 samplingPosterior <- function(psPlByBlock, blk, gammaPrior_Cont, itera = 10000,
     ncores = ncores) {
+        doParallel::registerDoParallel(ncores)
+        BiocParallel::register(BiocParallel::DoparParam())
 
     sampleLst <- seq(1, nsamples(psPlByBlock[[blk]]))
     sampleLst <- as.list(sampleLst)
@@ -31,8 +33,8 @@ samplingPosterior <- function(psPlByBlock, blk, gammaPrior_Cont, itera = 10000,
         return(taxa_post)
     }
 
-    taxa_post_all_sam <- mclapply(sampleLst, FUN = sub_sampling_pos, gammaPrior_Cont = gammaPrior_Cont,
-        blk = blk, itera = itera, mc.cores = ncores)
+    taxa_post_all_sam <- bplapply(sampleLst, FUN = sub_sampling_pos, gammaPrior_Cont = gammaPrior_Cont,
+        blk = blk, itera = itera)
 
     return(taxa_post_all_sam)
 }
