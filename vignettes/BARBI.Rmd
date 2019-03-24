@@ -23,22 +23,26 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 Install [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/). Open this `Rmd` `r Githubpkg("rstudio/rmarkdown")` file in RStudio. Then run the following code to install all required packages.
 
-```{r install_packages}
+```{r install_packages, eval=FALSE}
 pkgs <- c("DESeq2","phyloseq","dplyr",
           "tidyr","R.utils","BiocParallel",
           "doParallel","parallel","HDInterval",
           "grid","xtable","gtable",
           "gridExtra","BiocStyle","magrittr")
 
-source("http://bioconductor.org/biocLite.R")
-biocLite(setdiff(pkgs,installed.packages()))
+if (!requireNamespace("BiocManager")){
+  install.packages("BiocManager")
+}
+    
+BiocManager::install(setdiff(pkgs, installed.packages()), update = TRUE)
+
 
 devtools::install_github("PratheepaJ/BARBI",auth_token = "33c5f43cc3f1772c19a441e15fc9478c3bf91b67")
 ```
 
 Load packages:
 ```{r load_packages}
-library(BARBI)
+#library(BARBI)
 library(devtools)
 library(phyloseq)
 library(DESeq2)
@@ -55,11 +59,12 @@ library(gtable)
 library(gridExtra)
 library(BiocStyle)
 library(magrittr)
+sourceDirectory("/Users/jpratheepa31/Dropbox/GitHub/BARBI/R")
 ```
 
 Set the computational resources
 ```{r}
-ncores = as.integer(Sys.getenv("SLURM_NTASKS"))
+ncores <- as.integer(Sys.getenv("SLURM_NTASKS"))
 if(is.na(ncores)) ncores <- parallel::detectCores()
 ```
 
@@ -80,11 +85,11 @@ Remove library controls samples from the dataset, which will not be needed for t
 ps <- subset_samples(ps,Sample_Type=!"Library_Control")
 ```
 
-In a previous PCoA analysis of this dataset, the samples separated into three separate clusters, which correlated with three groups of DNA extraction batches. 
+In a previous PCA of this dataset, the samples separated into three separate clusters, which correlated with three groups of DNA extraction batches. 
 
-To reduce the batch-effects of contamination, we specified three "blocks" of samples, and analyzed each block separately with BARBI.  (Pratheepa, consider adding the code for PCoA of these samples). 
+To reduce the batch-effects of contamination, we specified three "blocks" of samples, and analyzed each block separately with BARBI.
 
-We highly recommend that you keep track of batch effects (esp. DNA extraction and library prep batches), visualize your data with PCoA, and separate your data into different blocks of necessary. 
+We highly recommend that you keep track of batch effects (esp. DNA extraction and library prep batches), visualize your data with PCA on ranks or MDS, and separate your data into different blocks of necessary. 
 
 ```{r adding_blocks}
 set1 <- c("1","2","3","4","11","12")
@@ -165,7 +170,7 @@ Estimate the gamma distribution parameters for the intensity of contaminants usi
 <!-- `add1 == TRUE` corresponds to adding 1 to the otu table and `add1 == FALSE` corresponds to choosing 'poscounts' for the size factor calculation method in `DESeq::estimateSizeFactors`. The latter is the default option. -->
 
 ```{r estimate_Cont_Intensity_ncontrols}
-alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock, stringent = FALSE)
+alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock)
 ```
 
 ##      Estimate the distribution parameters for the intensity of contamination in each plasma sample

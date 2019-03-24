@@ -49,7 +49,7 @@ alphaBetaNegControl <- function(psNCbyBlock, stringent = FALSE) {
                     if(all(is.na(x))){
                             NA
                     }else{
-                            max(x, na.rm = T)
+                            median(x, na.rm = T)
                     }
 
             })

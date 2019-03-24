@@ -33,7 +33,7 @@ samplingPosterior <- function(psPlByBlock, blk, gammaPrior_Cont, itera = 10000,
         return(taxa_post)
     }
 
-    taxa_post_all_sam <- bplapply(sampleLst, FUN = sub_sampling_pos, gammaPrior_Cont = gammaPrior_Cont,
+    taxa_post_all_sam <- lapply(sampleLst, FUN = sub_sampling_pos, gammaPrior_Cont = gammaPrior_Cont,
         blk = blk, itera = itera)
 
     return(taxa_post_all_sam)
