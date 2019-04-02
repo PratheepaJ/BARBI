@@ -1,4 +1,4 @@
 # BARBI
-BAyesian Reduction in Background Interference
+BAyesian Rreference analysis with Background Interference 
 
-BARBI provides a reproducible and automated process to remove contaminating DNA from metagenomic shotgun sequencing data in the setting of ultra low-biomass samples.
+BARBI is a reliable method to identify and remove DNA contamination in both low- and high-biomass samples.
