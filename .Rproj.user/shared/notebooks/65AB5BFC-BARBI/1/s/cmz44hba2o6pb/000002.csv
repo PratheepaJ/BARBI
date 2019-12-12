@@ -1,3 +1,0 @@
-"0","if(dim(otu_table(ps))[1]!=ntaxa(ps)){otu_table(ps) <- t(otu_table(ps))}"
-"0","totalReads <- colSums(otu_table(ps))"
-"0","hist(log(totalReads),yaxs=""i"",xaxs=""i"",main=""Distribution of total reads per sample"",breaks=50)"

@@ -1,8 +1,0 @@
-"0","ncores <- as.integer(Sys.getenv(""SLURM_NTASKS""))"
-"0","if(is.na(ncores)) ncores <- parallel::detectCores()"
-"0","ncores"
-"1","[1]"
-"1"," 4"
-"1","
-"
-"0","setting_name <- ""settingZ_1"""
