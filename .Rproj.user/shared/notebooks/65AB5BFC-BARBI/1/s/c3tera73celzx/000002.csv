@@ -1,0 +1,64 @@
+"0","pkgs <- c(""DESeq2"",""phyloseq"",""dplyr"","
+"0","          ""tidyr"",""R.utils"",""BiocParallel"","
+"0","          ""doParallel"",""parallel"",""HDInterval"","
+"0","          ""grid"",""xtable"",""gtable"","
+"0","          ""gridExtra"",""BiocStyle"",""magrittr"")"
+"0","source(""http://bioconductor.org/biocLite.R"")"
+"2","Bioconductor version 3.7 (BiocInstaller 1.30.0), ?biocLite for help
+"
+"0","biocLite(setdiff(pkgs,installed.packages()))"
+"2","BioC_mirror: https://bioconductor.org
+"
+"2","Using Bioconductor 3.7 (BiocInstaller 1.30.0), R 3.5.0 (2018-04-23).
+"
+"2","Old packages: 'scales', 'XML'
+"
+"1","Update all/some/none? [a/s/n]: "
+"0","n"
+"0","devtools::install_github(""PratheepaJ/BARBI"",auth_token = ""33c5f43cc3f1772c19a441e15fc9478c3bf91b67"")"
+"2","Downloading GitHub repo PratheepaJ/BARBI@master
+from URL https://api.github.com/repos/PratheepaJ/BARBI/zipball/master
+"
+"2","Installing BARBI
+"
+"2","'/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+  --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+  '/private/var/folders/8x/mtft3sm941q17yzfr72nw0qc0000gn/T/RtmpDthPaJ/devtools15f73a3daf5a/PratheepaJ-BARBI-8e0b9ce4f3a17773f086d746a2ad8d4069c9492e'  \
+  --library='/Library/Frameworks/R.framework/Versions/3.5/Resources/library'  \
+  --install-tests 
+"
+"2","
+"
+"2","* installing *source* package ‘BARBI’ ...
+"
+"2","** R
+"
+"2","** data
+"
+"2","*** moving datasets to lazyload DB
+"
+"2","** byte-compile and prepare package for lazy loading
+"
+"2","** help
+"
+"2","*** installing help indices
+"
+"2","** building package indices
+"
+"2","** installing vignettes
+"
+"2","** testing if installed package can be loaded
+"
+"2","* DONE (BARBI)
+"
+"2","Reloading installed BARBI
+"
+"2","
+Attaching package: ‘BARBI’
+
+"
+"2","The following objects are masked _by_ ‘.GlobalEnv’:
+
+    ps, psBlockResults
+
+"

@@ -1,0 +1,1 @@
+{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"saveRDS(MSE.all, fileN)","line_number":0},{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"gzfile(file, mode)","line_number":0}],"message":"Error in gzfile(file, mode) : cannot open the connection\n"}

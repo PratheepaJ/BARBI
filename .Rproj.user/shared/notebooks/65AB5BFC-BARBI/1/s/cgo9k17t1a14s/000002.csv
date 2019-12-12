@@ -1,0 +1,32 @@
+"0","pkgs <- c(""DESeq2"",""phyloseq"",""dplyr"","
+"0","          ""tidyr"",""R.utils"",""BiocParallel"","
+"0","          ""doParallel"",""parallel"",""HDInterval"","
+"0","          ""grid"",""xtable"",""gtable"","
+"0","          ""gridExtra"",""BiocStyle"",""magrittr"")"
+"0","source(""http://bioconductor.org/biocLite.R"")"
+"0","biocLite(setdiff(pkgs,installed.packages()))"
+"1","Update all/some/none? [a/s/n]: "
+"0","n"
+"0","devtools::install_github(""PratheepaJ/BARBI"",auth_token = ""33c5f43cc3f1772c19a441e15fc9478c3bf91b67"")"
+"2","* installing *source* package ‘BARBI’ ...
+"
+"2","** R
+"
+"2","** data
+"
+"2","*** moving datasets to lazyload DB
+"
+"2","** byte-compile and prepare package for lazy loading
+"
+"2","** help
+"
+"2","*** installing help indices
+"
+"2","** building package indices
+"
+"2","** installing vignettes
+"
+"2","** testing if installed package can be loaded
+"
+"2","* DONE (BARBI)
+"

@@ -1,0 +1,5 @@
+"0","ps <- prune_taxa(taxa_sums(ps)>0, ps)"
+"0","ps_plasma <- subset_samples(ps,Sample_Type%in%c(""Healthy_Plasma"",""Patient_Plasma""))"
+"0","prevTaxaP <- apply(otu_table(ps_plasma), 1, function(x){sum(x>0)})"
+"0","Contaminants1 <- names(prevTaxaP)[prevTaxaP==0]"
+"0","ps <- prune_taxa(prevTaxaP>0, ps)"

@@ -1,0 +1,2 @@
+"0","ncores <- as.integer(Sys.getenv(""SLURM_NTASKS""))"
+"0","if(is.na(ncores)) ncores <- parallel::detectCores()"

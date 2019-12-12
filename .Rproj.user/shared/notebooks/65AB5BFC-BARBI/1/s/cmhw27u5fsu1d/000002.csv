@@ -1,0 +1,6 @@
+"0","num_blks <- length(alphaBetaNegControl)"
+"0","blks <- seq(1, num_blks) %>% as.list"
+"0","gammaPrior_all_blks <- lapply(blks, function(x){"
+"0","        gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock, psallzeroInNC = psallzeroInNC, blk = x, alphaBetaNegControl=alphaBetaNegControl, stringent = FALSE)"
+"0","        return(gammaPrior)"
+"0","})"
