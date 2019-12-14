@@ -43,9 +43,8 @@ pkgs = c("DESeq2",
 if (!requireNamespace("BiocManager")){
   install.packages("BiocManager")
 }
-    
+   
 BiocManager::install(setdiff(pkgs, installed.packages()))
-
 
 devtools::install_github("PratheepaJ/BARBI")
 ```
@@ -53,7 +52,6 @@ devtools::install_github("PratheepaJ/BARBI")
 Load packages:
 ```{r load_packages}
 library(BARBI)
-library(devtools)
 library(phyloseq)
 library(DESeq2)
 library(dplyr)

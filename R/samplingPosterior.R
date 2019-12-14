@@ -14,11 +14,7 @@
 samplingPosterior = function(psPlByBlock,
                              blk,
                              gammaPrior_Cont,
-                             itera = 10000,
-                             ncores = ncores) {
-
-    doParallel::registerDoParallel(ncores)
-    BiocParallel::register(BiocParallel::DoparParam())
+                             itera = 10000) {
 
     sampleLst = seq(1, nsamples(psPlByBlock[[blk]]))
     sampleLst = as.list(sampleLst)
