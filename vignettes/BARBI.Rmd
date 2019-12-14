@@ -69,12 +69,6 @@ library(BiocStyle)
 library(magrittr)
 ```
 
-Set the computational resources
-```{r}
-ncores = as.integer(Sys.getenv("SLURM_NTASKS"))
-if(is.na(ncores)) ncores = parallel::detectCores()
-```
-
 
 # Example dataset 
 
@@ -228,8 +222,7 @@ post_all_blocks = lapply(blks,function(x){
     post_int_all_taxa = samplingPosterior(psPlByBlock = psPlByBlock,
                                           blk = x,
                                           gammaPrior_Cont = gammaPrior_all_blks[[x]],
-                                          itera = 100,
-                                          ncores = ncores)
+                                          itera = 100)
     return(post_int_all_taxa)
 })
 
