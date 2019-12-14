@@ -78,7 +78,7 @@
     
         <div class="abstract">
       <p class="abstract">Abstract</p>
-      BAyesian Reference analysis with Background Inteference (BARBI) provides a reliable statistical method to remove contaminating bacterial DNA from both high- and low-biomass samples.
+      BAyesian Reference analysis with Background Interference (BARBI) provides a reliable statistical method to remove contaminating bacterial DNA from both high- and low-biomass samples.
     </div>
     
 <p>Install <a href="https://www.r-project.org/">R</a> and <a href="https://www.rstudio.com/">RStudio</a>. Open this <code>Rmd</code> <em><a href="https://github.com/rstudio/rmarkdown">rmarkdown</a></em> file in RStudio. Then run the following code to install all required packages, including BARBI from Github repository.</p>
@@ -108,11 +108,11 @@
 <pre><code>## plyr (1.8.4 -&gt; 1.8.5) [CRAN]
 ## 
 ## The downloaded binary packages are in
-##  /var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T//Rtmpd57BcT/downloaded_packages
+##  /var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T//RtmpVmUUh3/downloaded_packages
 ##   
-   checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/Rtmpd57BcT/remotes49b81c2060c2/PratheepaJ-BARBI-8c5a3c4/DESCRIPTION’ ...
+   checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpVmUUh3/remotes4e6479074231/PratheepaJ-BARBI-804d6ff/DESCRIPTION’ ...
   
-✓  checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/Rtmpd57BcT/remotes49b81c2060c2/PratheepaJ-BARBI-8c5a3c4/DESCRIPTION’
+✓  checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpVmUUh3/remotes4e6479074231/PratheepaJ-BARBI-804d6ff/DESCRIPTION’
 ## 
   
 ─  preparing ‘BARBI’:
@@ -127,7 +127,9 @@
 ## 
   
 ─  checking for empty or unneeded directories
-## ─  looking to see if a ‘data/datalist’ file should be added
+## 
+  
+─  looking to see if a ‘data/datalist’ file should be added
 ## 
   
 ─  building ‘BARBI_0.1.0.tar.gz’
@@ -265,9 +267,9 @@
 <h2 class="hasAnchor">
 <a href="#sample-from-the-posterior-for-the-true-intensities" class="anchor"></a>Sample from the posterior for the true intensities</h2>
 <p>For all specimen samples and for all taxa, sample from the posterior for the true intensities using the Metropolis-Hasting MCMC.</p>
-<p>We need to specifify the number of iterations in the MCMC using the option <code>itera</code>.</p>
+<p>We need to specify the number of iterations in the MCMC using the option <code>itera</code>.</p>
 <p>Save the gamma prior for the intensity of contamination and the posterior samples.</p>
-<p>The suggeseted itera is 10,000.</p>
+<p>The suggested itera is 10,000.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">t1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">post_all_blocks =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(blks,<span class="cf">function</span>(x){</a>
@@ -280,7 +282,7 @@
 <a class="sourceLine" id="cb15-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb15-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()<span class="op">-</span>t1</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   6.779   0.136   6.920</code></pre>
+##   6.843   0.103   6.960</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">gammaPrior_posTrueSing_all_blocks =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(gammaPrior_all_blks,post_all_blocks)</a></code></pre></div>
 <p>We can save the results.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(gammaPrior_posTrueSing_all_blocks, <span class="dt">file=</span> <span class="st">"./gammaPrior_posTrueSing_all_blocks.rds"</span>)</a></code></pre></div>
@@ -289,12 +291,12 @@
 <div id="display-the-results" class="section level1">
 <h1 class="hasAnchor">
 <a href="#display-the-results" class="anchor"></a>Display the results</h1>
-<div id="make-summaires-from-the-barbi-results-" class="section level2">
+<div id="make-summaries-from-the-barbi-results-" class="section level2">
 <h2 class="hasAnchor">
-<a href="#make-summaires-from-the-barbi-results-" class="anchor"></a>Make summaires from the BARBI results.</h2>
+<a href="#make-summaries-from-the-barbi-results-" class="anchor"></a>Make summaries from the BARBI results.</h2>
 <p>Choose the number of MCMC to be removed using the option <code>burnIn</code>. It must be less than <code>itera</code>.</p>
 <p>Choose the coverage probability to construct the highest posterior density (HPD) interval<span class="math inline">\(\left(L_{ij}^{(r)}, U_{ij}^{(r)}\right)\)</span> (for each taxon <span class="math inline">\(i\)</span> in a specimen <span class="math inline">\(j\)</span>) using the option <code>cov.pro</code> for true intensities.</p>
-<p>Compute the highest density interval (HDI) for the contaminant internsities <span class="math inline">\(\left(L_{ij}^{(c)}, U_{ij}^{(c)}\right)\)</span> for each taxon <span class="math inline">\(i\)</span> in a specimen <span class="math inline">\(j\)</span>.</p>
+<p>Compute the highest density interval (HDI) for the contaminant intensities <span class="math inline">\(\left(L_{ij}^{(c)}, U_{ij}^{(c)}\right)\)</span> for each taxon <span class="math inline">\(i\)</span> in a specimen <span class="math inline">\(j\)</span>.</p>
 <p>For a contaminant taxon, the lower limit <span class="math inline">\(L_{ij}^{(r)}\)</span> will be smaller than the upper limit <span class="math inline">\(U_{ij}^{(c)}\)</span>.</p>
 <p>The suggested burnIn is 5000 for itera = 10,000.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">itera =<span class="st"> </span><span class="dv">100</span></a>
@@ -425,9 +427,9 @@
 <a class="sourceLine" id="cb20-3" data-line-number="3">ps_decon =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html">prune_taxa</a></span>(all_real_taxa_lt, ps)</a>
 <a class="sourceLine" id="cb20-4" data-line-number="4">ps_decon</a></code></pre></div>
 <pre><code>## phyloseq-class experiment-level object
-## otu_table()   OTU Table:         [ 34 taxa and 18 samples ]
+## otu_table()   OTU Table:         [ 33 taxa and 18 samples ]
 ## sample_data() Sample Data:       [ 18 samples by 5 sample variables ]
-## tax_table()   Taxonomy Table:    [ 34 taxa by 7 taxonomic ranks ]</code></pre>
+## tax_table()   Taxonomy Table:    [ 33 taxa by 7 taxonomic ranks ]</code></pre>
 </div>
 </div>
 <div id="session-info" class="section level1">
@@ -530,7 +532,7 @@
 </li>
       <li>
 <a href="#display-the-results">Display the results</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#make-summaires-from-the-barbi-results-">Make summaires from the BARBI results.</a></li>
+<li><a href="#make-summaries-from-the-barbi-results-">Make summaries from the BARBI results.</a></li>
       <li><a href="#construct-a-phyloseq-object-with-the-true-taxa">Construct a phyloseq object with the true taxa</a></li>
       </ul>
 </li>

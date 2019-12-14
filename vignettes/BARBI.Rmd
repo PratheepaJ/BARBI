@@ -6,7 +6,7 @@ author:
   email: jpratheepa31@gmail.com
 package: BARBI
 abstract: >
-  BAyesian Reference analysis with Background Inteference (BARBI) provides a reliable statistical method to remove contaminating bacterial DNA from both high- and low-biomass samples.
+  BAyesian Reference analysis with Background Interference (BARBI) provides a reliable statistical method to remove contaminating bacterial DNA from both high- and low-biomass samples.
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -209,11 +209,11 @@ gammaPrior_all_blks = lapply(blks, function(x){
 
 For all specimen samples and for all taxa, sample from the posterior for the true intensities using the Metropolis-Hasting MCMC. 
 
-We need to specifify the number of iterations in the MCMC using the option `itera`. 
+We need to specify the number of iterations in the MCMC using the option `itera`. 
 
 Save the gamma prior for the intensity of contamination and the posterior samples.
 
-The  suggeseted itera is 10,000. 
+The  suggested itera is 10,000. 
 
 ```{r sampling_post_true_int}
 t1 = proc.time()
@@ -240,13 +240,13 @@ saveRDS(gammaPrior_posTrueSing_all_blocks, file= "./gammaPrior_posTrueSing_all_b
 
 # Display the results
 
-##  Make summaires from the BARBI results.
+##  Make summaries from the BARBI results.
 
 Choose the number of MCMC to be removed using the option `burnIn`.  It must be less than `itera`.
 
 Choose the coverage probability to construct the highest posterior density (HPD) interval$\left(L_{ij}^{(r)}, U_{ij}^{(r)}\right)$ (for each taxon $i$ in a specimen $j$) using the option `cov.pro` for true intensities.
 
-Compute the highest density interval (HDI) for the contaminant internsities $\left(L_{ij}^{(c)}, U_{ij}^{(c)}\right)$ for each taxon $i$ in a specimen $j$.
+Compute the highest density interval (HDI) for the contaminant intensities $\left(L_{ij}^{(c)}, U_{ij}^{(c)}\right)$ for each taxon $i$ in a specimen $j$.
 
 For a contaminant taxon, the lower limit $L_{ij}^{(r)}$ will be smaller than the upper limit $U_{ij}^{(c)}$.
 

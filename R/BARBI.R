@@ -1,4 +1,4 @@
-#' BARBI: BAyesian Reduction in Background Interference
+#' BAyesian Reference analysis in the Background Interference (BARBI)
 #'
 #' A package for distinguishing true taxa from DNA contamination in molecular microbial studies.
 #' The BARBI package provides three important functions: alphaBetaNegControl, alphaBetaContInPlasma and samplingPosterior.
