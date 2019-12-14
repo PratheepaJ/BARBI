@@ -7,16 +7,16 @@
 posterior(lambda_r, k, al_c, be_c)
 }
 \arguments{
-\item{lambda_r}{numeric, intensity of true signal.}
+\item{lambda_r}{numeric, true intensity.}
 
 \item{k}{numeric, observed count for a taxa in a sample.}
 
-\item{al_c}{numeric, estimated shape parameter for the intensity of contamination for a taxa.}
+\item{al_c}{numeric, estimated shape parameter for the contaminant intensity.}
 
-\item{be_c}{numeric, estimated scale parameter for the intensity of contamination for a taxa.}
+\item{be_c}{numeric, estimated scale parameter for the contaminant intensity.}
 }
 \value{
-numeric, posterior density function
+numeric, posterior density function for the true intensity (up to a constant)
 }
 \description{
 Posterior density function

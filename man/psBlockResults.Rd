@@ -4,25 +4,32 @@
 \alias{psBlockResults}
 \title{psBlockResults}
 \usage{
-psBlockResults(ps, sampleTypeVar = "Sample_Type",
-  caselevels = "Plasma", controllevel = "Control",
-  sampleName = "SampleCode", blockVar = "block")
+psBlockResults(
+  ps,
+  sampleTypeVar = "Sample_Type",
+  caselevels = "Plasma",
+  controllevel = "Control",
+  sampleName = "SampleCode",
+  blockVar = "block"
+)
 }
 \arguments{
 \item{ps}{phyloseq object.}
 
-\item{sampleTypeVar}{character, variable defines the 'Plasma' and 'Control' samples.}
+\item{sampleTypeVar}{character, variable defines the specimen samples and control samples in the sample data of phyloseq.}
 
-\item{caselevels}{character vector, levels of the plasma samples, e.g. 'Healthy_Plasma' and 'Sick_Plasma'.}
+\item{caselevels}{character vector, levels (types) of the specimen-samples, e.g. 'healthy plasma' and 'sick plasma'.}
 
-\item{controllevel}{character, level of the control samples, e.g. 'Control'}
+\item{controllevel}{character, level of the control samples, e.g. 'control'}
 
-\item{sampleName}{character, variable defines the sample names.}
+\item{sampleName}{character, variable defines the sample names in the sample data of phyloseq. This should match sample_names() of phyloseq.}
 
-\item{blockVar}{character, variable defines the block of the samples. If there is only one block, create a variable with only one level.}
+\item{blockVar}{character, variable defines the block of the samples in the sample data of phyloseq. If there is only one block, you need to create a variable with only one level.}
 }
 \value{
-A list of phyloseq objects, phyloseq of negative control samples by block, phyloseq of taxa with prevalence zero in negative control samples by block, phyloseq of case samples by block.
+A list of phyloseq objects, phyloseq of negative control samples by block,
+phyloseq of taxa with prevalence zero in negative control samples by block,
+phyloseq of specimen-samples by block.
 }
 \description{
 Prepare the phyloseq object for the Bayesian inference

@@ -4,23 +4,28 @@
 \alias{samplingPosterior}
 \title{Sampling posterior}
 \usage{
-samplingPosterior(psPlByBlock, blk, gammaPrior_Cont, itera = 10000,
-  ncores = ncores)
+samplingPosterior(
+  psPlByBlock,
+  blk,
+  gammaPrior_Cont,
+  itera = 10000,
+  ncores = ncores
+)
 }
 \arguments{
 \item{psPlByBlock}{A list of phyloseq objects with plasma samples.}
 
 \item{blk}{Numeric, which block samples to be used.}
 
-\item{gammaPrior_Cont}{A list of estimated distribution parameters of
-contamination intensity in the plasma samples in a particular
+\item{gammaPrior_Cont}{A list of estimated distribution parameters for the
+contamination intensity in thespecimen samples in a particular
 block.}
 
 \item{itera}{Numeric, number of MCMC samples.}
 }
 \value{
-A list of estimated marginal reference posterior for the intensity of true signal.
+A list of marginal posterior for the true intensity
 }
 \description{
-Sampling from the marginal reference posterior for the intensity of true signal
+Sampling from the marginal posterior for the true intensity
 }

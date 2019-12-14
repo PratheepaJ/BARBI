@@ -11,11 +11,11 @@ MH_MCMC(itera, k, al_c, be_c, startvalue_lamda_r = 0)
 
 \item{k}{numeric, observed count for a taxa in a sample.}
 
-\item{al_c}{numeric, estimated shape parameter for the intensity of contamination for a taxa.}
+\item{al_c}{numeric, estimated shape parameter for the contaminant intensity.}
 
-\item{be_c}{numeric, estimated scale parameter for the intensity of contamination for a taxa.}
+\item{be_c}{numeric, estimated scale parameter for the contaminant intensity.}
 
-\item{startvalue_lamda_r}{numeric, initial value for the intensity of true signal.}
+\item{startvalue_lamda_r}{numeric, initial value for the true intensity.}
 }
 \value{
 An array of MCMC samples.

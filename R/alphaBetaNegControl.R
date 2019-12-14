@@ -16,36 +16,36 @@
 #' @importFrom Biobase rowMedians
 #' @importFrom stats median var runif dgamma rgamma
 #' @export
-alphaBetaNegControl <- function(psNCbyBlock, stringent = FALSE) {
+alphaBetaNegControl = function(psNCbyBlock, stringent = FALSE) {
 
-    compAlphaBeta <- lapply(psNCbyBlock, function(x) {
+    compAlphaBeta = lapply(psNCbyBlock, function(x) {
 
-            ps.to.dq <- phyloseq_to_deseq2(x, design = ~1)
+            ps.to.dq = phyloseq_to_deseq2(x, design = ~1)
 
-            geo.mean <- function(y) {
+            geo.mean = function(y) {
                     if(all(y == 0)){
-                            val <- 0
+                            val = 0
                     }else{
-                            val <- exp(sum(log(y[y > 0]))/length(y))
+                            val = exp(sum(log(y[y > 0]))/length(y))
                     }
                     return(val)
             }
 
-            geom.mean.row <- apply(counts(ps.to.dq), 1, FUN = geo.mean)
+            geom.mean.row = apply(counts(ps.to.dq), 1, FUN = geo.mean)
 
-            ps.to.dq <- estimateSizeFactors(ps.to.dq, geoMeans = geom.mean.row)
+            ps.to.dq = estimateSizeFactors(ps.to.dq, geoMeans = geom.mean.row)
 
-            dq <- DESeq(ps.to.dq, fitType = "local", minReplicatesForReplace= Inf)
+            dq = DESeq(ps.to.dq, fitType = "local", minReplicatesForReplace= Inf)
 
-            library.size.norm <- sizeFactors(dq)
+            library.size.norm = sizeFactors(dq)
 
-            ot.tab <- t(t(otu_table(x))/library.size.norm)
+            ot.tab = t(t(otu_table(x))/library.size.norm)
 
-            S_j0 <- round(median(colSums(ot.tab)), digits = 0)
+            S_j0 = round(median(colSums(ot.tab)), digits = 0)
 
-            mu_ij_0_all <- assays(dq)[["mu"]]
+            mu_ij_0_all = assays(dq)[["mu"]]
 
-            mu_ij_0 <- apply(mu_ij_0_all, 1, function(x){
+            mu_ij_0 = apply(mu_ij_0_all, 1, function(x){
                     if(all(is.na(x))){
                             NA
                     }else{
@@ -54,11 +54,11 @@ alphaBetaNegControl <- function(psNCbyBlock, stringent = FALSE) {
 
             })
 
-            gamma_ij_0 <- dispersions(dq)
+            gamma_ij_0 = dispersions(dq)
 
-            species_name <- taxa_names(x)
+            species_name = taxa_names(x)
 
-            sample_mean <- apply(ot.tab, 1, function(y){
+            sample_mean = apply(ot.tab, 1, function(y){
                     if(all(y == 0)){
                             0
                     }else{
@@ -66,7 +66,7 @@ alphaBetaNegControl <- function(psNCbyBlock, stringent = FALSE) {
                     }
             })
 
-            sample_var <- apply(ot.tab, 1, function(y){
+            sample_var = apply(ot.tab, 1, function(y){
                     if(all(y == 0)){
                             0
                     }else{
@@ -74,33 +74,33 @@ alphaBetaNegControl <- function(psNCbyBlock, stringent = FALSE) {
                     }
             })
 
-            disp <- numeric(0)
+            disp = numeric(0)
 
             for(i in 1:length(sample_var)){
-                    disp[i] <- (sample_var[i] - sample_mean[i])/(sample_mean[i])^2
+                    disp[i] = (sample_var[i] - sample_mean[i])/(sample_mean[i])^2
             }
 
-            alpha_ij_0 <- rep(1e-04, length(mu_ij_0))
-            beta_ij_0 <- rep(1, length(mu_ij_0))
+            alpha_ij_0 = rep(1e-04, length(mu_ij_0))
+            beta_ij_0 = rep(1, length(mu_ij_0))
 
-            ind_not_na_of_mu_ij_0 <- which(!is.na(mu_ij_0))#max produce NA for all zeros
+            ind_not_na_of_mu_ij_0 = which(!is.na(mu_ij_0))#max produce NA for all zeros
 
-            ind_less_one_mu_ij_0 <- which(abs(mu_ij_0) < 1)
+            ind_less_one_mu_ij_0 = which(abs(mu_ij_0) < 1)
 
             if(stringent){
-                    alpha_ij_0[ind_not_na_of_mu_ij_0] <- 1/gamma_ij_0[ind_not_na_of_mu_ij_0]
-                    beta_ij_0[ind_not_na_of_mu_ij_0] <- 1/(gamma_ij_0[ind_not_na_of_mu_ij_0] *
+                    alpha_ij_0[ind_not_na_of_mu_ij_0] = 1/gamma_ij_0[ind_not_na_of_mu_ij_0]
+                    beta_ij_0[ind_not_na_of_mu_ij_0] = 1/(gamma_ij_0[ind_not_na_of_mu_ij_0] *
                                     mu_ij_0[ind_not_na_of_mu_ij_0])
 
-                    beta_ij_0[ind_less_one_mu_ij_0] <- 1/(gamma_ij_0[ind_less_one_mu_ij_0]*sample_mean[ind_less_one_mu_ij_0])
+                    beta_ij_0[ind_less_one_mu_ij_0] = 1/(gamma_ij_0[ind_less_one_mu_ij_0]*sample_mean[ind_less_one_mu_ij_0])
 
             }else{
-                    alpha_ij_0[ind_not_na_of_mu_ij_0] <- 1/gamma_ij_0[ind_not_na_of_mu_ij_0]
-                    beta_ij_0[ind_not_na_of_mu_ij_0] <- 1/(gamma_ij_0[ind_not_na_of_mu_ij_0] *
+                    alpha_ij_0[ind_not_na_of_mu_ij_0] = 1/gamma_ij_0[ind_not_na_of_mu_ij_0]
+                    beta_ij_0[ind_not_na_of_mu_ij_0] = 1/(gamma_ij_0[ind_not_na_of_mu_ij_0] *
                                     mu_ij_0[ind_not_na_of_mu_ij_0])
             }
 
-        out <- list(mu_ij_0, gamma_ij_0, S_j0, species_name, sample_mean,
+        out = list(mu_ij_0, gamma_ij_0, S_j0, species_name, sample_mean,
             sample_var, alpha_ij_0, beta_ij_0)
         names(out) = c("mu_ij_0", "gamma_ij_0", "S_j0", "species_name", "sample_mean",
             "sample_var", "alpha_ij_0", "beta_ij_0")

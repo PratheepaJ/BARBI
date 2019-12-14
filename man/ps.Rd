@@ -3,21 +3,22 @@
 \docType{data}
 \name{ps}
 \alias{ps}
-\title{Simulated \code{'phyloseq'} object.}
+\title{ZymoBIOMICS microbial community \code{'phyloseq'} object.}
 \format{An object of class \code{'phyloseq'}.
 \describe{
-  \item{SubjectCode}{IDs of individuals}
-  \item{Sample_Type}{A factor with three levels: Patient_Plasma, Control, and Healthy_Plasma}
-  \item{Extraction_Number}{Factor to define blocks/batches}
+  \item{SubjectID}{IDs for each sample}
+  \item{sampleID}{IDs for each sample}
+  \item{SampleType}{A factor variable with two levels: Standard and Negative}
+  \item{Names}{Extended names of the sampleIDs}
   }}
 \source{
-A subset of samples from \href{https://academic.oup.com/ofid/article/4/suppl_1/S71/4294264}{where}
+Valdiation data for the BARBI method (manuscript is under review)
 }
 \usage{
 ps
 }
 \description{
-A \code{'phyloseq'} class object with 1638 taxa from 48 patient plasma, healthy plasma, and negative control samples.
+A \code{'phyloseq'} class object with 195 taxa in 8 samples that are from seven rounds of six-fold dilutions (1:1 up to 1:279,936) from standard ZymoBIOMICS microbial community and 10 negative extraction controls.
 }
 \examples{
 \dontrun{sample_data(ps)
