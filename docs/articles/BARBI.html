@@ -81,38 +81,28 @@
       BAyesian Reference analysis with Background Interference (BARBI) provides a reliable statistical method to remove contaminating bacterial DNA from both high- and low-biomass samples.
     </div>
     
-<p>Install <a href="https://www.r-project.org/">R</a> and <a href="https://www.rstudio.com/">RStudio</a>. Open this <code>Rmd</code> <em><a href="https://github.com/rstudio/rmarkdown">rmarkdown</a></em> file in RStudio. Then run the following code to install all required packages, including BARBI from Github repository.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pkgs =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"DESeq2"</span>,</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">         <span class="st">"phyloseq"</span>,</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">         <span class="st">"dplyr"</span>,</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">         <span class="st">"tidyr"</span>,</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">         <span class="st">"R.utils"</span>,</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">         <span class="st">"BiocParallel"</span>,</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">          <span class="st">"doParallel"</span>,</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">         <span class="st">"parallel"</span>,</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">         <span class="st">"HDInterval"</span>,</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">         <span class="st">"grid"</span>,</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">         <span class="st">"xtable"</span>,</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">         <span class="st">"gtable"</span>,</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">         <span class="st">"gridExtra"</span>,</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">         <span class="st">"BiocStyle"</span>,</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">         <span class="st">"magrittr"</span>)</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>)){</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)</a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">}</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20">   </a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(pkgs, <span class="kw"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()))</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"PratheepaJ/BARBI"</span>)</a></code></pre></div>
-<pre><code>## plyr (1.8.4 -&gt; 1.8.5) [CRAN]
-## 
-## The downloaded binary packages are in
-##  /var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T//RtmpVmUUh3/downloaded_packages
+<p>Install <a href="https://www.r-project.org/">R</a> and <a href="https://www.rstudio.com/">RStudio</a>. Open this <code>Rmd</code> <em><a href="https://github.com/rstudio/rmarkdown">rmarkdown</a></em> file in <code>vignettes</code> folder in RStudio. Then run the following code to install all required packages, including BARBI from Github repository.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pkgs &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"phyloseq"</span>,</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">         <span class="st">"dplyr"</span>,</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">         <span class="st">"HDInterval"</span>,</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">         <span class="st">"grid"</span>,</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">         <span class="st">"gtable"</span>,</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">         <span class="st">"gridExtra"</span>,</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">         <span class="st">"magrittr"</span>,</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">         <span class="st">"ggplot2"</span>)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>)){</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">}</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">   </a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(pkgs, <span class="kw"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()))</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"PratheepaJ/BARBI"</span>)</a></code></pre></div>
+<pre><code>## 
 ##   
-   checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpVmUUh3/remotes4e6479074231/PratheepaJ-BARBI-804d6ff/DESCRIPTION’ ...
+   checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpXLj8Ag/remotes444c796a1c48/PratheepaJ-BARBI-4c0e1e7/DESCRIPTION’ ...
   
-✓  checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpVmUUh3/remotes4e6479074231/PratheepaJ-BARBI-804d6ff/DESCRIPTION’
+✓  checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpXLj8Ag/remotes444c796a1c48/PratheepaJ-BARBI-4c0e1e7/DESCRIPTION’
 ## 
   
 ─  preparing ‘BARBI’:
@@ -140,20 +130,13 @@
 <p>Load packages:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(BARBI)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(phyloseq)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DESeq2)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyr)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(R.utils)</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(BiocParallel)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(doParallel)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(parallel)</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(HDInterval)</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(grid)</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(xtable)</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gtable)</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gridExtra)</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(BiocStyle)</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(magrittr)</a></code></pre></div>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(HDInterval)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(grid)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gtable)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gridExtra)</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(magrittr)</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a></code></pre></div>
 <div id="example-dataset" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example-dataset" class="anchor"></a>Example dataset</h1>
@@ -162,35 +145,39 @@
 <h2 class="hasAnchor">
 <a href="#load-the-phyloseq-object" class="anchor"></a>Load the phyloseq object</h2>
 <ul>
-<li>We first validate our method (BARBI) for removing contamination using a dilution series of eight known bacterial species in the standard ZymoBIOMICS microbial community (Zymo Research).</li>
-<li>We saved this data as phyloseq object in the BARBI package.</li>
-<li>Seven rounds of six-fold dilutions from the standard, from 1:1 up to 1:279,936 (<span class="math inline">\(n_{1} = 8\)</span>), as well as ten negative extraction controls <span class="math inline">\(n_{2} = 10\)</span>, were made. Then all <span class="math inline">\(N =18\)</span> specimens were processed and analyzed with the ZymoBIOMICS® Service: Targeted Metagenomic Sequencing (Zymo Research, Irvine, CA), which leverages 16S rRNA gene sequencing.</li>
+<li><p>We validated our the BARBI method for removing DNA contamination using a dilution series of samples of eight known bacterial species in the standard ZymoBIOMICS microbial community (Zymo Research).</p></li>
+<li><p>We saved this data as phyloseq object in the BARBI package.</p></li>
+<li><p>Seven rounds of six-fold dilutions from the standard, from 1:1 up to 1:279,936 (<span class="math inline">\(n_{1} = 8\)</span>), as well as ten negative extraction controls <span class="math inline">\(n_{2} = 10\)</span>, were made.</p></li>
+<li><p>Then all <span class="math inline">\(N =18\)</span> specimens were processed and analyzed with the ZymoBIOMICS® Service: Targeted Metagenomic Sequencing (Zymo Research, Irvine, CA), which leverages 16S rRNA gene sequencing.</p></li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ps =<span class="st"> </span>ps</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ps &lt;-<span class="st"> </span>ps</a></code></pre></div>
 <p>Specify that the samples are on the columns and taxa are on the rows of <code>otu_table</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps))[<span class="dv">1</span>]<span class="op">!=</span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/ntaxa-methods.html">ntaxa</a></span>(ps)){<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps) =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/transpose-methods.html">t</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps))}</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps))[<span class="dv">1</span>]<span class="op">!=</span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/ntaxa-methods.html">ntaxa</a></span>(ps)){</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/transpose-methods.html">t</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps))}</a></code></pre></div>
 </div>
 <div id="adding-blocksbatches" class="section level2">
 <h2 class="hasAnchor">
 <a href="#adding-blocksbatches" class="anchor"></a>Adding blocks/batches</h2>
 <p>To reduce the batch-effects of contamination, we can specify the block information and analyze each block separately with BARBI.</p>
-<p>We highly recommend that you keep track of batch effects (Especially DNA extraction and library prep batches), visualize your data with PCA on ranks or MDS, and separate your data into different blocks of necessary.</p>
+<p>We highly recommend that you keep track of batch effects (Especially DNA extraction and library prep batches), visualize your data with PCA on ranks, and separate your data into different blocks of necessary.</p>
 <p>In the example dataset, all samples are in one block.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">blocks =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"Set1"</span>, <span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html">nsamples</a></span>(ps))</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">blocks &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"Set1"</span>, <span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html">nsamples</a></span>(ps))</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span>(ps)<span class="op">$</span>block =<span class="st"> </span>blocks</a></code></pre></div>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span>(ps)<span class="op">$</span>block &lt;-<span class="st"> </span>blocks</a></code></pre></div>
 </div>
-<div id="remove-taxa-not-in-specimens-dilution-series-samples" class="section level2">
+<div id="remove-taxa-not-in-dilution-series-samples" class="section level2">
 <h2 class="hasAnchor">
-<a href="#remove-taxa-not-in-specimens-dilution-series-samples" class="anchor"></a>Remove taxa not in specimens (dilution series samples)</h2>
+<a href="#remove-taxa-not-in-dilution-series-samples" class="anchor"></a>Remove taxa not in dilution series samples</h2>
 <p>Identify the taxa that are not present in at least one dilution series sample and removed them from the phyloseq object. Label these species as contaminants.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">ps =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html">prune_taxa</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_sums.html">taxa_sums</a></span>(ps)<span class="op">&gt;</span><span class="dv">0</span>, ps)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">ps_specimen =<span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html">subset_samples</a></span>(ps, SampleType <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Standard"</span>))</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">prevTaxaP =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps_specimen), <span class="dv">1</span>, <span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(x<span class="op">&gt;</span><span class="dv">0</span>)})</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">Contaminants1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(prevTaxaP)[prevTaxaP <span class="op">==</span><span class="st"> </span><span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">ps =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html">prune_taxa</a></span>(prevTaxaP <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, ps)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">ps</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">ps &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html">prune_taxa</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_sums.html">taxa_sums</a></span>(ps) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, ps)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">ps_specimen &lt;-<span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html">subset_samples</a></span>(ps, </a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">                               SampleType <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Standard"</span>))</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">prevTaxaP &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps_specimen), <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">                   <span class="cf">function</span>(x){<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(x<span class="op">&gt;</span><span class="dv">0</span>)})</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">Contaminants1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(prevTaxaP)[prevTaxaP <span class="op">==</span><span class="st"> </span><span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">ps &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html">prune_taxa</a></span>(prevTaxaP <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, ps)</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">ps</a></code></pre></div>
 <pre><code>## phyloseq-class experiment-level object
 ## otu_table()   OTU Table:         [ 53 taxa and 18 samples ]
 ## sample_data() Sample Data:       [ 18 samples by 5 sample variables ]
@@ -202,10 +189,12 @@
 <h2 class="hasAnchor">
 <a href="#library-depth" class="anchor"></a>Library depth</h2>
 <p>We check the distribution of sample library depth to see whether there are samples with very small library depth that should be dropped from the analysis.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">totalReads =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps))</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(totalReads), <span class="dt">yaxs=</span><span class="st">"i"</span>, <span class="dt">xaxs=</span><span class="st">"i"</span>, </a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">     <span class="dt">main=</span><span class="st">"Distribution of total reads per sample"</span>, </a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">     <span class="dt">breaks=</span><span class="dv">50</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">totalReads &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(ps))</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(totalReads), </a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">     <span class="dt">yaxs=</span><span class="st">"i"</span>, </a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">     <span class="dt">xaxs=</span><span class="st">"i"</span>, </a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">     <span class="dt">main=</span><span class="st">"Distribution of total reads per sample"</span>, </a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">     <span class="dt">breaks=</span><span class="dv">50</span>)</a></code></pre></div>
 <p><img src="BARBI_files/figure-html/filter-samples-1.png" width="700"></p>
 <p>We do not need to drop any sample.</p>
 </div>
@@ -230,212 +219,317 @@
 <p>We select negative control samples from each block and store as a list of phyloseq objects, <code>psNCbyBlock</code>.</p>
 <p>We select all taxa that have a prevalence of zero (i.e., have zero reads) in all negative control samples for each block and store as a list of phyloseq objects, <code>psallzeroInNC</code>.</p>
 <p>We select all specimen samples from each block and store as a list of phyloseq objects, <code>psPlByBlock</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">psBlockResult =<span class="st"> </span><span class="kw"><a href="../reference/psBlockResults.html">psBlockResults</a></span>(ps, </a>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">psBlockResult &lt;-<span class="st"> </span><span class="kw"><a href="../reference/psBlockResults.html">psBlockResults</a></span>(ps, </a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">                               <span class="dt">sampleTypeVar =</span> <span class="st">"SampleType"</span>,</a>
 <a class="sourceLine" id="cb12-3" data-line-number="3">                               <span class="dt">caselevels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Standard"</span>),</a>
 <a class="sourceLine" id="cb12-4" data-line-number="4">                               <span class="dt">controllevel =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Negative"</span>),</a>
 <a class="sourceLine" id="cb12-5" data-line-number="5">                               <span class="dt">sampleName =</span> <span class="st">"sampleID"</span>, </a>
 <a class="sourceLine" id="cb12-6" data-line-number="6">                               <span class="dt">blockVar =</span> <span class="st">"block"</span>)</a>
 <a class="sourceLine" id="cb12-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">psByBlock =<span class="st"> </span>psBlockResult[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">psNCbyBlock =<span class="st"> </span>psBlockResult[[<span class="dv">2</span>]]</a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">psallzeroInNC =<span class="st"> </span>psBlockResult[[<span class="dv">3</span>]]</a>
-<a class="sourceLine" id="cb12-11" data-line-number="11">psPlByBlock =<span class="st"> </span>psBlockResult[[<span class="dv">4</span>]]</a></code></pre></div>
+<a class="sourceLine" id="cb12-8" data-line-number="8">psByBlock &lt;-<span class="st"> </span>psBlockResult[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">psNCbyBlock &lt;-<span class="st"> </span>psBlockResult[[<span class="dv">2</span>]]</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">psallzeroInNC &lt;-<span class="st"> </span>psBlockResult[[<span class="dv">3</span>]]</a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">psPlByBlock &lt;-<span class="st"> </span>psBlockResult[[<span class="dv">4</span>]]</a></code></pre></div>
 </div>
-<div id="estimate-the-distribution-parameters-for-the-instensity-of-contamination-in-negative-control-samples" class="section level2">
+<div id="estimate-the-density-parameters-for-the-contaminant-intensities-in-negative-control-samples" class="section level2">
 <h2 class="hasAnchor">
-<a href="#estimate-the-distribution-parameters-for-the-instensity-of-contamination-in-negative-control-samples" class="anchor"></a>Estimate the distribution parameters for the instensity of contamination in negative control samples</h2>
-<p>Estimate the gamma distribution parameters for the intensity of contaminants using the negative control samples for each block. <!-- Choosing `stringent == TRUE` specifies BARBI to not using the scaling property for the species with the mean intensity of contamination less than one. This is one of two parameters that allows for more stringent subtraction of contaminants, especially for those at low abundance in negative control samples. --></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">alphaBetaNegControl =<span class="st"> </span><span class="kw"><a href="../reference/alphaBetaNegControl.html">alphaBetaNegControl</a></span>(<span class="dt">psNCbyBlock =</span> psNCbyBlock)</a></code></pre></div>
+<a href="#estimate-the-density-parameters-for-the-contaminant-intensities-in-negative-control-samples" class="anchor"></a>Estimate the density parameters for the contaminant intensities in negative control samples</h2>
+<p>Estimate the gamma density parameters for the contaminant intensities using the negative control samples for each block.</p>
+<p><span class="math inline">\(\lambda_{il}^{(c)} \sim \text{gamma }\left(\frac{1}{\gamma_{i}^{0}},\frac{1}{\gamma_{i}^{0} \mu_{il}^{0}}\right),\)</span> <span class="math inline">\(l\)</span> is the <span class="math inline">\(l\)</span>-th negative control.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">con_int_neg_ctrl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/alphaBetaNegControl.html">alphaBetaNegControl</a></span>(<span class="dt">psNCbyBlock =</span> psNCbyBlock)</a></code></pre></div>
 </div>
-<div id="estimate-the-distribution-parameters-for-the-intensity-of-contamination-in-each-specimen-sample" class="section level2">
+<div id="estimate-the-density-parameters-for-the-contaminant-intensities-in-each-specimen" class="section level2">
 <h2 class="hasAnchor">
-<a href="#estimate-the-distribution-parameters-for-the-intensity-of-contamination-in-each-specimen-sample" class="anchor"></a>Estimate the distribution parameters for the intensity of contamination in each specimen sample</h2>
-<p>For each specimen sample, estimate the gamma distribution parameters for the intensity of contamination using the scaling property of the gamma distribution.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">num_blks =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(alphaBetaNegControl)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">blks =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1</span>, num_blks) <span class="op">%&gt;%</span><span class="st"> </span>as.list</a>
+<a href="#estimate-the-density-parameters-for-the-contaminant-intensities-in-each-specimen" class="anchor"></a>Estimate the density parameters for the contaminant intensities in each specimen</h2>
+<p>For each specimen, we estimate the gamma density parameters for the contaminant intensities using the scaling property of the gamma distribution.</p>
+<p><span class="math inline">\(\lambda_{ij}^{(c)} \sim \text{gamma }\left( \frac{d^{0}_{l} }{d_{j}} \frac{1}{\gamma_{i}^{0}},\frac{1}{\gamma_{i}^{0} \mu_{il}^{0}}\right),\)</span> where <span class="math inline">\(j\)</span> is the <span class="math inline">\(j\)</span>-th specimen.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">num_blks &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(con_int_neg_ctrl)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">blks &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1</span>, num_blks) <span class="op">%&gt;%</span><span class="st"> </span>as.list</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">gammaPrior_all_blks =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(blks, <span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">    gammaPrior =<span class="st"> </span><span class="kw"><a href="../reference/alphaBetaContInPlasma.html">alphaBetaContInPlasma</a></span>(<span class="dt">psPlByBlock =</span> psPlByBlock, </a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">                                       <span class="dt">psallzeroInNC =</span> psallzeroInNC, </a>
-<a class="sourceLine" id="cb14-7" data-line-number="7">                                       <span class="dt">blk =</span> x,</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8">                                       <span class="dt">alphaBetaNegControl=</span>alphaBetaNegControl)</a>
-<a class="sourceLine" id="cb14-9" data-line-number="9">        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(gammaPrior)</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">con_int_specimen &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(blks, <span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">    con_int_specimen_each_blk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/alphaBetaContInPlasma.html">alphaBetaContInPlasma</a></span>(<span class="dt">psPlByBlock =</span> psPlByBlock,</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">                                                       <span class="dt">psallzeroInNC =</span> psallzeroInNC,</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">                                                       <span class="dt">blk =</span> x,</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">                                                       <span class="dt">alphaBetaNegControl =</span> con_int_neg_ctrl)</a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(con_int_specimen_each_blk)</a>
 <a class="sourceLine" id="cb14-10" data-line-number="10">})</a></code></pre></div>
 </div>
-<div id="sample-from-the-posterior-for-the-true-intensities" class="section level2">
+<div id="sample-from-the-marginal-posterior-for-the-true-intensities" class="section level2">
 <h2 class="hasAnchor">
-<a href="#sample-from-the-posterior-for-the-true-intensities" class="anchor"></a>Sample from the posterior for the true intensities</h2>
+<a href="#sample-from-the-marginal-posterior-for-the-true-intensities" class="anchor"></a>Sample from the marginal posterior for the true intensities</h2>
 <p>For all specimen samples and for all taxa, sample from the posterior for the true intensities using the Metropolis-Hasting MCMC.</p>
 <p>We need to specify the number of iterations in the MCMC using the option <code>itera</code>.</p>
 <p>Save the gamma prior for the intensity of contamination and the posterior samples.</p>
 <p>The suggested itera is 10,000.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">t1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">t1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">post_all_blocks =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(blks,<span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">    post_int_all_taxa =<span class="st"> </span><span class="kw"><a href="../reference/samplingPosterior.html">samplingPosterior</a></span>(<span class="dt">psPlByBlock =</span> psPlByBlock,</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">                                          <span class="dt">blk =</span> x,</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">                                          <span class="dt">gammaPrior_Cont =</span> gammaPrior_all_blks[[x]],</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">                                          <span class="dt">itera =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(post_int_all_taxa)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">mar_post_true_intensities &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(blks,<span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">    mar_post_true_intensities_each_blk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/samplingPosterior.html">samplingPosterior</a></span>(<span class="dt">psPlByBlock =</span> psPlByBlock,</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">                                                            <span class="dt">blk =</span> x,</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">                                                            <span class="dt">gammaPrior_Cont =</span> con_int_specimen[[x]],</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">                                                            <span class="dt">itera =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(mar_post_true_intensities_each_blk)</a>
 <a class="sourceLine" id="cb15-9" data-line-number="9">})</a>
 <a class="sourceLine" id="cb15-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb15-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()<span class="op">-</span>t1</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   6.843   0.103   6.960</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">gammaPrior_posTrueSing_all_blocks =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(gammaPrior_all_blks,post_all_blocks)</a></code></pre></div>
-<p>We can save the results.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(gammaPrior_posTrueSing_all_blocks, <span class="dt">file=</span> <span class="st">"./gammaPrior_posTrueSing_all_blocks.rds"</span>)</a></code></pre></div>
+##   7.705   0.117   7.856</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">con_int_specimen_mar_post_true_intensities &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(con_int_specimen, mar_post_true_intensities)</a></code></pre></div>
 </div>
-</div>
-<div id="display-the-results" class="section level1">
-<h1 class="hasAnchor">
-<a href="#display-the-results" class="anchor"></a>Display the results</h1>
-<div id="make-summaries-from-the-barbi-results-" class="section level2">
+<div id="save-the-results-" class="section level2">
 <h2 class="hasAnchor">
-<a href="#make-summaries-from-the-barbi-results-" class="anchor"></a>Make summaries from the BARBI results.</h2>
+<a href="#save-the-results-" class="anchor"></a>Save the results.</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(con_int_specimen_mar_post_true_intensities, </a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">        <span class="dt">file=</span> <span class="st">"./con_int_specimen_mar_post_true_intensities_vignettes.rds"</span>)</a></code></pre></div>
+</div>
+</div>
+<div id="make-summaries-from-the-barbi-results-" class="section level1">
+<h1 class="hasAnchor">
+<a href="#make-summaries-from-the-barbi-results-" class="anchor"></a>Make summaries from the BARBI results.</h1>
+<div id="make-tables-for-each-sample" class="section level2">
+<h2 class="hasAnchor">
+<a href="#make-tables-for-each-sample" class="anchor"></a>Make tables for each sample</h2>
 <p>Choose the number of MCMC to be removed using the option <code>burnIn</code>. It must be less than <code>itera</code>.</p>
 <p>Choose the coverage probability to construct the highest posterior density (HPD) interval<span class="math inline">\(\left(L_{ij}^{(r)}, U_{ij}^{(r)}\right)\)</span> (for each taxon <span class="math inline">\(i\)</span> in a specimen <span class="math inline">\(j\)</span>) using the option <code>cov.pro</code> for true intensities.</p>
 <p>Compute the highest density interval (HDI) for the contaminant intensities <span class="math inline">\(\left(L_{ij}^{(c)}, U_{ij}^{(c)}\right)\)</span> for each taxon <span class="math inline">\(i\)</span> in a specimen <span class="math inline">\(j\)</span>.</p>
 <p>For a contaminant taxon, the lower limit <span class="math inline">\(L_{ij}^{(r)}\)</span> will be smaller than the upper limit <span class="math inline">\(U_{ij}^{(c)}\)</span>.</p>
-<p>The suggested burnIn is 5000 for itera = 10,000.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">itera =<span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">burnIn =<span class="st"> </span><span class="dv">10</span></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">cov.pro =<span class="st"> </span><span class="fl">.95</span></a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">mak_tab =<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb19-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co"># psByBlock = readRDS("./psByBlock.rds")</span></a>
-<a class="sourceLine" id="cb19-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co"># gammaPrior_posTrueSing_all_blocks = readRDS("./gammaPrior_posTrueSing_all_blocks.rds")</span></a>
-<a class="sourceLine" id="cb19-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb19-10" data-line-number="10">gammaPrior_all_blks =<span class="st"> </span>gammaPrior_posTrueSing_all_blocks[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb19-11" data-line-number="11">post_all_blocks =<span class="st"> </span>gammaPrior_posTrueSing_all_blocks[[<span class="dv">2</span>]]</a>
-<a class="sourceLine" id="cb19-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb19-13" data-line-number="13">all_real_taxa_lt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
-<a class="sourceLine" id="cb19-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb19-15" data-line-number="15"><span class="cf">for</span>(blk <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>num_blks){</a>
-<a class="sourceLine" id="cb19-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb19-17" data-line-number="17">    taxa_post_all_sam =<span class="st"> </span>post_all_blocks[[blk]]</a>
-<a class="sourceLine" id="cb19-18" data-line-number="18">    gammPrior =<span class="st"> </span>gammaPrior_all_blks[[blk]]</a>
-<a class="sourceLine" id="cb19-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb19-20" data-line-number="20">    total_summary_table =<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb19-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb19-22" data-line-number="22">    all_real_taxa =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/character.html">character</a></span>()</a>
-<a class="sourceLine" id="cb19-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb19-24" data-line-number="24">    <span class="cf">for</span>(sam <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html">nsamples</a></span>(psPlByBlock[[blk]])){</a>
-<a class="sourceLine" id="cb19-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb19-26" data-line-number="26">        taxa_post =<span class="st"> </span>taxa_post_all_sam[[sam]]</a>
-<a class="sourceLine" id="cb19-27" data-line-number="27">        acceptance =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
-<a class="sourceLine" id="cb19-28" data-line-number="28">        <span class="co"># exp_post_s = list()</span></a>
-<a class="sourceLine" id="cb19-29" data-line-number="29">        lower.t =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
-<a class="sourceLine" id="cb19-30" data-line-number="30">        upper.t =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
-<a class="sourceLine" id="cb19-31" data-line-number="31">        lower.c =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
-<a class="sourceLine" id="cb19-32" data-line-number="32">        upper.c =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
-<a class="sourceLine" id="cb19-33" data-line-number="33">        all.zero.nc =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
-<a class="sourceLine" id="cb19-34" data-line-number="34"></a>
-<a class="sourceLine" id="cb19-35" data-line-number="35">        <span class="cf">for</span>(taxa <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(taxa_post)){</a>
-<a class="sourceLine" id="cb19-36" data-line-number="36">            burnIn  =<span class="st"> </span>burnIn</a>
-<a class="sourceLine" id="cb19-37" data-line-number="37">            acceptance[[taxa]]  =<span class="st">  </span><span class="dv">1</span><span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span>(taxa_post[[taxa]][<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span>burnIn),]))</a>
-<a class="sourceLine" id="cb19-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb19-39" data-line-number="39">            <span class="co"># exp_post_s[[taxa]] = mean(taxa_post[[taxa]][-(1:burnIn),])</span></a>
-<a class="sourceLine" id="cb19-40" data-line-number="40"></a>
-<a class="sourceLine" id="cb19-41" data-line-number="41">            hdi.v =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HDInterval/man/hdi.html">hdi</a></span>(taxa_post[[taxa]][<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span>burnIn),],</a>
-<a class="sourceLine" id="cb19-42" data-line-number="42">                        <span class="dt">credMass =</span> cov.pro)</a>
-<a class="sourceLine" id="cb19-43" data-line-number="43">            lower.t[[taxa]] =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(hdi.v[<span class="dv">1</span>], <span class="dt">digits =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb19-44" data-line-number="44">            upper.t[[taxa]] =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(hdi.v[<span class="dv">2</span>], <span class="dt">digits =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb19-45" data-line-number="45">            bb =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span>((itera<span class="op">-</span>burnIn<span class="op">+</span><span class="dv">1</span>), </a>
-<a class="sourceLine" id="cb19-46" data-line-number="46">                        <span class="dt">shape=</span> gammPrior[[sam]][[<span class="dv">1</span>]][taxa],</a>
-<a class="sourceLine" id="cb19-47" data-line-number="47">                        <span class="dt">rate =</span> gammPrior[[sam]][[<span class="dv">2</span>]][taxa])</a>
-<a class="sourceLine" id="cb19-48" data-line-number="48">            </a>
-<a class="sourceLine" id="cb19-49" data-line-number="49">            <span class="co"># exp_bb = gammPrior[[sam]][[1]][taxa]/gammPrior[[sam]][[2]][taxa]</span></a>
-<a class="sourceLine" id="cb19-50" data-line-number="50"></a>
-<a class="sourceLine" id="cb19-51" data-line-number="51">            hdi.b =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HDInterval/man/hdi.html">hdi</a></span>(bb, <span class="dt">credMass =</span> cov.pro)</a>
-<a class="sourceLine" id="cb19-52" data-line-number="52">            lower.c[[taxa]] =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(hdi.b[<span class="dv">1</span>], <span class="dt">digits =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb19-53" data-line-number="53">            upper.c[[taxa]] =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(hdi.b[<span class="dv">2</span>], <span class="dt">digits =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb19-54" data-line-number="54">            </a>
-<a class="sourceLine" id="cb19-55" data-line-number="55">            all.zero.nc[[taxa]] =<span class="st">  </span>gammPrior[[sam]][[<span class="dv">5</span>]][taxa]</a>
-<a class="sourceLine" id="cb19-56" data-line-number="56">                </a>
-<a class="sourceLine" id="cb19-57" data-line-number="57">        }</a>
-<a class="sourceLine" id="cb19-58" data-line-number="58"></a>
-<a class="sourceLine" id="cb19-59" data-line-number="59">        df =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Species =</span> <span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html">taxa_names</a></span>(psPlByBlock[[blk]]),</a>
-<a class="sourceLine" id="cb19-60" data-line-number="60">                        <span class="dt">xj =</span> <span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(gammPrior[[sam]][[<span class="dv">3</span>]]),</a>
-<a class="sourceLine" id="cb19-61" data-line-number="61">                        <span class="dt">l.t =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(lower.t),</a>
-<a class="sourceLine" id="cb19-62" data-line-number="62">                        <span class="dt">u.t =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(upper.t),</a>
-<a class="sourceLine" id="cb19-63" data-line-number="63">                        <span class="dt">l.c =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(lower.c),</a>
-<a class="sourceLine" id="cb19-64" data-line-number="64">                        <span class="dt">u.c =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(upper.c),</a>
-<a class="sourceLine" id="cb19-65" data-line-number="65">                        <span class="dt">all.zero.nc =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(all.zero.nc))</a>
-<a class="sourceLine" id="cb19-66" data-line-number="66">        </a>
-<a class="sourceLine" id="cb19-67" data-line-number="67">        <span class="co"># List all true taxa</span></a>
-<a class="sourceLine" id="cb19-68" data-line-number="68">        df =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(df,(l.t <span class="op">&gt;</span><span class="st"> </span>u.c) <span class="op">&amp;</span><span class="st"> </span>(l.t <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)),</a>
-<a class="sourceLine" id="cb19-69" data-line-number="69">                     <span class="kw"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(xj))</a>
-<a class="sourceLine" id="cb19-70" data-line-number="70"></a>
-<a class="sourceLine" id="cb19-71" data-line-number="71">        <span class="co"># If there is no true taxa</span></a>
-<a class="sourceLine" id="cb19-72" data-line-number="72">        <span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(df)[<span class="dv">1</span>]<span class="op">==</span><span class="dv">0</span>){</a>
-<a class="sourceLine" id="cb19-73" data-line-number="73">            df =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Species=</span><span class="st">"Negative"</span>,</a>
-<a class="sourceLine" id="cb19-74" data-line-number="74">                             <span class="dt">xj=</span><span class="st">"Negative"</span>,</a>
-<a class="sourceLine" id="cb19-75" data-line-number="75">                             <span class="dt">l.t=</span><span class="st">"Negative"</span>,</a>
-<a class="sourceLine" id="cb19-76" data-line-number="76">                             <span class="dt">u.t=</span><span class="st">"Negative"</span>,</a>
-<a class="sourceLine" id="cb19-77" data-line-number="77">                             <span class="dt">l.c =</span><span class="st">"Negative"</span>,</a>
-<a class="sourceLine" id="cb19-78" data-line-number="78">                             <span class="dt">u.c=</span><span class="st">"Negative"</span>,</a>
-<a class="sourceLine" id="cb19-79" data-line-number="79">                             <span class="dt">all.zero.nc =</span> <span class="st">"Negative"</span>)</a>
-<a class="sourceLine" id="cb19-80" data-line-number="80">        }</a>
-<a class="sourceLine" id="cb19-81" data-line-number="81"></a>
-<a class="sourceLine" id="cb19-82" data-line-number="82">        <span class="co"># collect all true taxa in the specimen</span></a>
-<a class="sourceLine" id="cb19-83" data-line-number="83">        all_real_taxa =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(all_real_taxa,</a>
-<a class="sourceLine" id="cb19-84" data-line-number="84">                          <span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(df<span class="op">$</span>Species))</a>
-<a class="sourceLine" id="cb19-85" data-line-number="85">        </a>
-<a class="sourceLine" id="cb19-86" data-line-number="86">        <span class="cf">if</span>(mak_tab){</a>
-<a class="sourceLine" id="cb19-87" data-line-number="87">          filname =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"./"</span>,</a>
-<a class="sourceLine" id="cb19-88" data-line-number="88">                          <span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]])[sam],</a>
-<a class="sourceLine" id="cb19-89" data-line-number="89">                          <span class="st">".png"</span>,</a>
-<a class="sourceLine" id="cb19-90" data-line-number="90">                          <span class="dt">sep=</span><span class="st">""</span>)</a>
-<a class="sourceLine" id="cb19-91" data-line-number="91"></a>
-<a class="sourceLine" id="cb19-92" data-line-number="92">          <span class="kw"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(filname, <span class="dt">height =</span> <span class="dv">600</span>, <span class="dt">width =</span> <span class="dv">750</span>)</a>
-<a class="sourceLine" id="cb19-93" data-line-number="93"></a>
-<a class="sourceLine" id="cb19-94" data-line-number="94">          df.p =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gridExtra/man/tableGrob.html">tableGrob</a></span>(df)</a>
-<a class="sourceLine" id="cb19-95" data-line-number="95">          title =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/grid.text.html">textGrob</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]])[sam], </a>
-<a class="sourceLine" id="cb19-96" data-line-number="96">                           <span class="dt">gp =</span> <span class="kw"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="dt">fontsize =</span> <span class="dv">12</span>))</a>
-<a class="sourceLine" id="cb19-97" data-line-number="97"></a>
-<a class="sourceLine" id="cb19-98" data-line-number="98">          padding =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span>(<span class="fl">0.5</span>,<span class="st">"line"</span>)</a>
-<a class="sourceLine" id="cb19-99" data-line-number="99"></a>
-<a class="sourceLine" id="cb19-100" data-line-number="100">          df.p =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gtable/man/gtable_add_rows.html">gtable_add_rows</a></span>(df.p, </a>
-<a class="sourceLine" id="cb19-101" data-line-number="101">                                 <span class="dt">heights =</span> <span class="kw"><a href="https://rdrr.io/r/grid/grobWidth.html">grobHeight</a></span>(title) <span class="op">+</span><span class="st"> </span>padding, </a>
-<a class="sourceLine" id="cb19-102" data-line-number="102">                                 <span class="dt">pos =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb19-103" data-line-number="103"></a>
-<a class="sourceLine" id="cb19-104" data-line-number="104">          df.p =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gtable/man/gtable_add_grob.html">gtable_add_grob</a></span>(df.p, </a>
-<a class="sourceLine" id="cb19-105" data-line-number="105">                                 <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(title),</a>
-<a class="sourceLine" id="cb19-106" data-line-number="106">                                 <span class="dt">t =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb19-107" data-line-number="107">                                 <span class="dt">l =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb19-108" data-line-number="108">                                 <span class="dt">r =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(df.p))</a>
-<a class="sourceLine" id="cb19-109" data-line-number="109"></a>
-<a class="sourceLine" id="cb19-110" data-line-number="110">          <span class="kw"><a href="https://rdrr.io/r/grid/grid.newpage.html">grid.newpage</a></span>()</a>
-<a class="sourceLine" id="cb19-111" data-line-number="111">          <span class="kw"><a href="https://rdrr.io/r/grid/grid.draw.html">grid.draw</a></span>(df.p)</a>
-<a class="sourceLine" id="cb19-112" data-line-number="112">          <span class="kw"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()</a>
-<a class="sourceLine" id="cb19-113" data-line-number="113">        }</a>
-<a class="sourceLine" id="cb19-114" data-line-number="114"></a>
-<a class="sourceLine" id="cb19-115" data-line-number="115">        all_real_taxa =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(all_real_taxa)</a>
-<a class="sourceLine" id="cb19-116" data-line-number="116">    }</a>
-<a class="sourceLine" id="cb19-117" data-line-number="117"></a>
-<a class="sourceLine" id="cb19-118" data-line-number="118">    all_real_taxa_lt[[blk]] =<span class="st"> </span>all_real_taxa</a>
-<a class="sourceLine" id="cb19-119" data-line-number="119">}</a></code></pre></div>
+<p>The suggested burnIn is 5000 for itera &lt;- 10,000.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">ASV &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"ASV_"</span>,<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1</span>,<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/ntaxa-methods.html">ntaxa</a></span>(ps))))</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">ASV.Genus &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"ASV_"</span>,<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1</span>,<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/ntaxa-methods.html">ntaxa</a></span>(ps)),<span class="st">"_"</span>,<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(ps)[,<span class="dv">6</span>]))</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">ASV.Genus.Species &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(ASV,<span class="st">"_"</span>,<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(ps)[,<span class="dv">6</span>]),<span class="st">"_"</span>, <span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(ps)[,<span class="dv">7</span>]))</a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5">df.ASV &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">seq.variant =</span> <span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html">taxa_names</a></span>(ps), <span class="dt">ASV =</span> ASV, <span class="dt">ASV.Genus =</span> ASV.Genus, <span class="dt">ASV.Genus.Species =</span> ASV.Genus.Species)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">itera &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">burnIn &lt;-<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">cov.pro &lt;-<span class="st"> </span><span class="fl">.95</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">mak_tab &lt;-<span class="st"> </span><span class="ot">FALSE</span> <span class="co"># Save tables or print tables </span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co"># con_int_specimen_mar_post_true_intensities &lt;- readRDS("./con_int_specimen_mar_post_true_intensities_vignettes.rds")</span></a>
+<a class="sourceLine" id="cb20-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb20-8" data-line-number="8">con_int_specimen &lt;-<span class="st"> </span>con_int_specimen_mar_post_true_intensities[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb20-9" data-line-number="9">mar_post_true_intensities &lt;-<span class="st"> </span>con_int_specimen_mar_post_true_intensities[[<span class="dv">2</span>]]</a>
+<a class="sourceLine" id="cb20-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb20-11" data-line-number="11"><span class="co">## Keep true </span></a>
+<a class="sourceLine" id="cb20-12" data-line-number="12">all_true_taxa_blk &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
+<a class="sourceLine" id="cb20-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb20-14" data-line-number="14"><span class="cf">for</span>(blk <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>num_blks){</a>
+<a class="sourceLine" id="cb20-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb20-16" data-line-number="16">  mar_post_true_intensities_blk &lt;-<span class="st"> </span>mar_post_true_intensities[[blk]]</a>
+<a class="sourceLine" id="cb20-17" data-line-number="17">  con_int_specimen_blk &lt;-<span class="st"> </span>con_int_specimen[[blk]]</a>
+<a class="sourceLine" id="cb20-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb20-19" data-line-number="19">  all_true_taxa &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/character.html">character</a></span>()</a>
+<a class="sourceLine" id="cb20-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb20-21" data-line-number="21">  <span class="cf">for</span>(sam <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html">nsamples</a></span>(psPlByBlock[[blk]])){</a>
+<a class="sourceLine" id="cb20-22" data-line-number="22">      taxa_post &lt;-<span class="st"> </span>mar_post_true_intensities_blk[[sam]]</a>
+<a class="sourceLine" id="cb20-23" data-line-number="23">      acceptance &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
+<a class="sourceLine" id="cb20-24" data-line-number="24">      lower.r &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
+<a class="sourceLine" id="cb20-25" data-line-number="25">      upper.r &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
+<a class="sourceLine" id="cb20-26" data-line-number="26">      lower.c &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
+<a class="sourceLine" id="cb20-27" data-line-number="27">      upper.c &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
+<a class="sourceLine" id="cb20-28" data-line-number="28">      all.zero.nc &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
+<a class="sourceLine" id="cb20-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb20-30" data-line-number="30">      <span class="cf">for</span>(taxa <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(taxa_post)){</a>
+<a class="sourceLine" id="cb20-31" data-line-number="31">        burnIn  &lt;-<span class="st"> </span>burnIn</a>
+<a class="sourceLine" id="cb20-32" data-line-number="32">        acceptance[[taxa]]  &lt;-<span class="st">  </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span>(taxa_post[[taxa]][<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span>burnIn),]))</a>
+<a class="sourceLine" id="cb20-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb20-34" data-line-number="34">        HPD.r &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HDInterval/man/hdi.html">hdi</a></span>(taxa_post[[taxa]][<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span>burnIn),],</a>
+<a class="sourceLine" id="cb20-35" data-line-number="35">                    <span class="dt">credMass =</span> cov.pro)</a>
+<a class="sourceLine" id="cb20-36" data-line-number="36">        lower.r[[taxa]] &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(HPD.r[<span class="dv">1</span>], <span class="dt">digits =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb20-37" data-line-number="37">        upper.r[[taxa]] &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(HPD.r[<span class="dv">2</span>], <span class="dt">digits =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb20-38" data-line-number="38">        lamda.c &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span>((itera<span class="op">-</span>burnIn<span class="op">+</span><span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb20-39" data-line-number="39">                    <span class="dt">shape=</span> con_int_specimen_blk[[sam]][[<span class="dv">1</span>]][taxa],</a>
+<a class="sourceLine" id="cb20-40" data-line-number="40">                    <span class="dt">rate =</span> con_int_specimen_blk[[sam]][[<span class="dv">2</span>]][taxa])</a>
+<a class="sourceLine" id="cb20-41" data-line-number="41">        </a>
+<a class="sourceLine" id="cb20-42" data-line-number="42">        HDI.c &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HDInterval/man/hdi.html">hdi</a></span>(lamda.c, <span class="dt">credMass =</span> cov.pro)</a>
+<a class="sourceLine" id="cb20-43" data-line-number="43">        lower.c[[taxa]] &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(HDI.c[<span class="dv">1</span>], <span class="dt">digits =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb20-44" data-line-number="44">        upper.c[[taxa]] &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(HDI.c[<span class="dv">2</span>], <span class="dt">digits =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb20-45" data-line-number="45">        </a>
+<a class="sourceLine" id="cb20-46" data-line-number="46">        all.zero.nc[[taxa]] &lt;-<span class="st">  </span>con_int_specimen_blk[[sam]][[<span class="dv">5</span>]][taxa]</a>
+<a class="sourceLine" id="cb20-47" data-line-number="47">      }</a>
+<a class="sourceLine" id="cb20-48" data-line-number="48"></a>
+<a class="sourceLine" id="cb20-49" data-line-number="49">    tax_names &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html">taxa_names</a></span>(psPlByBlock[[blk]])</a>
+<a class="sourceLine" id="cb20-50" data-line-number="50">    tax_names &lt;-<span class="st"> </span>df.ASV<span class="op">$</span>ASV.Genus[<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(df.ASV<span class="op">$</span>seq.variant) <span class="op">%in%</span><span class="st">  </span>tax_names)]</a>
+<a class="sourceLine" id="cb20-51" data-line-number="51">      </a>
+<a class="sourceLine" id="cb20-52" data-line-number="52">    df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Species =</span> tax_names,</a>
+<a class="sourceLine" id="cb20-53" data-line-number="53">                    <span class="dt">xj =</span> <span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(con_int_specimen_blk[[sam]][[<span class="dv">3</span>]]),</a>
+<a class="sourceLine" id="cb20-54" data-line-number="54">                    <span class="dt">l.r =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(lower.r),</a>
+<a class="sourceLine" id="cb20-55" data-line-number="55">                    <span class="dt">u.r =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(upper.r),</a>
+<a class="sourceLine" id="cb20-56" data-line-number="56">                    <span class="dt">l.c =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(lower.c),</a>
+<a class="sourceLine" id="cb20-57" data-line-number="57">                    <span class="dt">u.c =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(upper.c),</a>
+<a class="sourceLine" id="cb20-58" data-line-number="58">                    <span class="dt">all.zero.nc =</span> <span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(all.zero.nc))</a>
+<a class="sourceLine" id="cb20-59" data-line-number="59">      </a>
+<a class="sourceLine" id="cb20-60" data-line-number="60">    </a>
+<a class="sourceLine" id="cb20-61" data-line-number="61">      <span class="co"># List all true taxa</span></a>
+<a class="sourceLine" id="cb20-62" data-line-number="62">      df &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(df,(l.r <span class="op">&gt;</span><span class="st"> </span>u.c) <span class="op">&amp;</span><span class="st"> </span>(l.r <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)),</a>
+<a class="sourceLine" id="cb20-63" data-line-number="63">                   <span class="kw"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(xj))</a>
+<a class="sourceLine" id="cb20-64" data-line-number="64"></a>
+<a class="sourceLine" id="cb20-65" data-line-number="65">      <span class="co"># If there is no true taxa</span></a>
+<a class="sourceLine" id="cb20-66" data-line-number="66">      <span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(df)[<span class="dv">1</span>]<span class="op">==</span><span class="dv">0</span>){</a>
+<a class="sourceLine" id="cb20-67" data-line-number="67">          df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Species=</span><span class="st">"Negative"</span>,</a>
+<a class="sourceLine" id="cb20-68" data-line-number="68">                           <span class="dt">xj=</span><span class="st">"Negative"</span>,</a>
+<a class="sourceLine" id="cb20-69" data-line-number="69">                           <span class="dt">l.r=</span><span class="st">"Negative"</span>,</a>
+<a class="sourceLine" id="cb20-70" data-line-number="70">                           <span class="dt">u.r=</span><span class="st">"Negative"</span>,</a>
+<a class="sourceLine" id="cb20-71" data-line-number="71">                           <span class="dt">l.c =</span><span class="st">"Negative"</span>,</a>
+<a class="sourceLine" id="cb20-72" data-line-number="72">                           <span class="dt">u.c=</span><span class="st">"Negative"</span>,</a>
+<a class="sourceLine" id="cb20-73" data-line-number="73">                           <span class="dt">all.zero.nc =</span> <span class="st">"Negative"</span>)</a>
+<a class="sourceLine" id="cb20-74" data-line-number="74">      }</a>
+<a class="sourceLine" id="cb20-75" data-line-number="75"></a>
+<a class="sourceLine" id="cb20-76" data-line-number="76">    </a>
+<a class="sourceLine" id="cb20-77" data-line-number="77">      </a>
+<a class="sourceLine" id="cb20-78" data-line-number="78">      <span class="co"># collect all true taxa in the specimen</span></a>
+<a class="sourceLine" id="cb20-79" data-line-number="79">      all_true_taxa &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(all_true_taxa,</a>
+<a class="sourceLine" id="cb20-80" data-line-number="80">                        <span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(df<span class="op">$</span>Species))</a>
+<a class="sourceLine" id="cb20-81" data-line-number="81">      </a>
+<a class="sourceLine" id="cb20-82" data-line-number="82">      <span class="cf">if</span>(mak_tab){</a>
+<a class="sourceLine" id="cb20-83" data-line-number="83">        filname &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"./"</span>,</a>
+<a class="sourceLine" id="cb20-84" data-line-number="84">                         <span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]])[sam],</a>
+<a class="sourceLine" id="cb20-85" data-line-number="85">                        <span class="st">".png"</span>,</a>
+<a class="sourceLine" id="cb20-86" data-line-number="86">                        <span class="dt">sep =</span> <span class="st">""</span>)</a>
+<a class="sourceLine" id="cb20-87" data-line-number="87"></a>
+<a class="sourceLine" id="cb20-88" data-line-number="88">        <span class="kw"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(filname, <span class="dt">height =</span> <span class="dv">600</span>, <span class="dt">width =</span> <span class="dv">750</span>)</a>
+<a class="sourceLine" id="cb20-89" data-line-number="89"></a>
+<a class="sourceLine" id="cb20-90" data-line-number="90">        df.p &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gridExtra/man/tableGrob.html">tableGrob</a></span>(df)</a>
+<a class="sourceLine" id="cb20-91" data-line-number="91">        title &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/grid.text.html">textGrob</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]])[sam], </a>
+<a class="sourceLine" id="cb20-92" data-line-number="92">                         gp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="dt">fontsize =</span> <span class="dv">12</span>))</a>
+<a class="sourceLine" id="cb20-93" data-line-number="93"></a>
+<a class="sourceLine" id="cb20-94" data-line-number="94">        padding &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span>(<span class="fl">0.5</span>,<span class="st">"line"</span>)</a>
+<a class="sourceLine" id="cb20-95" data-line-number="95"></a>
+<a class="sourceLine" id="cb20-96" data-line-number="96">        df.p &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gtable/man/gtable_add_rows.html">gtable_add_rows</a></span>(df.p, </a>
+<a class="sourceLine" id="cb20-97" data-line-number="97">                               <span class="dt">heights =</span> <span class="kw"><a href="https://rdrr.io/r/grid/grobWidth.html">grobHeight</a></span>(title) <span class="op">+</span><span class="st"> </span>padding, </a>
+<a class="sourceLine" id="cb20-98" data-line-number="98">                               <span class="dt">pos =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb20-99" data-line-number="99"></a>
+<a class="sourceLine" id="cb20-100" data-line-number="100">        df.p &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gtable/man/gtable_add_grob.html">gtable_add_grob</a></span>(df.p, </a>
+<a class="sourceLine" id="cb20-101" data-line-number="101">                               <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(title),</a>
+<a class="sourceLine" id="cb20-102" data-line-number="102">                               <span class="dt">t =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb20-103" data-line-number="103">                               <span class="dt">l =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb20-104" data-line-number="104">                               <span class="dt">r =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(df.p))</a>
+<a class="sourceLine" id="cb20-105" data-line-number="105"></a>
+<a class="sourceLine" id="cb20-106" data-line-number="106">        <span class="kw"><a href="https://rdrr.io/r/grid/grid.newpage.html">grid.newpage</a></span>()</a>
+<a class="sourceLine" id="cb20-107" data-line-number="107">        <span class="kw"><a href="https://rdrr.io/r/grid/grid.draw.html">grid.draw</a></span>(df.p)</a>
+<a class="sourceLine" id="cb20-108" data-line-number="108">        <span class="kw"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()</a>
+<a class="sourceLine" id="cb20-109" data-line-number="109">        </a>
+<a class="sourceLine" id="cb20-110" data-line-number="110">      }<span class="cf">else</span>{</a>
+<a class="sourceLine" id="cb20-111" data-line-number="111">        df.p &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gridExtra/man/tableGrob.html">tableGrob</a></span>(df)</a>
+<a class="sourceLine" id="cb20-112" data-line-number="112">        title &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/grid.text.html">textGrob</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]])[sam], </a>
+<a class="sourceLine" id="cb20-113" data-line-number="113">                         gp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="dt">fontsize =</span> <span class="dv">12</span>))</a>
+<a class="sourceLine" id="cb20-114" data-line-number="114"></a>
+<a class="sourceLine" id="cb20-115" data-line-number="115">        padding &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span>(<span class="fl">0.5</span>,<span class="st">"line"</span>)</a>
+<a class="sourceLine" id="cb20-116" data-line-number="116"></a>
+<a class="sourceLine" id="cb20-117" data-line-number="117">        df.p &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gtable/man/gtable_add_rows.html">gtable_add_rows</a></span>(df.p, </a>
+<a class="sourceLine" id="cb20-118" data-line-number="118">                               <span class="dt">heights =</span> <span class="kw"><a href="https://rdrr.io/r/grid/grobWidth.html">grobHeight</a></span>(title) <span class="op">+</span><span class="st"> </span>padding, </a>
+<a class="sourceLine" id="cb20-119" data-line-number="119">                               <span class="dt">pos =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb20-120" data-line-number="120"></a>
+<a class="sourceLine" id="cb20-121" data-line-number="121">        df.p &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gtable/man/gtable_add_grob.html">gtable_add_grob</a></span>(df.p, </a>
+<a class="sourceLine" id="cb20-122" data-line-number="122">                               <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(title),</a>
+<a class="sourceLine" id="cb20-123" data-line-number="123">                               <span class="dt">t =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb20-124" data-line-number="124">                               <span class="dt">l =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb20-125" data-line-number="125">                               <span class="dt">r =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(df.p))</a>
+<a class="sourceLine" id="cb20-126" data-line-number="126">        <span class="kw"><a href="https://rdrr.io/r/grid/grid.newpage.html">grid.newpage</a></span>()</a>
+<a class="sourceLine" id="cb20-127" data-line-number="127">        <span class="kw"><a href="https://rdrr.io/r/grid/grid.draw.html">grid.draw</a></span>(df.p)</a>
+<a class="sourceLine" id="cb20-128" data-line-number="128">      }</a>
+<a class="sourceLine" id="cb20-129" data-line-number="129"></a>
+<a class="sourceLine" id="cb20-130" data-line-number="130">      all_true_taxa &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(all_true_taxa)</a>
+<a class="sourceLine" id="cb20-131" data-line-number="131">  }</a>
+<a class="sourceLine" id="cb20-132" data-line-number="132"></a>
+<a class="sourceLine" id="cb20-133" data-line-number="133">  all_true_taxa_blk[[blk]] &lt;-<span class="st"> </span>all_true_taxa</a>
+<a class="sourceLine" id="cb20-134" data-line-number="134">}</a></code></pre></div>
+<p><img src="BARBI_files/figure-html/make_tables-1.png" width="700"><img src="BARBI_files/figure-html/make_tables-2.png" width="700"><img src="BARBI_files/figure-html/make_tables-3.png" width="700"><img src="BARBI_files/figure-html/make_tables-4.png" width="700"><img src="BARBI_files/figure-html/make_tables-5.png" width="700"><img src="BARBI_files/figure-html/make_tables-6.png" width="700"><img src="BARBI_files/figure-html/make_tables-7.png" width="700"><img src="BARBI_files/figure-html/make_tables-8.png" width="700"></p>
 </div>
 <div id="construct-a-phyloseq-object-with-the-true-taxa" class="section level2">
 <h2 class="hasAnchor">
 <a href="#construct-a-phyloseq-object-with-the-true-taxa" class="anchor"></a>Construct a phyloseq object with the true taxa</h2>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">all_real_taxa_lt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(all_real_taxa_lt)</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">all_real_taxa_lt =<span class="st"> </span>all_real_taxa_lt[<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="op">!</span>all_real_taxa_lt <span class="op">==</span><span class="st"> "Negative"</span>)]</a>
-<a class="sourceLine" id="cb20-3" data-line-number="3">ps_decon =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html">prune_taxa</a></span>(all_real_taxa_lt, ps)</a>
-<a class="sourceLine" id="cb20-4" data-line-number="4">ps_decon</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">all_true_taxa_blk &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(all_true_taxa_blk)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">ASV =<span class="st"> </span>df.ASV<span class="op">$</span>seq.variant[<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(df.ASV<span class="op">$</span>ASV.Genus) <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(all_true_taxa_blk))] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>()</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">ps_decon &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html">prune_taxa</a></span>(ASV, ps)</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">ps_decon</a></code></pre></div>
 <pre><code>## phyloseq-class experiment-level object
 ## otu_table()   OTU Table:         [ 33 taxa and 18 samples ]
 ## sample_data() Sample Data:       [ 18 samples by 5 sample variables ]
 ## tax_table()   Taxonomy Table:    [ 33 taxa by 7 taxonomic ranks ]</code></pre>
 </div>
+<div id="histograms" class="section level2">
+<h2 class="hasAnchor">
+<a href="#histograms" class="anchor"></a>Histograms</h2>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">itera &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">burnIn &lt;-<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">cov.pro &lt;-<span class="st"> </span><span class="fl">.95</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">num_blks &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(psByBlock)</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="co"># con_int_specimen_mar_post_true_intensities &lt;- readRDS("./con_int_specimen_mar_post_true_intensities_vignettes.rds")</span></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">con_int_specimen &lt;-<span class="st"> </span>con_int_specimen_mar_post_true_intensities[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb23-11" data-line-number="11">mar_post_true_intensities &lt;-<span class="st"> </span>con_int_specimen_mar_post_true_intensities[[<span class="dv">2</span>]]</a>
+<a class="sourceLine" id="cb23-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">blk &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb23-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb23-15" data-line-number="15">con_int_specimen_blk &lt;-<span class="st"> </span>con_int_specimen[[blk]]</a>
+<a class="sourceLine" id="cb23-16" data-line-number="16">mar_post_true_intensities_blk &lt;-<span class="st"> </span>mar_post_true_intensities[[blk]]</a>
+<a class="sourceLine" id="cb23-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb23-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb23-19" data-line-number="19">sample.names &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]])</a>
+<a class="sourceLine" id="cb23-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb23-21" data-line-number="21"><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(sample.names)){</a>
+<a class="sourceLine" id="cb23-22" data-line-number="22">    desired.sample.name &lt;-<span class="st"> </span>sample.names[j]</a>
+<a class="sourceLine" id="cb23-23" data-line-number="23">    desired.sample.index &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]]) <span class="op">%in%</span><span class="st"> </span>desired.sample.name)</a>
+<a class="sourceLine" id="cb23-24" data-line-number="24">    tax_interested &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html">otu_table</a></span>(psPlByBlock[[blk]])[,desired.sample.index],<span class="dt">decreasing =</span> <span class="ot">TRUE</span>))[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">16</span>)]</a>
+<a class="sourceLine" id="cb23-25" data-line-number="25">    tax_interested_ind &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html">taxa_names</a></span>(psPlByBlock[[blk]])) <span class="op">%in%</span><span class="st"> </span>tax_interested)</a>
+<a class="sourceLine" id="cb23-26" data-line-number="26">    tax_names &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html">taxa_names</a></span>(psPlByBlock[[blk]])[tax_interested_ind]</a>
+<a class="sourceLine" id="cb23-27" data-line-number="27">    tax_names &lt;-<span class="st"> </span>df.ASV<span class="op">$</span>ASV.Genus[<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(df.ASV<span class="op">$</span>seq.variant) <span class="op">%in%</span><span class="st">  </span>tax_names)] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>()</a>
+<a class="sourceLine" id="cb23-28" data-line-number="28">    </a>
+<a class="sourceLine" id="cb23-29" data-line-number="29">    taxa.post &lt;-<span class="st"> </span>mar_post_true_intensities_blk[[desired.sample.index]]</a>
+<a class="sourceLine" id="cb23-30" data-line-number="30">    </a>
+<a class="sourceLine" id="cb23-31" data-line-number="31">    burnIn &lt;-<span class="st"> </span>burnIn</a>
+<a class="sourceLine" id="cb23-32" data-line-number="32">    signal.hist &lt;-<span class="st"> </span>taxa.post[tax_interested_ind]</a>
+<a class="sourceLine" id="cb23-33" data-line-number="33">    signal.hist &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(signal.hist,<span class="cf">function</span>(x){x[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span>burnIn),]})</a>
+<a class="sourceLine" id="cb23-34" data-line-number="34">    signal.df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="st">"cbind"</span>, signal.hist))</a>
+<a class="sourceLine" id="cb23-35" data-line-number="35">    <span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(signal.df) &lt;-<span class="st"> </span>tax_names</a>
+<a class="sourceLine" id="cb23-36" data-line-number="36">    signal.df<span class="op">$</span>group &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"True"</span>, <span class="dt">length=</span><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(signal.df)[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb23-37" data-line-number="37">    </a>
+<a class="sourceLine" id="cb23-38" data-line-number="38">    bg &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>()</a>
+<a class="sourceLine" id="cb23-39" data-line-number="39">    <span class="cf">for</span>(ind <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(tax_interested_ind)){</a>
+<a class="sourceLine" id="cb23-40" data-line-number="40">        bg[[ind]] &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span>((itera<span class="op">-</span>burnIn<span class="op">+</span><span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb23-41" data-line-number="41">                            <span class="dt">shape =</span> con_int_specimen_blk[[desired.sample.index]][[<span class="dv">1</span>]][tax_interested_ind[ind]],</a>
+<a class="sourceLine" id="cb23-42" data-line-number="42">                            <span class="dt">rate =</span> con_int_specimen_blk[[desired.sample.index]][[<span class="dv">2</span>]][tax_interested_ind[ind]])</a>
+<a class="sourceLine" id="cb23-43" data-line-number="43">    }</a>
+<a class="sourceLine" id="cb23-44" data-line-number="44">    </a>
+<a class="sourceLine" id="cb23-45" data-line-number="45">    bg.df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="st">"cbind"</span>,bg))</a>
+<a class="sourceLine" id="cb23-46" data-line-number="46">    <span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(bg.df) &lt;-<span class="st"> </span>tax_names</a>
+<a class="sourceLine" id="cb23-47" data-line-number="47">    bg.df<span class="op">$</span>group &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"Contaminant"</span>, <span class="dt">length=</span><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(bg.df)[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb23-48" data-line-number="48">    </a>
+<a class="sourceLine" id="cb23-49" data-line-number="49">    bg.signal &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(signal.df, bg.df)</a>
+<a class="sourceLine" id="cb23-50" data-line-number="50">    bg.signal<span class="op">$</span>group &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(bg.signal<span class="op">$</span>group)</a>
+<a class="sourceLine" id="cb23-51" data-line-number="51">    bg_sig_long &lt;-<span class="st"> </span>tidyr<span class="op">::</span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span>(bg.signal,<span class="dt">key=</span><span class="st">"Taxa"</span>,</a>
+<a class="sourceLine" id="cb23-52" data-line-number="52">                                 <span class="dt">value=</span><span class="st">"Reads"</span>,<span class="dv">1</span><span class="op">:</span>(<span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(bg.signal)[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb23-53" data-line-number="53">    bg_sig_long<span class="op">$</span>Taxa &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(bg_sig_long<span class="op">$</span>Taxa)</a>
+<a class="sourceLine" id="cb23-54" data-line-number="54">    </a>
+<a class="sourceLine" id="cb23-55" data-line-number="55">    p &lt;-<span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(bg_sig_long, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span> Reads))<span class="op">+</span></a>
+<a class="sourceLine" id="cb23-56" data-line-number="56"><span class="st">      </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html">geom_density</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">y =</span> ..scaled.., <span class="dt">fill =</span> group, <span class="dt">color =</span> group)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-57" data-line-number="57"><span class="st">      </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>Taxa,<span class="dt">scales =</span> <span class="st">"free"</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb23-58" data-line-number="58"><span class="st">      </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span>(<span class="dt">values=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"blue"</span>,<span class="st">"brown"</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-59" data-line-number="59"><span class="st">      </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="dt">values=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"blue"</span>,<span class="st">"brown"</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-60" data-line-number="60"><span class="st">      </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(desired.sample.name)<span class="op">+</span></a>
+<a class="sourceLine" id="cb23-61" data-line-number="61"><span class="st">      </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">plot.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb23-62" data-line-number="62">            <span class="dt">legend.title=</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(), </a>
+<a class="sourceLine" id="cb23-63" data-line-number="63">            <span class="dt">strip.text.x =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">size=</span><span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb23-64" data-line-number="64">            <span class="dt">strip.background =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(), </a>
+<a class="sourceLine" id="cb23-65" data-line-number="65">            <span class="dt">panel.grid =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(), </a>
+<a class="sourceLine" id="cb23-66" data-line-number="66">            <span class="dt">panel.background =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>()) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-67" data-line-number="67"><span class="st">      </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">""</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-68" data-line-number="68"><span class="st">      </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">"density"</span>)</a>
+<a class="sourceLine" id="cb23-69" data-line-number="69">    </a>
+<a class="sourceLine" id="cb23-70" data-line-number="70">    <span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(p)</a>
+<a class="sourceLine" id="cb23-71" data-line-number="71">    <span class="co"># fileN &lt;- paste0("./Figures/", desired.sample.name,"_hist",".eps")</span></a>
+<a class="sourceLine" id="cb23-72" data-line-number="72">    <span class="co"># ggsave(fileN, plot = p, width = 10, height = 5, device = "eps")</span></a>
+<a class="sourceLine" id="cb23-73" data-line-number="73">}</a></code></pre></div>
+<p><img src="BARBI_files/figure-html/unnamed-chunk-2-1.png" width="700"><img src="BARBI_files/figure-html/unnamed-chunk-2-2.png" width="700"><img src="BARBI_files/figure-html/unnamed-chunk-2-3.png" width="700"><img src="BARBI_files/figure-html/unnamed-chunk-2-4.png" width="700"><img src="BARBI_files/figure-html/unnamed-chunk-2-5.png" width="700"><img src="BARBI_files/figure-html/unnamed-chunk-2-6.png" width="700"><img src="BARBI_files/figure-html/unnamed-chunk-2-7.png" width="700"><img src="BARBI_files/figure-html/unnamed-chunk-2-8.png" width="700"></p>
+</div>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a></code></pre></div>
 <pre><code>## R version 3.6.1 (2019-07-05)
 ## Platform: x86_64-apple-darwin15.6.0 (64-bit)
 ## Running under: macOS Mojave 10.14.6
@@ -448,62 +542,77 @@
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
-##  [1] grid      parallel  stats4    stats     graphics  grDevices utils    
-##  [8] datasets  methods   base     
+## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
 ## 
 ## other attached packages:
-##  [1] magrittr_1.5                gridExtra_2.3              
-##  [3] gtable_0.3.0                xtable_1.8-4               
-##  [5] HDInterval_0.2.0            doParallel_1.0.15          
-##  [7] iterators_1.0.12            foreach_1.4.7              
-##  [9] R.utils_2.9.2               R.oo_1.23.0                
-## [11] R.methodsS3_1.7.1           tidyr_1.0.0                
-## [13] dplyr_0.8.3                 DESeq2_1.26.0              
-## [15] SummarizedExperiment_1.16.0 DelayedArray_0.12.0        
-## [17] BiocParallel_1.20.0         matrixStats_0.55.0         
-## [19] Biobase_2.46.0              GenomicRanges_1.38.0       
-## [21] GenomeInfoDb_1.22.0         IRanges_2.20.1             
-## [23] S4Vectors_0.24.1            BiocGenerics_0.32.0        
-## [25] phyloseq_1.30.0             BARBI_0.1.0                
-## [27] BiocStyle_2.14.0           
+## [1] ggplot2_3.2.1    magrittr_1.5     gridExtra_2.3    gtable_0.3.0    
+## [5] HDInterval_0.2.0 dplyr_0.8.3      phyloseq_1.30.0  BARBI_0.1.0     
+## [9] BiocStyle_2.14.0
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] backports_1.1.5        Hmisc_4.3-0            plyr_1.8.5            
-##   [4] igraph_1.2.4.2         lazyeval_0.2.2         splines_3.6.1         
-##   [7] usethis_1.5.1          ggplot2_3.2.1          digest_0.6.23         
-##  [10] htmltools_0.4.0        fansi_0.4.0            checkmate_1.9.4       
-##  [13] memoise_1.1.0          cluster_2.1.0          remotes_2.1.0         
-##  [16] Biostrings_2.54.0      annotate_1.64.0        pkgdown_1.4.1.9000    
-##  [19] prettyunits_1.0.2      colorspace_1.4-1       blob_1.2.0            
-##  [22] xfun_0.11              callr_3.4.0            crayon_1.3.4          
-##  [25] RCurl_1.95-4.12        jsonlite_1.6           genefilter_1.68.0     
-##  [28] zeallot_0.1.0          survival_3.1-8         ape_5.3               
-##  [31] glue_1.3.1             zlibbioc_1.32.0        XVector_0.26.0        
-##  [34] pkgbuild_1.0.6         Rhdf5lib_1.8.0         scales_1.1.0          
-##  [37] DBI_1.0.0              Rcpp_1.0.3             htmlTable_1.13.2      
-##  [40] foreign_0.8-72         bit_1.1-14             Formula_1.2-3         
-##  [43] htmlwidgets_1.5.1      RColorBrewer_1.1-2     acepack_1.4.1         
-##  [46] ellipsis_0.3.0         pkgconfig_2.0.3        XML_3.98-1.20         
-##  [49] nnet_7.3-12            locfit_1.5-9.1         tidyselect_0.2.5      
-##  [52] rlang_0.4.2            reshape2_1.4.3         AnnotationDbi_1.48.0  
-##  [55] munsell_0.5.0          tools_3.6.1            cli_2.0.0             
-##  [58] RSQLite_2.1.3          ade4_1.7-13            devtools_2.2.1        
-##  [61] evaluate_0.14          biomformat_1.14.0      stringr_1.4.0         
-##  [64] yaml_2.2.0             processx_3.4.1         knitr_1.26            
-##  [67] bit64_0.9-7            fs_1.3.1               purrr_0.3.3           
-##  [70] nlme_3.1-142           compiler_3.6.1         rstudioapi_0.10       
-##  [73] curl_4.3               testthat_2.3.1         tibble_2.1.3          
-##  [76] geneplotter_1.64.0     stringi_1.4.3          ps_1.3.0              
-##  [79] desc_1.2.0             lattice_0.20-38        Matrix_1.2-18         
-##  [82] vegan_2.5-6            permute_0.9-5          multtest_2.42.0       
-##  [85] vctrs_0.2.0            pillar_1.4.2           lifecycle_0.1.0       
-##  [88] BiocManager_1.30.10    data.table_1.12.6      bitops_1.0-6          
-##  [91] R6_2.4.1               latticeExtra_0.6-28    bookdown_0.16         
-##  [94] sessioninfo_1.1.1      codetools_0.2-16       MASS_7.3-51.4         
-##  [97] assertthat_0.2.1       pkgload_1.0.2          rhdf5_2.30.1          
-## [100] rprojroot_1.3-2        withr_2.1.2            GenomeInfoDbData_1.2.2
-## [103] mgcv_1.8-31            rpart_4.1-15           rmarkdown_2.0         
-## [106] base64enc_0.1-3</code></pre>
+##   [1] colorspace_1.4-1            ellipsis_0.3.0             
+##   [3] rprojroot_1.3-2             htmlTable_1.13.2           
+##   [5] XVector_0.26.0              GenomicRanges_1.38.0       
+##   [7] base64enc_0.1-3             fs_1.3.1                   
+##   [9] rstudioapi_0.10             farver_2.0.1               
+##  [11] remotes_2.1.0               bit64_0.9-7                
+##  [13] AnnotationDbi_1.48.0        fansi_0.4.0                
+##  [15] codetools_0.2-16            splines_3.6.1              
+##  [17] geneplotter_1.64.0          knitr_1.26                 
+##  [19] ade4_1.7-13                 pkgload_1.0.2              
+##  [21] zeallot_0.1.0               jsonlite_1.6               
+##  [23] Formula_1.2-3               annotate_1.64.0            
+##  [25] cluster_2.1.0               BiocManager_1.30.10        
+##  [27] compiler_3.6.1              backports_1.1.5            
+##  [29] assertthat_0.2.1            Matrix_1.2-18              
+##  [31] lazyeval_0.2.2              cli_2.0.0                  
+##  [33] acepack_1.4.1               htmltools_0.4.0            
+##  [35] prettyunits_1.0.2           tools_3.6.1                
+##  [37] igraph_1.2.4.2              glue_1.3.1                 
+##  [39] GenomeInfoDbData_1.2.2      reshape2_1.4.3             
+##  [41] Rcpp_1.0.3                  Biobase_2.46.0             
+##  [43] pkgdown_1.4.1.9000          Biostrings_2.54.0          
+##  [45] vctrs_0.2.1                 multtest_2.42.0            
+##  [47] nlme_3.1-142                ape_5.3                    
+##  [49] iterators_1.0.12            xfun_0.11                  
+##  [51] stringr_1.4.0               ps_1.3.0                   
+##  [53] testthat_2.3.1              lifecycle_0.1.0            
+##  [55] devtools_2.2.1              XML_3.98-1.20              
+##  [57] zlibbioc_1.32.0             MASS_7.3-51.4              
+##  [59] scales_1.1.0                biomformat_1.14.0          
+##  [61] parallel_3.6.1              SummarizedExperiment_1.16.0
+##  [63] rhdf5_2.30.1                RColorBrewer_1.1-2         
+##  [65] yaml_2.2.0                  curl_4.3                   
+##  [67] memoise_1.1.0               rpart_4.1-15               
+##  [69] latticeExtra_0.6-28         stringi_1.4.3              
+##  [71] RSQLite_2.1.3               genefilter_1.68.0          
+##  [73] S4Vectors_0.24.1            desc_1.2.0                 
+##  [75] foreach_1.4.7               permute_0.9-5              
+##  [77] checkmate_1.9.4             BiocGenerics_0.32.0        
+##  [79] pkgbuild_1.0.6              BiocParallel_1.20.0        
+##  [81] GenomeInfoDb_1.22.0         rlang_0.4.2                
+##  [83] pkgconfig_2.0.3             matrixStats_0.55.0         
+##  [85] bitops_1.0-6                evaluate_0.14              
+##  [87] lattice_0.20-38             Rhdf5lib_1.8.0             
+##  [89] purrr_0.3.3                 labeling_0.3               
+##  [91] htmlwidgets_1.5.1           bit_1.1-14                 
+##  [93] processx_3.4.1              tidyselect_0.2.5           
+##  [95] plyr_1.8.5                  bookdown_0.16              
+##  [97] DESeq2_1.26.0               R6_2.4.1                   
+##  [99] IRanges_2.20.1              Hmisc_4.3-0                
+## [101] DelayedArray_0.12.0         DBI_1.0.0                  
+## [103] mgcv_1.8-31                 pillar_1.4.2               
+## [105] foreign_0.8-72              withr_2.1.2                
+## [107] survival_3.1-8              RCurl_1.95-4.12            
+## [109] nnet_7.3-12                 tibble_2.1.3               
+## [111] crayon_1.3.4                rmarkdown_2.0              
+## [113] usethis_1.5.1               locfit_1.5-9.1             
+## [115] data.table_1.12.6           vegan_2.5-6                
+## [117] blob_1.2.0                  callr_3.4.0                
+## [119] digest_0.6.23               xtable_1.8-4               
+## [121] tidyr_1.0.0                 stats4_3.6.1               
+## [123] munsell_0.5.0               sessioninfo_1.1.1</code></pre>
 </div>
   </div>
 
@@ -517,7 +626,7 @@
 <a href="#example-dataset">Example dataset</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#load-the-phyloseq-object">Load the phyloseq object</a></li>
       <li><a href="#adding-blocksbatches">Adding blocks/batches</a></li>
-      <li><a href="#remove-taxa-not-in-specimens-dilution-series-samples">Remove taxa not in specimens (dilution series samples)</a></li>
+      <li><a href="#remove-taxa-not-in-dilution-series-samples">Remove taxa not in dilution series samples</a></li>
       <li><a href="#library-depth">Library depth</a></li>
       <li><a href="#summary">Summary</a></li>
       </ul>
@@ -525,15 +634,17 @@
       <li>
 <a href="#barbi">BARBI</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#prepare-the-phyloseq-object-for-the-barbi-method">Prepare the phyloseq object for the BARBI method</a></li>
-      <li><a href="#estimate-the-distribution-parameters-for-the-instensity-of-contamination-in-negative-control-samples">Estimate the distribution parameters for the instensity of contamination in negative control samples</a></li>
-      <li><a href="#estimate-the-distribution-parameters-for-the-intensity-of-contamination-in-each-specimen-sample">Estimate the distribution parameters for the intensity of contamination in each specimen sample</a></li>
-      <li><a href="#sample-from-the-posterior-for-the-true-intensities">Sample from the posterior for the true intensities</a></li>
+      <li><a href="#estimate-the-density-parameters-for-the-contaminant-intensities-in-negative-control-samples">Estimate the density parameters for the contaminant intensities in negative control samples</a></li>
+      <li><a href="#estimate-the-density-parameters-for-the-contaminant-intensities-in-each-specimen">Estimate the density parameters for the contaminant intensities in each specimen</a></li>
+      <li><a href="#sample-from-the-marginal-posterior-for-the-true-intensities">Sample from the marginal posterior for the true intensities</a></li>
+      <li><a href="#save-the-results-">Save the results.</a></li>
       </ul>
 </li>
       <li>
-<a href="#display-the-results">Display the results</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#make-summaries-from-the-barbi-results-">Make summaries from the BARBI results.</a></li>
+<a href="#make-summaries-from-the-barbi-results-">Make summaries from the BARBI results.</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#make-tables-for-each-sample">Make tables for each sample</a></li>
       <li><a href="#construct-a-phyloseq-object-with-the-true-taxa">Construct a phyloseq object with the true taxa</a></li>
+      <li><a href="#histograms">Histograms</a></li>
       </ul>
 </li>
       <li><a href="#session-info">Session Info</a></li>

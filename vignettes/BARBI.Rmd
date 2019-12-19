@@ -85,7 +85,6 @@ if(dim(otu_table(ps))[1]!=ntaxa(ps)){
 ```
 
 
-
 ## Adding blocks/batches
 
 To reduce the batch-effects of contamination, we can specify the block information and analyze each block separately with BARBI.
