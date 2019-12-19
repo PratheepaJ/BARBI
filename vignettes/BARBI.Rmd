@@ -232,7 +232,7 @@ con_int_specimen_mar_post_true_intensities <- list(con_int_specimen, mar_post_tr
 ```
 
 ## Save the results.
-```{r}
+```{r eval=FALSE}
 saveRDS(con_int_specimen_mar_post_true_intensities, 
         file= "./con_int_specimen_mar_post_true_intensities_vignettes.rds")
 ```
