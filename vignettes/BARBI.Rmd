@@ -26,21 +26,14 @@ knitr::opts_chunk$set(echo = TRUE,
 Install [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/). Open this `Rmd` `r Githubpkg("rstudio/rmarkdown")` file in `vignettes` folder in RStudio. Then run the following code to install all required packages, including BARBI from Github repository.
 
 ```{r install_packages}
-pkgs <- c("DESeq2",
-         "phyloseq",
+pkgs <- c("phyloseq",
          "dplyr",
-         "tidyr",
-         "R.utils",
-         "BiocParallel",
-          "doParallel",
-         "parallel",
          "HDInterval",
          "grid",
-         "xtable",
          "gtable",
          "gridExtra",
-         "BiocStyle",
-         "magrittr")
+         "magrittr",
+         "ggplot2")
 
 if (!requireNamespace("BiocManager")){
   install.packages("BiocManager")
@@ -55,20 +48,13 @@ Load packages:
 ```{r load_packages}
 library(BARBI)
 library(phyloseq)
-# library(DESeq2)
 library(dplyr)
-# library(tidyr)
-# library(R.utils)
-# library(BiocParallel)
-# library(doParallel)
-# library(parallel)
-# library(HDInterval)
-# library(grid)
-# library(xtable)
-# library(gtable)
-# library(gridExtra)
-# library(BiocStyle)
+library(HDInterval)
+library(grid)
+library(gtable)
+library(gridExtra)
 library(magrittr)
+library(ggplot2)
 ```
 
 
@@ -119,10 +105,13 @@ sample_data(ps)$block <- blocks
 
 Identify the taxa that are not present in at least one dilution series sample and removed them from the phyloseq object. Label these species as contaminants. 
 
+
 ```{r filter_taxa}
-ps <- prune_taxa(taxa_sums(ps)>0, ps)
-ps_specimen <-  subset_samples(ps, SampleType %in% c("Standard"))
-prevTaxaP <- apply(otu_table(ps_specimen), 1, function(x){sum(x>0)})
+ps <- prune_taxa(taxa_sums(ps) > 0, ps)
+ps_specimen <-  subset_samples(ps, 
+                               SampleType %in% c("Standard"))
+prevTaxaP <- apply(otu_table(ps_specimen), 1,
+                   function(x){sum(x>0)})
 
 Contaminants1 <- names(prevTaxaP)[prevTaxaP == 0]
 ps <- prune_taxa(prevTaxaP > 0, ps)
@@ -139,13 +128,14 @@ We check the distribution of sample library depth to see whether there are sampl
 
 ```{r filter-samples}
 totalReads <- colSums(otu_table(ps))
-hist(log(totalReads), yaxs="i", xaxs="i", 
+hist(log(totalReads), 
+     yaxs="i", 
+     xaxs="i", 
      main="Distribution of total reads per sample", 
      breaks=50)
 ```
 
 We do not need to drop any sample. 
-
 
 ## Summary
 
@@ -183,36 +173,38 @@ psPlByBlock <- psBlockResult[[4]]
 ```
 
 
-##  Estimate the distribution parameters for the instensity of contamination in negative control samples
+##  Estimate the density parameters for the contaminant intensities in negative control samples
 
-Estimate the gamma distribution parameters for the intensity of contaminants using the negative control samples for each block. 
-<!-- Choosing `stringent == TRUE` specifies BARBI to not using the scaling property for the species with the mean intensity of contamination less than one. This is one of two parameters that allows for more stringent subtraction of contaminants, especially for those at low abundance in negative control samples. -->
+Estimate the gamma density parameters for the contaminant intensities using the negative control samples for each block. 
 
-```{r estimate_Cont_Intensity_ncontrols}
-alphaBetaNegControl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock)
+$\lambda_{il}^{(c)} \sim \text{gamma }\left(\frac{1}{\gamma_{i}^{0}},\frac{1}{\gamma_{i}^{0} \mu_{il}^{0}}\right),$ $l$ is the $l$-th negative control.
+
+```{r gamma-den-con-in-neg-ctrl}
+con_int_neg_ctrl <- alphaBetaNegControl(psNCbyBlock = psNCbyBlock)
 ```
 
 
+##  Estimate the density parameters for the contaminant intensities in each specimen 
 
-##  Estimate the distribution parameters for the intensity of contamination in each specimen sample
+For each specimen, we estimate the gamma density parameters for the contaminant intensities using the scaling property of the gamma distribution.
 
-For each specimen sample, estimate the gamma distribution parameters for the intensity of contamination using the scaling property of the gamma distribution.
+$\lambda_{ij}^{(c)} \sim \text{gamma }\left(  \frac{d^{0}_{l} }{d_{j}} \frac{1}{\gamma_{i}^{0}},\frac{1}{\gamma_{i}^{0} \mu_{il}^{0}}\right),$ where $j$ is the $j$-th specimen.
 
-```{r estimate_Cont_Intensity_specimen}
-num_blks <- length(alphaBetaNegControl)
+```{r gamma-den-con-in-specimen}
+num_blks <- length(con_int_neg_ctrl)
 blks <- seq(1, num_blks) %>% as.list
 
-gammaPrior_all_blks <- lapply(blks, function(x){
-    gammaPrior <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock, 
-                                       psallzeroInNC = psallzeroInNC, 
-                                       blk = x,
-                                       alphaBetaNegControl=alphaBetaNegControl)
-        return(gammaPrior)
+con_int_specimen <- lapply(blks, function(x){
+    con_int_specimen_each_blk <- alphaBetaContInPlasma(psPlByBlock = psPlByBlock,
+                                                       psallzeroInNC = psallzeroInNC,
+                                                       blk = x,
+                                                       alphaBetaNegControl = con_int_neg_ctrl)
+        return(con_int_specimen_each_blk)
 })
 ```
 
 
-##  Sample from the posterior for the true intensities
+##  Sample from the marginal posterior for the true intensities
 
 For all specimen samples and for all taxa, sample from the posterior for the true intensities using the Metropolis-Hasting MCMC. 
 
@@ -222,28 +214,28 @@ Save the gamma prior for the intensity of contamination and the posterior sample
 
 The  suggested itera is 10,000. 
 
-```{r sampling_post_true_int}
+```{r sample-mar-post-true-int}
 t1 <- proc.time()
 
-post_all_blocks <- lapply(blks,function(x){
-    post_int_all_taxa <- samplingPosterior(psPlByBlock = psPlByBlock,
-                                          blk = x,
-                                          gammaPrior_Cont = gammaPrior_all_blks[[x]],
-                                          itera = 100)
-    return(post_int_all_taxa)
+mar_post_true_intensities <- lapply(blks,function(x){
+    mar_post_true_intensities_each_blk <- samplingPosterior(psPlByBlock = psPlByBlock,
+                                                            blk = x,
+                                                            gammaPrior_Cont = con_int_specimen[[x]],
+                                                            itera = 100)
+    return(mar_post_true_intensities_each_blk)
 })
 
 proc.time()-t1
 
 
-gammaPrior_posTrueSing_all_blocks <- list(gammaPrior_all_blks,post_all_blocks)
+con_int_specimen_mar_post_true_intensities <- list(con_int_specimen, mar_post_true_intensities)
 ```
 
-We can save the results.
-```{r eval=FALSE}
-saveRDS(gammaPrior_posTrueSing_all_blocks, file= "./gammaPrior_posTrueSing_all_blocks.rds")
+## Save the results.
+```{r}
+saveRDS(con_int_specimen_mar_post_true_intensities, 
+        file= "./con_int_specimen_mar_post_true_intensities_vignettes.rds")
 ```
-
 
 
 #  Make summaries from the BARBI results.
@@ -259,139 +251,238 @@ Compute the highest density interval (HDI) for the contaminant intensities $\lef
 For a contaminant taxon, the lower limit $L_{ij}^{(r)}$ will be smaller than the upper limit $U_{ij}^{(c)}$.
 
 The suggested burnIn is 5000 for itera <- 10,000.
+
+```{r ASV-names}
+ASV <- as.character(paste0("ASV_",seq(1,ntaxa(ps))))
+ASV.Genus <- paste0("ASV_",seq(1,ntaxa(ps)),"_",as.character(tax_table(ps)[,6]))
+ASV.Genus.Species <- paste0(ASV,"_",as.character(tax_table(ps)[,6]),"_", as.character(tax_table(ps)[,7]))
+
+df.ASV <- data.frame(seq.variant = taxa_names(ps), ASV = ASV, ASV.Genus = ASV.Genus, ASV.Genus.Species = ASV.Genus.Species)
+```
+
 ```{r make_tables}
 itera <- 100
 burnIn <- 10
 cov.pro <- .95
-mak_tab <- TRUE
+mak_tab <- FALSE # Save tables or print tables 
 
-# psByBlock <- readRDS("./psByBlock.rds")
+# con_int_specimen_mar_post_true_intensities <- readRDS("./con_int_specimen_mar_post_true_intensities_vignettes.rds")
 
-# gammaPrior_posTrueSing_all_blocks <- readRDS("./gammaPrior_posTrueSing_all_blocks.rds")
+con_int_specimen <- con_int_specimen_mar_post_true_intensities[[1]]
+mar_post_true_intensities <- con_int_specimen_mar_post_true_intensities[[2]]
 
-gammaPrior_all_blks <- gammaPrior_posTrueSing_all_blocks[[1]]
-post_all_blocks <- gammaPrior_posTrueSing_all_blocks[[2]]
-
-all_real_taxa_lt <- list()
+## Keep true 
+all_true_taxa_blk <- list()
 
 for(blk in 1:num_blks){
 
-    taxa_post_all_sam <- post_all_blocks[[blk]]
-    gammPrior <- gammaPrior_all_blks[[blk]]
+  mar_post_true_intensities_blk <- mar_post_true_intensities[[blk]]
+  con_int_specimen_blk <- con_int_specimen[[blk]]
 
-    total_summary_table <- NULL
+  all_true_taxa <- character()
 
-    all_real_taxa <- character()
+  for(sam in 1:nsamples(psPlByBlock[[blk]])){
+      taxa_post <- mar_post_true_intensities_blk[[sam]]
+      acceptance <- list()
+      lower.r <- list()
+      upper.r <- list()
+      lower.c <- list()
+      upper.c <- list()
+      all.zero.nc <- list()
 
-    for(sam in 1:nsamples(psPlByBlock[[blk]])){
+      for(taxa in 1:length(taxa_post)){
+        burnIn  <- burnIn
+        acceptance[[taxa]]  <-  1 - mean(duplicated(taxa_post[[taxa]][-(1:burnIn),]))
 
-        taxa_post <- taxa_post_all_sam[[sam]]
-        acceptance <- list()
-        # exp_post_s <- list()
-        lower.t <- list()
-        upper.t <- list()
-        lower.c <- list()
-        upper.c <- list()
-        all.zero.nc <- list()
-
-        for(taxa in 1:length(taxa_post)){
-            burnIn  <- burnIn
-            acceptance[[taxa]]  <-  1-mean(duplicated(taxa_post[[taxa]][-(1:burnIn),]))
-
-            # exp_post_s[[taxa]] <- mean(taxa_post[[taxa]][-(1:burnIn),])
-
-            hdi.v <- hdi(taxa_post[[taxa]][-(1:burnIn),],
-                        credMass <- cov.pro)
-            lower.t[[taxa]] <- round(hdi.v[1], digits = 0)
-            upper.t[[taxa]] <- round(hdi.v[2], digits = 0)
-            bb <- rgamma((itera-burnIn+1), 
-                        shape= gammPrior[[sam]][[1]][taxa],
-                        rate = gammPrior[[sam]][[2]][taxa])
-            
-            # exp_bb <- gammPrior[[sam]][[1]][taxa]/gammPrior[[sam]][[2]][taxa]
-
-            hdi.b <- hdi(bb, credMass = cov.pro)
-            lower.c[[taxa]] <- round(hdi.b[1], digits = 0)
-            upper.c[[taxa]] <- round(hdi.b[2], digits = 0)
-            
-            all.zero.nc[[taxa]] <-  gammPrior[[sam]][[5]][taxa]
-                
-        }
-
-
-        df <- data.frame(Species = taxa_names(psPlByBlock[[blk]]),
-                        xj = as.numeric(gammPrior[[sam]][[3]]),
-                        l.t = unlist(lower.t),
-                        u.t = unlist(upper.t),
-                        l.c = unlist(lower.c),
-                        u.c = unlist(upper.c),
-                        all.zero.nc = unlist(all.zero.nc))
+        HPD.r <- hdi(taxa_post[[taxa]][-(1:burnIn),],
+                    credMass = cov.pro)
+        lower.r[[taxa]] <- round(HPD.r[1], digits = 0)
+        upper.r[[taxa]] <- round(HPD.r[2], digits = 0)
+        lamda.c <- rgamma((itera-burnIn+1), 
+                    shape= con_int_specimen_blk[[sam]][[1]][taxa],
+                    rate = con_int_specimen_blk[[sam]][[2]][taxa])
         
-        # List all true taxa
-        df <- arrange(filter(df,(l.t > u.c) & (l.t > 0)),
-                     desc(xj))
-
-        # If there is no true taxa
-        if(dim(df)[1]==0){
-            df <- data.frame(Species="Negative",
-                             xj="Negative",
-                             l.t="Negative",
-                             u.t="Negative",
-                             l.c ="Negative",
-                             u.c="Negative",
-                             all.zero.nc = "Negative")
-        }
-
-        # collect all true taxa in the specimen
-        all_real_taxa <- c(all_real_taxa,
-                          as.character(df$Species))
+        HDI.c <- hdi(lamda.c, credMass = cov.pro)
+        lower.c[[taxa]] <- round(HDI.c[1], digits = 0)
+        upper.c[[taxa]] <- round(HDI.c[2], digits = 0)
         
-        if(mak_tab){
-          filname <- paste("./",
-                          sample_names(psPlByBlock[[blk]])[sam],
-                          ".png",
-                          sep="")
+        all.zero.nc[[taxa]] <-  con_int_specimen_blk[[sam]][[5]][taxa]
+      }
 
-          png(filname, height = 600, width = 750)
+    tax_names <- taxa_names(psPlByBlock[[blk]])
+    tax_names <- df.ASV$ASV.Genus[which(as.character(df.ASV$seq.variant) %in%  tax_names)]
+      
+    df <- data.frame(Species = tax_names,
+                    xj = as.numeric(con_int_specimen_blk[[sam]][[3]]),
+                    l.r = unlist(lower.r),
+                    u.r = unlist(upper.r),
+                    l.c = unlist(lower.c),
+                    u.c = unlist(upper.c),
+                    all.zero.nc = unlist(all.zero.nc))
+      
+    
+      # List all true taxa
+      df <- arrange(filter(df,(l.r > u.c) & (l.r > 0)),
+                   desc(xj))
 
-          df.p <- tableGrob(df)
-          title <- textGrob(sample_names(psPlByBlock[[blk]])[sam], 
-                           gp <- gpar(fontsize = 12))
+      # If there is no true taxa
+      if(dim(df)[1]==0){
+          df <- data.frame(Species="Negative",
+                           xj="Negative",
+                           l.r="Negative",
+                           u.r="Negative",
+                           l.c ="Negative",
+                           u.c="Negative",
+                           all.zero.nc = "Negative")
+      }
 
-          padding <- unit(0.5,"line")
+    
+      
+      # collect all true taxa in the specimen
+      all_true_taxa <- c(all_true_taxa,
+                        as.character(df$Species))
+      
+      if(mak_tab){
+        filname <- paste("./",
+                         sample_names(psPlByBlock[[blk]])[sam],
+                        ".png",
+                        sep = "")
 
-          df.p <- gtable_add_rows(df.p, 
-                                 heights = grobHeight(title) + padding, 
-                                 pos = 0)
+        png(filname, height = 600, width = 750)
 
-          df.p <- gtable_add_grob(df.p, 
-                                 list(title),
-                                 t = 1, 
-                                 l = 1, 
-                                 r = ncol(df.p))
+        df.p <- tableGrob(df)
+        title <- textGrob(sample_names(psPlByBlock[[blk]])[sam], 
+                         gp <- gpar(fontsize = 12))
 
-          grid.newpage()
-          grid.draw(df.p)
-          dev.off()
-        }
+        padding <- unit(0.5,"line")
+
+        df.p <- gtable_add_rows(df.p, 
+                               heights = grobHeight(title) + padding, 
+                               pos = 0)
+
+        df.p <- gtable_add_grob(df.p, 
+                               list(title),
+                               t = 1, 
+                               l = 1, 
+                               r = ncol(df.p))
+
+        grid.newpage()
+        grid.draw(df.p)
+        dev.off()
+        
+      }else{
+        df.p <- tableGrob(df)
+        title <- textGrob(sample_names(psPlByBlock[[blk]])[sam], 
+                         gp <- gpar(fontsize = 12))
+
+        padding <- unit(0.5,"line")
+
+        df.p <- gtable_add_rows(df.p, 
+                               heights = grobHeight(title) + padding, 
+                               pos = 0)
+
+        df.p <- gtable_add_grob(df.p, 
+                               list(title),
+                               t = 1, 
+                               l = 1, 
+                               r = ncol(df.p))
+        grid.newpage()
+        grid.draw(df.p)
+      }
 
 
-        all_real_taxa <- unique(all_real_taxa)
-    }
+      all_true_taxa <- unique(all_true_taxa)
+  }
 
-    all_real_taxa_lt[[blk]] <- all_real_taxa
+  all_true_taxa_blk[[blk]] <- all_true_taxa
 }
 ```
 
 ## Construct a phyloseq object with the true taxa
 ```{r make_phyloseq}
-all_real_taxa_lt <- unlist(all_real_taxa_lt)
-all_real_taxa_lt <- all_real_taxa_lt[which(!all_real_taxa_lt == "Negative")]
-ps_decon <- prune_taxa(all_real_taxa_lt, ps)
+all_true_taxa_blk <- unlist(all_true_taxa_blk)
+ASV = df.ASV$seq.variant[which(as.character(df.ASV$ASV.Genus) %in% as.character(all_true_taxa_blk))] %>% as.character()
+ps_decon <- prune_taxa(ASV, ps)
 ps_decon
 ```
 
-## Make histograms
+## Histograms
+```{r}
+set.seed(10000)
+itera <- 100
+burnIn <- 10
+cov.pro <- .95
+
+num_blks <- length(psByBlock)
+
+# con_int_specimen_mar_post_true_intensities <- readRDS("./con_int_specimen_mar_post_true_intensities_vignettes.rds")
+
+con_int_specimen <- con_int_specimen_mar_post_true_intensities[[1]]
+mar_post_true_intensities <- con_int_specimen_mar_post_true_intensities[[2]]
+
+blk <- 1
+
+con_int_specimen_blk <- con_int_specimen[[blk]]
+mar_post_true_intensities_blk <- mar_post_true_intensities[[blk]]
+
+
+sample.names <- sample_names(psPlByBlock[[blk]])
+
+for(j in 1: length(sample.names)){
+    desired.sample.name <- sample.names[j]
+    desired.sample.index <- which(sample_names(psPlByBlock[[blk]]) %in% desired.sample.name)
+    tax_interested <- rownames(sort(otu_table(psPlByBlock[[blk]])[,desired.sample.index],decreasing = TRUE))[c(1:16)]
+    tax_interested_ind <- which(as.character(taxa_names(psPlByBlock[[blk]])) %in% tax_interested)
+    tax_names <- taxa_names(psPlByBlock[[blk]])[tax_interested_ind]
+    tax_names <- df.ASV$ASV.Genus[which(as.character(df.ASV$seq.variant) %in%  tax_names)] %>% as.character()
+    
+    taxa.post <- mar_post_true_intensities_blk[[desired.sample.index]]
+    
+    burnIn <- burnIn
+    signal.hist <- taxa.post[tax_interested_ind]
+    signal.hist <- lapply(signal.hist,function(x){x[-(1:burnIn),]})
+    signal.df <- data.frame(do.call("cbind", signal.hist))
+    colnames(signal.df) <- tax_names
+    signal.df$group <- rep("True", length=dim(signal.df)[1])
+    
+    bg <- list()
+    for(ind in 1:length(tax_interested_ind)){
+        bg[[ind]] <- rgamma((itera-burnIn+1),
+                            shape = con_int_specimen_blk[[desired.sample.index]][[1]][tax_interested_ind[ind]],
+                            rate = con_int_specimen_blk[[desired.sample.index]][[2]][tax_interested_ind[ind]])
+    }
+    
+    bg.df <- data.frame(do.call("cbind",bg))
+    colnames(bg.df) <- tax_names
+    bg.df$group <- rep("Contaminant", length=dim(bg.df)[1])
+    
+    bg.signal <- rbind(signal.df, bg.df)
+    bg.signal$group <- as.factor(bg.signal$group)
+    bg_sig_long <- tidyr::gather(bg.signal,key="Taxa",
+                                 value="Reads",1:(dim(bg.signal)[2]-1))
+    bg_sig_long$Taxa <- as.factor(bg_sig_long$Taxa)
+    
+    p <- ggplot(bg_sig_long, aes(x= Reads))+
+      geom_density(aes(y = ..scaled.., fill = group, color = group)) +
+      facet_wrap(~Taxa,scales = "free")+
+      scale_fill_manual(values=c("blue","brown")) +
+      scale_color_manual(values=c("blue","brown")) +
+      ggtitle(desired.sample.name)+
+      theme(plot.title = element_text(hjust = 0.5),
+            legend.title=element_blank(), 
+            strip.text.x = element_text(size=5),
+            strip.background = element_blank(), 
+            panel.grid = element_blank(), 
+            panel.background = element_blank()) + 
+      xlab("") + 
+      ylab("density")
+    
+    print(p)
+    # fileN <- paste0("./Figures/", desired.sample.name,"_hist",".eps")
+    # ggsave(fileN, plot = p, width = 10, height = 5, device = "eps")
+}
+
+```
 
 # Session Info 
 
