@@ -89,20 +89,26 @@
 <a class="sourceLine" id="cb1-5" data-line-number="5">         <span class="st">"gtable"</span>,</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">         <span class="st">"gridExtra"</span>,</a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">         <span class="st">"magrittr"</span>,</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">         <span class="st">"ggplot2"</span>)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>)){</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">}</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">   </a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(pkgs, <span class="kw"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()))</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"PratheepaJ/BARBI"</span>)</a></code></pre></div>
-<pre><code>## 
+<a class="sourceLine" id="cb1-8" data-line-number="8">         <span class="st">"ggplot2"</span>,</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">         <span class="st">"DESeq2"</span>)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>)){</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">}</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">   </a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(pkgs, <span class="kw"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()))</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"PratheepaJ/BARBI"</span>)</a></code></pre></div>
+<pre><code>## pillar (1.4.2 -&gt; 1.4.3) [CRAN]
+## 
+##   There is a binary version available but the source version is later:
+##        binary source needs_compilation
+## pillar  1.4.2  1.4.3             FALSE
+## 
 ##   
-   checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpXLj8Ag/remotes444c796a1c48/PratheepaJ-BARBI-4c0e1e7/DESCRIPTION’ ...
+   checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpfYZy68/remotes593f2f6dc0d1/PratheepaJ-BARBI-6e58adf/DESCRIPTION’ ...
   
-✓  checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpXLj8Ag/remotes444c796a1c48/PratheepaJ-BARBI-4c0e1e7/DESCRIPTION’
+✓  checking for file ‘/private/var/folders/70/2611_qjd0sdbxlcny0wp4xx40000gn/T/RtmpfYZy68/remotes593f2f6dc0d1/PratheepaJ-BARBI-6e58adf/DESCRIPTION’
 ## 
   
 ─  preparing ‘BARBI’:
@@ -136,7 +142,8 @@
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gtable)</a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gridExtra)</a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(magrittr)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a></code></pre></div>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DESeq2)</a></code></pre></div>
 <div id="example-dataset" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example-dataset" class="anchor"></a>Example dataset</h1>
@@ -261,19 +268,20 @@
 <p>We need to specify the number of iterations in the MCMC using the option <code>itera</code>.</p>
 <p>Save the gamma prior for the intensity of contamination and the posterior samples.</p>
 <p>The suggested itera is 10,000.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">t1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">mar_post_true_intensities &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(blks,<span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">    mar_post_true_intensities_each_blk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/samplingPosterior.html">samplingPosterior</a></span>(<span class="dt">psPlByBlock =</span> psPlByBlock,</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">                                                            <span class="dt">blk =</span> x,</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">                                                            <span class="dt">gammaPrior_Cont =</span> con_int_specimen[[x]],</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">                                                            <span class="dt">itera =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(mar_post_true_intensities_each_blk)</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">})</a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()<span class="op">-</span>t1</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">itera =<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">t1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">mar_post_true_intensities &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(blks,<span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">    mar_post_true_intensities_each_blk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/samplingPosterior.html">samplingPosterior</a></span>(<span class="dt">psPlByBlock =</span> psPlByBlock,</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">                                                            <span class="dt">blk =</span> x,</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">                                                            <span class="dt">gammaPrior_Cont =</span> con_int_specimen[[x]],</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">                                                            <span class="dt">itera =</span> itera)</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(mar_post_true_intensities_each_blk)</a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">})</a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()<span class="op">-</span>t1</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   7.705   0.117   7.856</code></pre>
+##   6.980   0.115   7.120</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">con_int_specimen_mar_post_true_intensities &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(con_int_specimen, mar_post_true_intensities)</a></code></pre></div>
 </div>
 <div id="save-the-results-" class="section level2">
@@ -390,7 +398,7 @@
 <a class="sourceLine" id="cb20-89" data-line-number="89"></a>
 <a class="sourceLine" id="cb20-90" data-line-number="90">        df.p &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gridExtra/man/tableGrob.html">tableGrob</a></span>(df)</a>
 <a class="sourceLine" id="cb20-91" data-line-number="91">        title &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/grid.text.html">textGrob</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]])[sam], </a>
-<a class="sourceLine" id="cb20-92" data-line-number="92">                         gp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="dt">fontsize =</span> <span class="dv">12</span>))</a>
+<a class="sourceLine" id="cb20-92" data-line-number="92">                         <span class="dt">gp =</span> <span class="kw"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="dt">fontsize =</span> <span class="dv">12</span>))</a>
 <a class="sourceLine" id="cb20-93" data-line-number="93"></a>
 <a class="sourceLine" id="cb20-94" data-line-number="94">        padding &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span>(<span class="fl">0.5</span>,<span class="st">"line"</span>)</a>
 <a class="sourceLine" id="cb20-95" data-line-number="95"></a>
@@ -411,7 +419,7 @@
 <a class="sourceLine" id="cb20-110" data-line-number="110">      }<span class="cf">else</span>{</a>
 <a class="sourceLine" id="cb20-111" data-line-number="111">        df.p &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/gridExtra/man/tableGrob.html">tableGrob</a></span>(df)</a>
 <a class="sourceLine" id="cb20-112" data-line-number="112">        title &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/grid.text.html">textGrob</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html">sample_names</a></span>(psPlByBlock[[blk]])[sam], </a>
-<a class="sourceLine" id="cb20-113" data-line-number="113">                         gp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="dt">fontsize =</span> <span class="dv">12</span>))</a>
+<a class="sourceLine" id="cb20-113" data-line-number="113">                         <span class="dt">gp =</span> <span class="kw"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="dt">fontsize =</span> <span class="dv">12</span>))</a>
 <a class="sourceLine" id="cb20-114" data-line-number="114"></a>
 <a class="sourceLine" id="cb20-115" data-line-number="115">        padding &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span>(<span class="fl">0.5</span>,<span class="st">"line"</span>)</a>
 <a class="sourceLine" id="cb20-116" data-line-number="116"></a>
@@ -542,77 +550,59 @@
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
-## [1] grid      stats     graphics  grDevices utils     datasets  methods  
-## [8] base     
+##  [1] parallel  stats4    grid      stats     graphics  grDevices utils    
+##  [8] datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] ggplot2_3.2.1    magrittr_1.5     gridExtra_2.3    gtable_0.3.0    
-## [5] HDInterval_0.2.0 dplyr_0.8.3      phyloseq_1.30.0  BARBI_0.1.0     
-## [9] BiocStyle_2.14.0
+##  [1] DESeq2_1.26.0               SummarizedExperiment_1.16.0
+##  [3] DelayedArray_0.12.0         BiocParallel_1.20.0        
+##  [5] matrixStats_0.55.0          Biobase_2.46.0             
+##  [7] GenomicRanges_1.38.0        GenomeInfoDb_1.22.0        
+##  [9] IRanges_2.20.1              S4Vectors_0.24.1           
+## [11] BiocGenerics_0.32.0         ggplot2_3.2.1              
+## [13] magrittr_1.5                gridExtra_2.3              
+## [15] gtable_0.3.0                HDInterval_0.2.0           
+## [17] dplyr_0.8.3                 phyloseq_1.30.0            
+## [19] BARBI_0.1.0                 BiocStyle_2.14.0           
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] colorspace_1.4-1            ellipsis_0.3.0             
-##   [3] rprojroot_1.3-2             htmlTable_1.13.2           
-##   [5] XVector_0.26.0              GenomicRanges_1.38.0       
-##   [7] base64enc_0.1-3             fs_1.3.1                   
-##   [9] rstudioapi_0.10             farver_2.0.1               
-##  [11] remotes_2.1.0               bit64_0.9-7                
-##  [13] AnnotationDbi_1.48.0        fansi_0.4.0                
-##  [15] codetools_0.2-16            splines_3.6.1              
-##  [17] geneplotter_1.64.0          knitr_1.26                 
-##  [19] ade4_1.7-13                 pkgload_1.0.2              
-##  [21] zeallot_0.1.0               jsonlite_1.6               
-##  [23] Formula_1.2-3               annotate_1.64.0            
-##  [25] cluster_2.1.0               BiocManager_1.30.10        
-##  [27] compiler_3.6.1              backports_1.1.5            
-##  [29] assertthat_0.2.1            Matrix_1.2-18              
-##  [31] lazyeval_0.2.2              cli_2.0.0                  
-##  [33] acepack_1.4.1               htmltools_0.4.0            
-##  [35] prettyunits_1.0.2           tools_3.6.1                
-##  [37] igraph_1.2.4.2              glue_1.3.1                 
-##  [39] GenomeInfoDbData_1.2.2      reshape2_1.4.3             
-##  [41] Rcpp_1.0.3                  Biobase_2.46.0             
-##  [43] pkgdown_1.4.1.9000          Biostrings_2.54.0          
-##  [45] vctrs_0.2.1                 multtest_2.42.0            
-##  [47] nlme_3.1-142                ape_5.3                    
-##  [49] iterators_1.0.12            xfun_0.11                  
-##  [51] stringr_1.4.0               ps_1.3.0                   
-##  [53] testthat_2.3.1              lifecycle_0.1.0            
-##  [55] devtools_2.2.1              XML_3.98-1.20              
-##  [57] zlibbioc_1.32.0             MASS_7.3-51.4              
-##  [59] scales_1.1.0                biomformat_1.14.0          
-##  [61] parallel_3.6.1              SummarizedExperiment_1.16.0
-##  [63] rhdf5_2.30.1                RColorBrewer_1.1-2         
-##  [65] yaml_2.2.0                  curl_4.3                   
-##  [67] memoise_1.1.0               rpart_4.1-15               
-##  [69] latticeExtra_0.6-28         stringi_1.4.3              
-##  [71] RSQLite_2.1.3               genefilter_1.68.0          
-##  [73] S4Vectors_0.24.1            desc_1.2.0                 
-##  [75] foreach_1.4.7               permute_0.9-5              
-##  [77] checkmate_1.9.4             BiocGenerics_0.32.0        
-##  [79] pkgbuild_1.0.6              BiocParallel_1.20.0        
-##  [81] GenomeInfoDb_1.22.0         rlang_0.4.2                
-##  [83] pkgconfig_2.0.3             matrixStats_0.55.0         
-##  [85] bitops_1.0-6                evaluate_0.14              
-##  [87] lattice_0.20-38             Rhdf5lib_1.8.0             
-##  [89] purrr_0.3.3                 labeling_0.3               
-##  [91] htmlwidgets_1.5.1           bit_1.1-14                 
-##  [93] processx_3.4.1              tidyselect_0.2.5           
-##  [95] plyr_1.8.5                  bookdown_0.16              
-##  [97] DESeq2_1.26.0               R6_2.4.1                   
-##  [99] IRanges_2.20.1              Hmisc_4.3-0                
-## [101] DelayedArray_0.12.0         DBI_1.0.0                  
-## [103] mgcv_1.8-31                 pillar_1.4.2               
-## [105] foreign_0.8-72              withr_2.1.2                
-## [107] survival_3.1-8              RCurl_1.95-4.12            
-## [109] nnet_7.3-12                 tibble_2.1.3               
-## [111] crayon_1.3.4                rmarkdown_2.0              
-## [113] usethis_1.5.1               locfit_1.5-9.1             
-## [115] data.table_1.12.6           vegan_2.5-6                
-## [117] blob_1.2.0                  callr_3.4.0                
-## [119] digest_0.6.23               xtable_1.8-4               
-## [121] tidyr_1.0.0                 stats4_3.6.1               
-## [123] munsell_0.5.0               sessioninfo_1.1.1</code></pre>
+##   [1] colorspace_1.4-1       ellipsis_0.3.0         rprojroot_1.3-2       
+##   [4] htmlTable_1.13.2       XVector_0.26.0         base64enc_0.1-3       
+##   [7] fs_1.3.1               rstudioapi_0.10        farver_2.0.1          
+##  [10] remotes_2.1.0          bit64_0.9-7            AnnotationDbi_1.48.0  
+##  [13] fansi_0.4.0            codetools_0.2-16       splines_3.6.1         
+##  [16] geneplotter_1.64.0     knitr_1.26             ade4_1.7-13           
+##  [19] pkgload_1.0.2          zeallot_0.1.0          jsonlite_1.6          
+##  [22] Formula_1.2-3          annotate_1.64.0        cluster_2.1.0         
+##  [25] BiocManager_1.30.10    compiler_3.6.1         backports_1.1.5       
+##  [28] assertthat_0.2.1       Matrix_1.2-18          lazyeval_0.2.2        
+##  [31] cli_2.0.0              acepack_1.4.1          htmltools_0.4.0       
+##  [34] prettyunits_1.0.2      tools_3.6.1            igraph_1.2.4.2        
+##  [37] glue_1.3.1             GenomeInfoDbData_1.2.2 reshape2_1.4.3        
+##  [40] Rcpp_1.0.3             pkgdown_1.4.1.9000     Biostrings_2.54.0     
+##  [43] vctrs_0.2.1            multtest_2.42.0        nlme_3.1-142          
+##  [46] ape_5.3                iterators_1.0.12       xfun_0.11             
+##  [49] stringr_1.4.0          ps_1.3.0               testthat_2.3.1        
+##  [52] lifecycle_0.1.0        devtools_2.2.1         XML_3.98-1.20         
+##  [55] zlibbioc_1.32.0        MASS_7.3-51.4          scales_1.1.0          
+##  [58] biomformat_1.14.0      rhdf5_2.30.1           RColorBrewer_1.1-2    
+##  [61] yaml_2.2.0             curl_4.3               memoise_1.1.0         
+##  [64] rpart_4.1-15           latticeExtra_0.6-28    stringi_1.4.3         
+##  [67] RSQLite_2.1.3          genefilter_1.68.0      desc_1.2.0            
+##  [70] foreach_1.4.7          permute_0.9-5          checkmate_1.9.4       
+##  [73] pkgbuild_1.0.6         rlang_0.4.2            pkgconfig_2.0.3       
+##  [76] bitops_1.0-6           evaluate_0.14          lattice_0.20-38       
+##  [79] Rhdf5lib_1.8.0         purrr_0.3.3            labeling_0.3          
+##  [82] htmlwidgets_1.5.1      bit_1.1-14             processx_3.4.1        
+##  [85] tidyselect_0.2.5       plyr_1.8.5             bookdown_0.16         
+##  [88] R6_2.4.1               Hmisc_4.3-0            DBI_1.0.0             
+##  [91] mgcv_1.8-31            pillar_1.4.3           foreign_0.8-72        
+##  [94] withr_2.1.2            survival_3.1-8         RCurl_1.95-4.12       
+##  [97] nnet_7.3-12            tibble_2.1.3           crayon_1.3.4          
+## [100] rmarkdown_2.0          usethis_1.5.1          locfit_1.5-9.1        
+## [103] data.table_1.12.6      vegan_2.5-6            blob_1.2.0            
+## [106] callr_3.4.0            digest_0.6.23          xtable_1.8-4          
+## [109] tidyr_1.0.0            munsell_0.5.0          sessioninfo_1.1.1</code></pre>
 </div>
   </div>
 
