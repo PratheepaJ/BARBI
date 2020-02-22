@@ -57,6 +57,8 @@ library(gridExtra)
 library(magrittr)
 library(ggplot2)
 library(DESeq2)
+library(reshape2)
+library(ggwordcloud)
 ```
 
 
@@ -483,6 +485,111 @@ for(j in 1: length(sample.names)){
     # fileN <- paste0("./Figures/", desired.sample.name,"_hist",".eps")
     # ggsave(fileN, plot = p, width = 10, height = 5, device = "eps")
 }
+
+```
+
+# Latent Dirichlet Allocation
+
+Co-occurrences of contaminants provide important information about their potential source and we provide a topic modeling approach that identifies "contaminant topics" and the distribution of taxa in each topic. This model helps identify contaminant sources related to each topic. This is important in the appropriate design of followup experiments.
+
+```{r}
+short.sample.names = c(paste0("NC.", c(1,10)), 
+                       paste0("Di.", seq(1,8)), 
+                       paste0("NC.", seq(2,9)))
+sample_names(ps) = short.sample.names
+
+x = t(get_taxa(ps))
+dimnames(x) = NULL
+K = 4
+stan.data <- list(K = K, 
+  V = ncol(x), 
+  D = nrow(x), 
+  n = x, 
+  alpha = rep(1, K), 
+  gamma = rep(0.5, ncol(x))
+)
+
+stan.fit = LDAtopicmodel(stan_data = stan.data, iter = 100, chains = 1)
+```
+
+## Extract posterior samples 
+- $\beta$ and $\theta$
+```{r}
+samples = rstan::extract(stan.fit, permuted = TRUE, inc_warmup = FALSE, include = TRUE)
+```
+
+## Posterior distribution of topic in each sample 
+
+```{r}
+theta = samples$theta 
+names(theta) = c("theta", "Sample", "Topic")
+dimnames(theta)[[2]] = sample_names(ps)
+dimnames(theta)[[3]] = c(paste0("Topic ", seq(1,K)))
+
+theta.all = melt(theta)
+colnames(theta.all) = c("Iteration", "Sample", "Topic", "topic.dis")
+
+theta.all$Sample = factor(theta.all$Sample)
+theta.all$Topic = factor(theta.all$Topic)
+
+# add control or dilution series
+sam = sample_data(ps) %>% data.frame()
+sam$unique_names = rownames(sam)
+theta.all = left_join(theta.all, sam, by =c("Sample"= "unique_names"))
+theta.all$Sample_Type = factor(theta.all$SampleType)
+```
+
+
+## Topic distirbution in each sample
+```{r}
+ggplot(data = theta.all) + 
+  geom_boxplot(aes(x = Sample, 
+                   y = topic.dis, 
+                   color = Topic)) + 
+  facet_grid(Topic ~ Sample_Type, scales = "free_x") +
+  ylab(bquote(theta[k])) + 
+  ggtitle("") + 
+  theme(plot.title = element_text(hjust = 0.5, size = 15), 
+    strip.text.y= element_text(size = 12), 
+    strip.text.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none")
+
+```
+
+
+## ASV cloud in each topic
+```{r}
+beta = samples$beta
+dimnames(beta)[[2]] = c(paste0("Topic ", seq(1,K)))
+
+tax_tab = tax_table(ps) %>% data.frame()
+tax_tab = mutate(tax_tab, seq.variant = rownames(tax_tab))
+
+dimnames(beta)[[3]] =tax_tab[, "seq.variant"]
+beta.all = melt(beta)
+colnames(beta.all) = c("Chain", "Topic", "ASV", "ASV.distribution")
+beta.all$ASV = as.character(beta.all$ASV)
+beta.all = left_join(beta.all, tax_tab, by = c("ASV"= "seq.variant"))
+beta.all$Topic = factor(beta.all$Topic)
+beta.all$ASV = factor(beta.all$ASV)
+```
+
+
+```{r}
+max.beta.in.each.asv.all.topics = group_by(beta.all, 
+                                           Topic, 
+                                           Family, 
+                                           Genus) %>% summarise(max_beta = max(ASV.distribution)) %>% top_n(10, max_beta) %>% as.data.frame()
+
+
+ggplot(max.beta.in.each.asv.all.topics, 
+                 aes(label = Genus, size = max_beta, color = Family)) + 
+  geom_text_wordcloud() +
+  theme_minimal() +
+  scale_size_area(max_size = 11) + 
+  facet_wrap(~ Topic) + 
+  theme(strip.text.x = element_text(size = 12, face = "bold"))
 
 ```
 
