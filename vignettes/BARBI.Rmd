@@ -587,11 +587,13 @@ ggplot(max.beta.in.each.asv.all.topics,
                  aes(label = Genus, size = max_beta, color = Family)) + 
   geom_text_wordcloud() +
   theme_minimal() +
-  scale_size_area(max_size = 11) + 
+  scale_size_area(max_size = 8) + 
   facet_wrap(~ Topic) + 
   theme(strip.text.x = element_text(size = 12, face = "bold"))
 
 ```
+
+We observed two contaminant topics.
 
 # Session Info 
 
